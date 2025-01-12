@@ -36,7 +36,7 @@ repos:
       - id: pylint
         name: pylint
         entry: pylint
-        language: system
+        language: python
         types: [ python ]
         args: [ '--rcfile=pylintrc' ]
         stages: [ pre-commit ]
