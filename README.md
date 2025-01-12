@@ -17,7 +17,7 @@ This guide helps you set up a development environment for this project.
 
 ## Prerequisites
 
-*   **Python:** 3.8 or higher. Check your version: `python --version`. 
+*   **Python:** 3.8 or higher. Check your version: `python --version`.
     *   Download and install Python from: [https://www.python.org/downloads/](https://www.python.org/downloads/)
 
 ## Setting Up the Development Environment
@@ -40,7 +40,7 @@ This guide helps you set up a development environment for this project.
 
     *   **Linux:** Install additional packages for MySQL support:
         ```bash
-        sudo apt install libmysqlclient-dev default-libmysqlclient-dev pkg-config python3-dev build-essential 
+        sudo apt install libmysqlclient-dev default-libmysqlclient-dev pkg-config python3-dev build-essential
         ```
         (Adjust command for your Linux package manager)
 
@@ -48,7 +48,7 @@ This guide helps you set up a development environment for this project.
 
     *   Maintain code quality with pre-commit hooks:
         ```bash
-        pip pre-commit install --install-hooks
+        pre-commit install --install-hooks
         ```
 
 4.  **Configure the Database:**

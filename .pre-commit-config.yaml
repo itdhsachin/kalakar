@@ -28,7 +28,7 @@ repos:
         language: system
         types: [python]
         args: ["--rcfile=pylintrc"]
-        stages: [commit]
+        stages: [pre-commit]
         exclude: ^(alembic/)
 ci:
     autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks
