@@ -3,11 +3,6 @@ name: pre-commit
 on:
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
-  push:
-    branches:
-      - '*'
-      - '*/*'
-      - '**'
 
 jobs:
   pre-commit:
