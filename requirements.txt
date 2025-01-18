@@ -2,3 +2,7 @@ Django==5.1.4
 django-braces==1.16.0
 mysqlclient==2.2.7
 pillow==11.1.0
+django-admin-soft-dashboard==1.0.12
+whitenoise
+gunicorn
+python-dotenv

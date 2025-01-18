@@ -20,9 +20,17 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
 urlpatterns = [
+    path("", include("dashboard.urls")),
+    path("dashbaord", include("dashboard.urls")),
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
     path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("course/", include("courses.urls")),
+
+    path("contests/", include("contests.urls")),
+    # path("cources/", include("cources.urls")),
+    path("students/", include("students.urls")),
+    path("courses1/", include("courses1.urls")),
+
+    path("courses/", include("courses.urls")),
     path("admin/", admin.site.urls),
 ]
 
