@@ -10,4 +10,5 @@ class StudentsConfig(AppConfig):
         name (str): The name of the app.
     """
 
+    default_auto_field = "django.db.models.BigAutoField"
     name = "students"
