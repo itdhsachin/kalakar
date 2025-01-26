@@ -23,9 +23,9 @@
                 Instructor: {{ object.owner }}
             </p>
 
-            <h5 class="display-6">Overview</h5>
+            <h5 class="display-6">Description</h5>
             <p>
-                {{ object.overview|linebreaks }}
+                {{ object.description|linebreaks }}
             </p>
 
             {% if request.user.is_authenticated %}

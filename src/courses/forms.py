@@ -1,7 +1,19 @@
-from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Course, Module
 
+from modules.models import Module
 
-ModuleFormSet = inlineformset_factory(Course, Module, fields=['title', 'description'], extra=2, can_delete=True)
+from .models import Course
 
+ModuleFormSet = inlineformset_factory(
+    Course,
+    Module,
+    fields=[
+        "title",
+        "description",
+        "target_end_date",
+        "start_date",
+        "prerequisite_module",
+    ],
+    extra=2,
+    can_delete=True,
+)

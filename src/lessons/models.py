@@ -1,61 +1,41 @@
 """Module to perform database operations."""
 
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.template.loader import render_to_string
 
+from courses.fields import OrderField
 from modules.models import Module
-
-
-class LessonTypeMaster(models.Model):
-    """Represents the master data for lesson types with an ID."""
-
-    id = models.AutoField(primary_key=True, help_text="Primary key")
-    type = models.CharField(
-        max_length=255, null=False, help_text="Type of lesson"
-    )
-    description = models.TextField(
-        blank=True, null=True, help_text="Description of the lesson type"
-    )
-    created_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="created_lesson_types",
-        help_text="User who created the lesson type",
-    )
-    updated_at = models.DateTimeField(
-        auto_now=True, help_text="Timestamp of the last update"
-    )
-
-    def __str__(self):
-        """Returns the string representation of the LessonTypeMaster."""
-        return str(self.type)
 
 
 class Lesson(models.Model):
     """Represents a lesson within a module with an ID."""
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
+    title = models.CharField(
+        max_length=255, null=False, help_text="Name of the lesson"
+    )
+    description = models.TextField(
+        blank=True, null=True, help_text="Description of the lesson"
+    )
     module = models.ForeignKey(
         Module,
         on_delete=models.CASCADE,
         related_name="lessons",
         help_text="Module this lesson belongs to",
     )
+
     lesson_type = models.ForeignKey(
-        LessonTypeMaster,
+        ContentType,
         on_delete=models.CASCADE,
-        related_name="lessons",
-        help_text="Type of the lesson",
+        limit_choices_to={"model__in": ("text", "video", "image", "file")},
     )
-    content_url = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="URL of the lesson content",
-    )
-    order = models.IntegerField(
-        null=False, help_text="Order of the lesson within the module"
-    )
+
+    object_id = models.PositiveIntegerField()
+    item = GenericForeignKey("lesson_type", "object_id")
+
     prerequisite_lesson = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
@@ -83,9 +63,16 @@ class Lesson(models.Model):
         default=True, help_text="State of the lesson (active/inactive)"
     )
 
+    order = OrderField(blank=True, for_fields=["module"])
+
+    class Meta:
+        """Metaclass."""
+
+        ordering = ["order"]
+
     def __str__(self):
         """Returns the string representation of the Lesson."""
-        return str(self.content_url)
+        return str(self.title)
 
 
 class LessonTrack(models.Model):
@@ -120,3 +107,53 @@ class LessonTrack(models.Model):
     def __str__(self):
         """Returns the string representation of the LessonTrack."""
         return f"LessonTrack for {self.user.username} on {self.lesson.id}"
+
+
+class ItemBase(models.Model):
+    """Abstract base class for different types of items with an owner, title, created and updated timestamps."""
+
+    created_by = models.ForeignKey(
+        User, related_name="%(class)s_related", on_delete=models.CASCADE
+    )
+    title = models.CharField(max_length=250)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        """Metaclass."""
+
+        abstract = True
+
+    def __str__(self):
+        """Returns the string representation of the item."""
+        return str(self.title)
+
+    def render(self):
+        """Renders the item to a string using a template."""
+        return render_to_string(
+            f"courses/content/{self._meta.model_name}.html", {"item": self}
+        )
+
+
+class Text(ItemBase):
+    """Represents a text item with content."""
+
+    content = models.TextField()
+
+
+class File(ItemBase):
+    """Represents a file item with a file field."""
+
+    file = models.FileField(upload_to="files")
+
+
+class Image(ItemBase):
+    """Represents an image item with an image field."""
+
+    image = models.ImageField(upload_to="images")
+
+
+class Video(ItemBase):
+    """Represents a video item with a URL field."""
+
+    url = models.URLField()
