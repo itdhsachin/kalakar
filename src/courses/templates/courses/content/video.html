@@ -1,4 +1,75 @@
-<div>
-    {% load embed_video_tags %}
-    {% video item.url "small" %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="embed-responsive embed-responsive-16by9">
+                <div id="player" class="embed-responsive-item"></div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Load the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Extract the video ID from the YouTube link
+    function getYouTubeVideoId(url) {
+        var videoId = '';
+        var urlParts = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+        if (urlParts[2] !== undefined) {
+            videoId = urlParts[2].split(/[^0-9a-z_\-]/i)[0];
+        } else {
+            videoId = urlParts[0];
+        }
+        return videoId;
+    }
+
+    // Replace the 'player' div with an <iframe> and YouTube player after the API code downloads.
+    var player;
+    function onYouTubeIframeAPIReady() {
+        var videoUrl = '{{ item.url }}'; // Replace with your YouTube video URL
+        var videoId = getYouTubeVideoId(videoUrl);
+        player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            videoId: videoId,
+            playerVars: {
+                'controls': 0, // Disable controls
+                'disablekb': 1, // Disable keyboard controls
+                'rel': 0, // Disable related videos
+                'modestbranding': 1, // Hide YouTube logo
+                'showinfo': 0, // Hide video title
+                'iv_load_policy': 3 // Disable annotations
+            },
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    // Track video watch progress
+    var done = false;
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+            setInterval(trackProgress, 1000);
+            done = true;
+        }
+    }
+
+    function trackProgress() {
+        var currentTime = player.getCurrentTime();
+        var duration = player.getDuration();
+        var percentageWatched = (currentTime / duration) * 100;
+
+        console.log('Current Time: ' + currentTime);
+        console.log('Percentage Watched: ' + percentageWatched.toFixed(2) + '%');
+
+        if (percentageWatched >= 90) {
+            console.log('User has watched 90% of the video.');
+        }
+        // You can send this data to your server or perform other actions
+    }
+</script>

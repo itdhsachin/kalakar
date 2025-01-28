@@ -5,23 +5,54 @@ from django.db import models
 
 
 class Subject(models.Model):
-    """Represents a subject with a title and slug."""
+    """Represents a subject with a title and slug.
+
+    Attributes:
+        title (CharField): The title of the subject.
+        slug (SlugField): The slug of the subject.
+    """
 
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
-        """Metaclass."""
+        """Metaclass.
+
+        Attributes:
+            ordering (list): The ordering of the subjects.
+        """
 
         ordering = ["title"]
 
     def __str__(self):
-        """Returns the string representation of the Subject."""
+        """Returns the string representation of the Subject.
+
+        Returns:
+            str: The title of the subject.
+        """
         return str(self.title)
 
 
 class Course(models.Model):
-    """Represents a course with an ID."""
+    """Represents a course with an ID.
+
+    Attributes:
+        id (AutoField): The primary key of the course.
+        title (CharField): The title of the course.
+        subject (ForeignKey): The subject of the course.
+        slug (SlugField): The unique slug for the course.
+        description (TextField): The description of the course.
+        price (DecimalField): The price of the course.
+        currency (CharField): The currency of the price.
+        is_paid (BooleanField): Indicates if the course is paid or not.
+        created_at (DateTimeField): The timestamp of creation.
+        enroll_start_date (DateField): The enrollment start date.
+        enroll_end_date (DateField): The enrollment end date.
+        completion_days (IntegerField): The number of days to complete the course.
+        created_by (ForeignKey): The user who created the course.
+        updated_at (DateTimeField): The timestamp of the last update.
+        state (BooleanField): The state of the course (active/inactive).
+    """
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
     title = models.CharField(
@@ -75,17 +106,38 @@ class Course(models.Model):
     )
 
     class Meta:
-        """Metaclass."""
+        """Metaclass.
+
+        Attributes:
+            ordering (list): The ordering of the courses.
+        """
 
         ordering = ["-created_at"]
 
     def __str__(self):
-        """Returns the string representation of the Course."""
+        """Returns the string representation of the Course.
+
+        Returns:
+            str: The title of the course.
+        """
         return str(self.title)
 
 
 class Enrollment(models.Model):
-    """Represents an enrollment with an ID."""
+    """Represents an enrollment with an ID.
+
+    Attributes:
+        id (AutoField): The primary key of the enrollment.
+        user (ForeignKey): The user who enrolled in the course.
+        course (ForeignKey): The course this enrollment belongs to.
+        enrollment_date (DateTimeField): The timestamp of enrollment.
+        target_end_date (DateField): The target end date for the enrollment.
+        is_completed (BooleanField): Indicates if the enrollment is completed.
+        completion_date (DateField): The date of completion.
+        created_by (ForeignKey): The user who created the enrollment.
+        updated_at (DateTimeField): The timestamp of the last update.
+        state (BooleanField): The state of the enrollment (active/inactive).
+    """
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
     user = models.ForeignKey(
@@ -125,13 +177,38 @@ class Enrollment(models.Model):
         default=True, help_text="State of the enrollment (active/inactive)"
     )
 
+    class Meta:
+        """Metaclass.
+
+        Attributes:
+            unique_together (tuple): The unique together constraint for user and course.
+        """
+
+        unique_together = ("user", "course")
+
     def __str__(self):
-        """Returns the string representation of the Enrollment."""
+        """Returns the string representation of the Enrollment.
+
+        Returns:
+            str: The enrollment details.
+        """
         return f"Enrollment of {self.user.username} in {self.course.title}"
 
 
 class Certificate(models.Model):
-    """Represents a certificate with an ID."""
+    """Represents a certificate with an ID.
+
+    Attributes:
+        id (AutoField): The primary key of the certificate.
+        course (ForeignKey): The course this certificate belongs to.
+        user (ForeignKey): The user who received the certificate.
+        issue_date (DateField): The issue date of the certificate.
+        eol_date (DateField): The end of life date of the certificate.
+        certificate_url (CharField): The URL of the certificate.
+        state (BooleanField): The state of the certificate (active/inactive).
+        created_by (ForeignKey): The user who created the certificate.
+        updated_at (DateTimeField): The timestamp of the last update.
+    """
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
     course = models.ForeignKey(
@@ -170,12 +247,25 @@ class Certificate(models.Model):
     )
 
     def __str__(self):
-        """Returns the string representation of the Certificate."""
+        """Returns the string representation of the Certificate.
+
+        Returns:
+            str: The certificate details.
+        """
         return f"Certificate for {self.user.username} in {self.course.title}"
 
 
 class CertificateMaster(models.Model):
-    """Represents a certificate master template with an ID."""
+    """Represents a certificate master template with an ID.
+
+    Attributes:
+        id (AutoField): The primary key of the certificate master.
+        title (CharField): The title of the certificate.
+        design (TextField): The design of the certificate.
+        created_by (ForeignKey): The user who created the certificate master.
+        updated_at (DateTimeField): The timestamp of the last update.
+        state (BooleanField): The state of the certificate master (active/inactive).
+    """
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
     title = models.CharField(
@@ -199,5 +289,9 @@ class CertificateMaster(models.Model):
     )
 
     def __str__(self):
-        """Returns the string representation of the CertificateMaster."""
+        """Returns the string representation of the CertificateMaster.
+
+        Returns:
+            str: The title of the certificate master.
+        """
         return str(self.title)

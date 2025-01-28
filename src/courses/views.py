@@ -196,12 +196,12 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         formset = self.get_formset(data=request.POST)
         user = request.user
 
-        for form in formset.forms:
-            if "created_by" not in form.initial:
-                form.initial["created_by"] = user
-
         if formset.is_valid():
-            formset.save()
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.created_by = user
+                instance.save()
+            formset.save_m2m()
             return redirect("manage_course_list")
         return self.render_to_response(
             {"course": self.course, "formset": formset}
@@ -233,6 +233,8 @@ class ModuleContentListView(TemplateResponseMixin, View):
         module = get_object_or_404(
             Module, id=module_id, course__created_by=request.user
         )
+
+        module.lessons.set(Lesson.objects.filter(module=module))
         return self.render_to_response({"module": module})
 
 
@@ -350,7 +352,9 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             obj.save()
 
             if not id:
-                Lesson.objects.create(module=self.module, item=obj)
+                Lesson.objects.create(
+                    module=self.module, item=obj, created_by=request.user
+                )
             return redirect("module_content_list", self.module.id)
         return self.render_to_response({"form": form, "object": self.obj})
 

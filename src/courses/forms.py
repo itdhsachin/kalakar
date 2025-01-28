@@ -1,9 +1,11 @@
+"""Module."""
+
 from django.forms.models import inlineformset_factory
 
+from courses.models import Course
 from modules.models import Module
 
-from .models import Course
-
+# Define the ModuleFormSet with inline formset factory
 ModuleFormSet = inlineformset_factory(
     Course,
     Module,

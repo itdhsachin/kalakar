@@ -8,7 +8,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic.list import ListView
 
-from courses.models import Course
+from courses.models import Course, Enrollment
+from lessons.models import Lesson
 from students.forms import CourseEnrollForm
 
 
@@ -69,7 +70,18 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
             HttpResponse: The HTTP response after processing the form.
         """
         self.course = form.cleaned_data["course"]
-        self.course.students.add(self.request.user)
+        user = self.request.user
+
+        # Check if the enrollment already exists
+        _, created = Enrollment.objects.get_or_create(
+            user=user, course=self.course, defaults={"created_by": user}
+        )
+
+        if not created:
+            # Enrollment already exists
+            form.add_error(None, "You are already enrolled in this course.")
+            return self.form_invalid(form)
+
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -127,7 +139,7 @@ class StudentCourseDetailView(DetailView):
             QuerySet: The queryset of courses.
         """
         qs = super().get_queryset()
-        return qs.filter(students__in=[self.request.user])
+        return qs.filter(enrollments__user=self.request.user)
 
     def get_context_data(self, **kwargs):
         """Adds additional context data for the template.
@@ -141,10 +153,21 @@ class StudentCourseDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         course = self.get_object()
 
+        # Fetch modules and attach lessons to each module
+        modules = course.modules.all()
+        for module in modules:
+            module.lessons.set(Lesson.objects.filter(module=module))
+
+        # Attach modules to course object
+        course.modules.set(modules)
+
+        context["course"] = course
+
         if "module_id" in self.kwargs:
             context["module"] = course.modules.get(id=self.kwargs["module_id"])
         else:
-            if course.modules.all():
-                context["module"] = course.modules.all()[0]
+            modules_list = list(course.modules.all())
+            if modules_list:
+                context["module"] = modules_list[0]
 
         return context

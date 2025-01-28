@@ -39,7 +39,7 @@
 
     <div class="module">
 {#    {% cache 300 module_content_s module%}#}
-        {% for content in module.contents.all %}
+        {% for content in module.lessons.all %}
             {% with item=content.item %}
                 <div class="module card" >
                     <details>
