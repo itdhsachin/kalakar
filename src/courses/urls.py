@@ -1,4 +1,4 @@
-"""URL configuration for the course' app.
+"""URL configuration for the course app.
 
 This module maps URL patterns to the corresponding views for the course app.
 

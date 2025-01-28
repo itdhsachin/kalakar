@@ -3,6 +3,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from courses.fields import OrderField
 from courses.models import Course
 
 
@@ -16,8 +17,8 @@ class Module(models.Model):
         related_name="modules",
         help_text="Course this module belongs to",
     )
-    name = models.CharField(
-        max_length=255, null=False, help_text="Name of the module"
+    title = models.CharField(
+        max_length=255, null=False, help_text="Title of the module"
     )
     description = models.TextField(
         blank=True, null=True, help_text="Description of the module"
@@ -36,8 +37,8 @@ class Module(models.Model):
         related_name="subsequent_modules",
         help_text="Prerequisite module",
     )
-    order = models.IntegerField(
-        null=False, help_text="Order of the module within the course"
+    order = OrderField(
+        blank=True, help_text="Order of the module within the course"
     )
     created_by = models.ForeignKey(
         User,
@@ -54,7 +55,12 @@ class Module(models.Model):
 
     def __str__(self):
         """Returns the string representation of the Module."""
-        return str(self.name)
+        return str(self.title)
+
+    class Meta:
+        """meta class."""
+
+        ordering = ["order"]
 
 
 class ModuleTrack(models.Model):
@@ -91,4 +97,4 @@ class ModuleTrack(models.Model):
 
     def __str__(self):
         """Returns the string representation of the ModuleTrack."""
-        return f"ModuleTrack for {self.user.username} on {self.module.name}"
+        return f"ModuleTrack for {self.user.username} on {self.module.title}"

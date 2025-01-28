@@ -17,7 +17,9 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
 from courses.forms import ModuleFormSet
-from courses.models import Content, Course, Module, Subject
+from courses.models import Course, Subject
+from lessons.models import Lesson
+from modules.models import Module
 from students.forms import CourseEnrollForm
 
 
@@ -31,7 +33,7 @@ class OwnerMixin:
     def get_queryset(self):
         """Return the queryset."""
         qs = super().get_queryset()
-        return qs.filter(owner=self.request.user)
+        return qs.filter(created_by=self.request.user)
 
 
 class OwnerEditMixin:
@@ -50,7 +52,7 @@ class OwnerEditMixin:
         Returns:
             HttpResponse: The HTTP response after form validation.
         """
-        form.instance.owner = self.request.user
+        form.instance.created_by = self.request.user
         return super().form_valid(form)
 
 
@@ -64,7 +66,7 @@ class OwnerCourseMixin(OwnerMixin, LoginRequiredMixin, PermissionRequiredMixin):
     """
 
     model = Course
-    fields = ["subject", "title", "slug", "overview"]
+    fields = ["subject", "title", "slug", "description"]
     success_url = reverse_lazy("manage_course_list")
 
 
@@ -161,7 +163,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         Returns:
             HttpResponse: The response object.
         """
-        self.course = get_object_or_404(Course, id=pk, owner=request.user)
+        self.course = get_object_or_404(Course, id=pk, created_by=request.user)
         return super().dispatch(request, pk)
 
     def get(self, request, *args, **kwargs):  # pylint: disable=unused-argument
@@ -192,8 +194,14 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
             HttpResponse: The response object with the module formset.
         """
         formset = self.get_formset(data=request.POST)
+        user = request.user
+
         if formset.is_valid():
-            formset.save()
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.created_by = user
+                instance.save()
+            formset.save_m2m()
             return redirect("manage_course_list")
         return self.render_to_response(
             {"course": self.course, "formset": formset}
@@ -223,8 +231,10 @@ class ModuleContentListView(TemplateResponseMixin, View):
             HttpResponse: The response object with the content list.
         """
         module = get_object_or_404(
-            Module, id=module_id, course__owner=request.user
+            Module, id=module_id, course__created_by=request.user
         )
+
+        module.lessons.set(Lesson.objects.filter(module=module))
         return self.render_to_response({"module": module})
 
 
@@ -262,7 +272,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             Model: The content model.
         """
         if model_name in ["text", "image", "video", "file"]:
-            return apps.get_model(app_label="courses", model_name=model_name)
+            return apps.get_model(app_label="lessons", model_name=model_name)
         return None
 
     def get_form(self, model, *args, **kwargs):
@@ -277,7 +287,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             Form: The form for the content model.
         """
         form = modelform_factory(
-            model, exclude=["owner", "order", "created", "updated"]
+            model, exclude=["created_by", "order", "created", "updated"]
         )
         return form(*args, **kwargs)
 
@@ -294,11 +304,13 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             HttpResponse: The response object.
         """
         self.module = get_object_or_404(
-            Module, id=module_id, course__owner=request.user
+            Module, id=module_id, course__created_by=request.user
         )
         self.model = self.get_model(model_name)
         if id:
-            self.obj = get_object_or_404(self.model, id=id, owner=request.user)
+            self.obj = get_object_or_404(
+                self.model, id=id, created_by=request.user
+            )
         return super().dispatch(request, module_id, model_name, id)
 
     def get(self, request, module_id, model_name, id=None):  # pylint: disable=unused-argument disable=redefined-builtin
@@ -336,10 +348,13 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         )
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.owner = request.user
+            obj.created_by = request.user
             obj.save()
+
             if not id:
-                Content.objects.create(module=self.module, item=obj)
+                Lesson.objects.create(
+                    module=self.module, item=obj, created_by=request.user
+                )
             return redirect("module_content_list", self.module.id)
         return self.render_to_response({"form": form, "object": self.obj})
 
@@ -362,7 +377,7 @@ class ContentDeleteView(View):
             HttpResponse: The response object redirecting to the content list.
         """
         content = get_object_or_404(
-            Content, id=id, module__course__owner=request.user
+            Lesson, id=id, module__course__created_by=request.user
         )
         module = content.module
         content.item.delete()
@@ -388,9 +403,9 @@ class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             JsonResponse: The JSON response indicating the status.
         """
         for id_key, order in self.request_json.items():
-            Module.objects.filter(id=id_key, course__owner=request.user).update(
-                order=order
-            )
+            Module.objects.filter(
+                id=id_key, course__created_by=request.user
+            ).update(order=order)
         return self.render_json_response({"saved": "ok"})
 
 
@@ -412,8 +427,8 @@ class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
             JsonResponse: The JSON response indicating the status.
         """
         for id_key, order in self.request_json.items():
-            Content.objects.filter(
-                id=id_key, module__course__owner=request.user
+            Lesson.objects.filter(
+                id=id_key, module__course__created_by=request.user
             ).update(order=order)
         return self.render_json_response({"saved": "ok"})
 

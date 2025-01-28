@@ -20,12 +20,12 @@
                     Modules Numbers: {{ object.modules.count }}
                 </span>
                 <br>
-                Instructor: {{ object.owner }}
+                Instructor: {{ object.created_by }}
             </p>
 
-            <h5 class="display-6">Overview</h5>
+            <h5 class="display-6">Description</h5>
             <p>
-                {{ object.overview|linebreaks }}
+                {{ object.description|linebreaks }}
             </p>
 
             {% if request.user.is_authenticated %}

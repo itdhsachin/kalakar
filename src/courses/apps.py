@@ -1,5 +1,9 @@
+"""Course app module."""
+
 from django.apps import AppConfig
 
 
 class CoursesConfig(AppConfig):
-    name = 'courses'
+    """Course config."""
+
+    name = "courses"

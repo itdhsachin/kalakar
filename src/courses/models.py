@@ -1,197 +1,143 @@
 """Course database models."""
 
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.template.loader import render_to_string
-
-from courses.fields import OrderField
 
 
 class Subject(models.Model):
-    """Represents a subject with a title and slug."""
+    """Represents a subject with a title and slug.
+
+    Attributes:
+        title (CharField): The title of the subject.
+        slug (SlugField): The slug of the subject.
+    """
 
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
-        """meta class."""
+        """Metaclass.
+
+        Attributes:
+            ordering (list): The ordering of the subjects.
+        """
 
         ordering = ["title"]
 
     def __str__(self):
-        """Returns the string representation of the Subject."""
+        """Returns the string representation of the Subject.
+
+        Returns:
+            str: The title of the subject.
+        """
         return str(self.title)
 
 
 class Course(models.Model):
-    """Represents a course with an owner, subject, title, overview, slug, created timestamp, and students."""
+    """Represents a course with an ID.
 
-    owner = models.ForeignKey(
-        User, related_name="courses_created", on_delete=models.CASCADE
+    Attributes:
+        id (AutoField): The primary key of the course.
+        title (CharField): The title of the course.
+        subject (ForeignKey): The subject of the course.
+        slug (SlugField): The unique slug for the course.
+        description (TextField): The description of the course.
+        price (DecimalField): The price of the course.
+        currency (CharField): The currency of the price.
+        is_paid (BooleanField): Indicates if the course is paid or not.
+        created_at (DateTimeField): The timestamp of creation.
+        enroll_start_date (DateField): The enrollment start date.
+        enroll_end_date (DateField): The enrollment end date.
+        completion_days (IntegerField): The number of days to complete the course.
+        created_by (ForeignKey): The user who created the course.
+        updated_at (DateTimeField): The timestamp of the last update.
+        state (BooleanField): The state of the course (active/inactive).
+    """
+
+    id = models.AutoField(primary_key=True, help_text="Primary key")
+    title = models.CharField(
+        max_length=255, null=False, help_text="Title of the course"
     )
     subject = models.ForeignKey(
         Subject, related_name="courses", on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=200)
-    overview = models.TextField()
-    slug = models.CharField(max_length=200, unique=True)
-    created = models.DateTimeField(auto_now_add=True)
-    students = models.ManyToManyField(
-        User, related_name="courses_joined", blank=True
+    slug = models.SlugField(
+        max_length=255, unique=True, help_text="Unique slug for the course"
     )
-
-    class Meta:
-        """meta class."""
-
-        ordering = ["-created"]
-
-    def __str__(self):
-        """Returns the string representation of the Course."""
-        return str(self.title)
-
-
-class Module(models.Model):
-    """Represents a module within a course with a title, description, and order."""
-
-    course = models.ForeignKey(
-        Course, related_name="modules", on_delete=models.CASCADE
+    description = models.TextField(
+        blank=True, null=True, help_text="Description of the course"
     )
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    order = OrderField(blank=True, for_fields=["course"])
-
-    class Meta:
-        """meta class."""
-
-        ordering = ["order"]
-
-    def __str__(self):
-        """Returns the string representation of the Module."""
-        return f"{self.order}, {self.title}"
-
-
-class Content(models.Model):
-    """Represents content within a module with a content type, object ID, and order."""
-
-    module = models.ForeignKey(
-        Module, related_name="contents", on_delete=models.CASCADE
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Price of the course",
     )
-    content_type = models.ForeignKey(
-        ContentType,
+    currency = models.CharField(
+        max_length=10, null=True, blank=True, help_text="Currency of the price"
+    )
+    is_paid = models.BooleanField(
+        default=False, help_text="Indicates if the course is paid or not"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, help_text="Timestamp of creation"
+    )
+    enroll_start_date = models.DateField(
+        null=True, blank=True, help_text="Enrollment start date"
+    )
+    enroll_end_date = models.DateField(
+        null=True, blank=True, help_text="Enrollment end date"
+    )
+    completion_days = models.IntegerField(
+        null=True, blank=True, help_text="Number of days to complete the course"
+    )
+    created_by = models.ForeignKey(
+        User,
         on_delete=models.CASCADE,
-        limit_choices_to={"model__in": ("text", "video", "image", "file")},
+        related_name="created_courses",
+        help_text="User who created the course",
     )
-    object_id = models.PositiveIntegerField()
-    item = GenericForeignKey("content_type", "object_id")
-    order = OrderField(blank=True, for_fields=["module"])
+    updated_at = models.DateTimeField(
+        auto_now=True, help_text="Timestamp of the last update"
+    )
+    state = models.BooleanField(
+        default=True, help_text="State of the course (active/inactive)"
+    )
 
     class Meta:
-        """meta class."""
+        """Metaclass.
 
-        ordering = ["order"]
+        Attributes:
+            ordering (list): The ordering of the courses.
+        """
 
-
-class ItemBase(models.Model):
-    """Abstract base class for different types of items with an owner, title, created and updated timestamps."""
-
-    owner = models.ForeignKey(
-        User, related_name="%(class)s_related", on_delete=models.CASCADE
-    )
-    title = models.CharField(max_length=250)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        """meta class."""
-
-        abstract = True
+        ordering = ["-created_at"]
 
     def __str__(self):
-        """Returns the string representation of the item."""
+        """Returns the string representation of the Course.
+
+        Returns:
+            str: The title of the course.
+        """
         return str(self.title)
-
-    def render(self):
-        """Renders the item to a string using a template."""
-        return render_to_string(
-            f"courses/content/{self._meta.model_name}.html", {"item": self}
-        )
-
-
-class Text(ItemBase):
-    """Represents a text item with content."""
-
-    content = models.TextField()
-
-
-class File(ItemBase):
-    """Represents a file item with a file field."""
-
-    file = models.FileField(upload_to="files")
-
-
-class Image(ItemBase):
-    """Represents an image item with an image field."""
-
-    image = models.ImageField(upload_to="images")
-
-
-class Video(ItemBase):
-    """Represents a video item with a URL field."""
-
-    url = models.URLField()
-
-
-# """
-# # The new functionality added with the below course model
-#
-# class Category(models.Model):
-# #    Represents a category with an ID, name, description, created by user, updated timestamp, and state.
-#
-#     id = models.AutoField(primary_key=True, help_text="Primary key")
-#     name = models.CharField(max_length=255, null=False, help_text="Name of the category")
-#     description = models.TextField(blank=True, null=True, help_text="Description of the category")
-#     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_categories",
-#       help_text="User who created the category")
-#     updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp of the last update")
-#     state = models.BooleanField(default=True, help_text="State of the category (active/inactive)")
-#
-#     def __str__(self):
-# #        Returns the string representation of the Category.
-#         return self.name
-#
-#
-# class Course(models.Model):
-# #    Represents a course with an ID.
-#
-#     id = models.AutoField(primary_key=True, help_text="Primary key")
-#     title = models.CharField(max_length=255, null=False, help_text="Title of the course")
-#     slug = models.SlugField(max_length=255, unique=True, help_text="Unique slug for the course")
-#     description = models.TextField(blank=True, null=True, help_text="Description of the course")
-#     price = models.DecimalField(max_digits=10, decimal_places=2, null=True,
-#     blank=True, help_text="Price of the course")
-#     currency = models.CharField(max_length=10, null=True, blank=True, help_text="Currency of the price")
-#     is_paid = models.BooleanField(default=False, help_text="Indicates if the course is paid or not")
-#     categories = models.ManyToManyField(Category, related_name="courses",
-#     help_text="Categories this course belongs to")
-#     created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp of creation")
-#     enroll_start_date = models.DateField(null=True, blank=True, help_text="Enrollment start date")
-#     enroll_end_date = models.DateField(null=True, blank=True, help_text="Enrollment end date")
-#     completion_days = models.IntegerField(null=True, blank=True, help_text="Number of days to complete the course")
-#     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_courses",
-#     help_text="User who created the course")
-#     updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp of the last update")
-#     state = models.BooleanField(default=True, help_text="State of the course (active/inactive)")
-#
-#     def __str__(self):
-# #        Returns the string representation of the Course.
-#         return self.title
-# """
 
 
 class Enrollment(models.Model):
-    """Represents an enrollment with an ID."""
+    """Represents an enrollment with an ID.
+
+    Attributes:
+        id (AutoField): The primary key of the enrollment.
+        user (ForeignKey): The user who enrolled in the course.
+        course (ForeignKey): The course this enrollment belongs to.
+        enrollment_date (DateTimeField): The timestamp of enrollment.
+        target_end_date (DateField): The target end date for the enrollment.
+        is_completed (BooleanField): Indicates if the enrollment is completed.
+        completion_date (DateField): The date of completion.
+        created_by (ForeignKey): The user who created the enrollment.
+        updated_at (DateTimeField): The timestamp of the last update.
+        state (BooleanField): The state of the enrollment (active/inactive).
+    """
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
     user = models.ForeignKey(
@@ -231,13 +177,38 @@ class Enrollment(models.Model):
         default=True, help_text="State of the enrollment (active/inactive)"
     )
 
+    class Meta:
+        """Metaclass.
+
+        Attributes:
+            unique_together (tuple): The unique together constraint for user and course.
+        """
+
+        unique_together = ("user", "course")
+
     def __str__(self):
-        """Returns the string representation of the Enrollment."""
+        """Returns the string representation of the Enrollment.
+
+        Returns:
+            str: The enrollment details.
+        """
         return f"Enrollment of {self.user.username} in {self.course.title}"
 
 
 class Certificate(models.Model):
-    """Represents a certificate with an ID."""
+    """Represents a certificate with an ID.
+
+    Attributes:
+        id (AutoField): The primary key of the certificate.
+        course (ForeignKey): The course this certificate belongs to.
+        user (ForeignKey): The user who received the certificate.
+        issue_date (DateField): The issue date of the certificate.
+        eol_date (DateField): The end of life date of the certificate.
+        certificate_url (CharField): The URL of the certificate.
+        state (BooleanField): The state of the certificate (active/inactive).
+        created_by (ForeignKey): The user who created the certificate.
+        updated_at (DateTimeField): The timestamp of the last update.
+    """
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
     course = models.ForeignKey(
@@ -276,12 +247,25 @@ class Certificate(models.Model):
     )
 
     def __str__(self):
-        """Returns the string representation of the Certificate."""
+        """Returns the string representation of the Certificate.
+
+        Returns:
+            str: The certificate details.
+        """
         return f"Certificate for {self.user.username} in {self.course.title}"
 
 
 class CertificateMaster(models.Model):
-    """Represents a certificate master template with an ID."""
+    """Represents a certificate master template with an ID.
+
+    Attributes:
+        id (AutoField): The primary key of the certificate master.
+        title (CharField): The title of the certificate.
+        design (TextField): The design of the certificate.
+        created_by (ForeignKey): The user who created the certificate master.
+        updated_at (DateTimeField): The timestamp of the last update.
+        state (BooleanField): The state of the certificate master (active/inactive).
+    """
 
     id = models.AutoField(primary_key=True, help_text="Primary key")
     title = models.CharField(
@@ -305,5 +289,9 @@ class CertificateMaster(models.Model):
     )
 
     def __str__(self):
-        """Returns the string representation of the CertificateMaster."""
+        """Returns the string representation of the CertificateMaster.
+
+        Returns:
+            str: The title of the certificate master.
+        """
         return str(self.title)

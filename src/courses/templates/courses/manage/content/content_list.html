@@ -44,7 +44,7 @@
             <h5 class="display-6">Module{{ module.order|add:1 }}  "{{ module.title }}"</h5>
 
             <div id="module-contents">
-                {% for content in module.contents.all %}
+                {% for content in module.lessons.all %}
                     <div data-id="{{ content.id }}">
                         {% with item=content.item %}
 

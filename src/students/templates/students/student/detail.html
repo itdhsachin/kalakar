@@ -29,9 +29,9 @@
 
         <div>
             <h3 class="display-6 hover-style">
-                <a href="{% url 'chat:course_chat_room' object.id %}">
-                    Chat Room ==>
-                </a>
+<!--                <a href="{url 'chat:course_chat_room' object.id }">-->
+<!--                    Chat Room ==>-->
+<!--                </a>-->
             </h3>
 
         </div>
@@ -39,7 +39,7 @@
 
     <div class="module">
 {#    {% cache 300 module_content_s module%}#}
-        {% for content in module.contents.all %}
+        {% for content in module.lessons.all %}
             {% with item=content.item %}
                 <div class="module card" >
                     <details>
