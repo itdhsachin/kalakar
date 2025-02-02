@@ -1,0 +1,474 @@
+{% load static %}
+<div class="mobile-off-canvas-active">
+    <a class="mobile-aside-close"><i class="icofont  icofont-close-line"></i></a>
+    <div class="header-mobile-aside-wrap">
+        <div class="mobile-search">
+            <form class="search-form" action="#">
+                <input type="text" placeholder="Search entire store…">
+                <button class="button-search">
+                    <i class="icofont icofont-search-2"></i>
+                </button>
+            </form>
+        </div>
+        <div class="mobile-menu-wrap headerarea">
+            <div class="mobile-navigation">
+                <nav>
+                    <ul class="mobile-menu">
+                        <li class="menu-item-has-children">
+                            <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home</a>
+                            <ul class="dropdown">
+                                <li class="menu-item-has-children">
+                                    <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Homes Light</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home (Default)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-2' %}">Elegant</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-3' %}">Classic</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-4' %}">Classic LMS</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-5' %}">Online Course</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-6' %}">Marketplace</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-7' %}">University</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-8' %}">eCommerce</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-9' %}">Kindergarten</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-10' %}">Machine Learning</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-11' %}">Single Course</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Homes Dark</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='index-dark' %}">Home Default (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-2-dark' %}">Elegant (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-3-dark' %}">Classic (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-4-dark' %}">Classic LMS (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-5-dark' %}">Online Course (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-6-dark' %}">Marketplace (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-7-dark' %}">University (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-8-dark' %}">eCommerce (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-9-dark' %}">Kindergarten (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-10-dark' %}">Kindergarten (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='home-11-dark' %}">Single Course (Dark)</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item-has-children ">
+                            <a href="#">Pages</a>
+                            <ul class="dropdown">
+                                <li class="menu-item-has-children">
+                                    <a href="#">Get Started 1</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='about' %}">About</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='about-dark' %}">About (Dark)<span class="mega__menu__label new">New</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='blog' %}">Blog</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='blog-dark' %}">Blog (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='blog-details' %}">Blog Details</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='blog-details-dark' %}">Blog Details (Dark)</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="#">Get Started 2</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='error' %}">Error 404</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='error-dark' %}">Error (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='event-details' %}">Event Details</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='zoom-meetings' %}">Zoom<span class="mega__menu__label">Online Call</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='zoom-meetings-dark' %}">Zoom Meeting (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='zoom-meetings-details' %}">Zoom Meeting Details</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="#">Get Started 3</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='meeting-details-dark' %}">Meeting Details (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='login' %}">Login</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='login-dark' %}">Login (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='maintenance' %}">Maintenance</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='maintenance-dark' %}">Maintenance Dark</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Terms & Condition</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="#">Get Started 4</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="#">Terms & Condition (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='contact' %}">Contact</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='contact-dark' %}">Contact (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Success Stories</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Success Stories (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Work Policy</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <div class="mega__menu__img">
+                                        <a href="#">
+                                            <img loading="lazy"
+                                                 src="{% static 'img/mega/mega_menu_2.png' %}"
+                                                 alt="Mega Menu">
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item-has-children ">
+                            <a href="{% url 'pages:dynamic_pages' template_name='course' %}">Courses</a>
+                            <ul class="dropdown">
+                                <li class="menu-item-has-children">
+                                    <a href="#">Get Started 1</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course' %}">Grid <span class="mega__menu__label">All
+                                            Courses</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-dark' %}">Course Grid (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-grid' %}">Course Grid</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-grid-dark' %}">Course Grid (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-list' %}">Course List</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-list-dark' %}">Course List (Dark)</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="#">Get Started 2</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Course Details</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details-dark' %}">Course Details (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details-2' %}">Course Details 2</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details-2-dark' %}">Details 2 (Dark)</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details-3' %}">Course Details 3</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details-3-dark' %}">Details 3 (Dark)</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="#">Get Started 3</a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{% url 'pages:dynamic_pages' template_name='become-an-instructor' %}">Become An
+                                            Instructor</a>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='create-course' %}">Create Course <span class="mega__menu__label">Career</span></a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor' %}">Instructor</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-dark' %}">Instructor (Dark)</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">Instructor Details</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='lessons' %}">Course Lesson<span class="mega__menu__label new">New</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <div class="mega__menu__img">
+                                            <a href="#">
+                                                <img loading="lazy"
+                                                     src="{% static 'img/mega/mega_menu_1.png' %}"
+                                                     alt="Mega Menu">
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children ">
+                                <a href="{% url 'pages:dynamic_pages' template_name='admin-dashboard' %}">Dashboard</a>
+                                <ul class="dropdown">
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Admin</a>
+                                        <ul class="dropdown">
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='admin-dashboard' %}">Admin Dashboard</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='admin-profile' %}">Admin Profile</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='admin-message' %}">Recent
+                                                Courses</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='admin-course' %}">Courses</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='admin-reviews' %}">Review</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='admin-quiz' %}">Admin Quiz</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='admin-settings' %}">Settings</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Instructor</a>
+                                        <ul class="dropdown">
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-dashboard' %}">Inst. Dashboard</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-profile' %}">Inst. Profile</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-message' %}">Message</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-wishlist' %}">Wishlist</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-reviews' %}">Review</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-quiz-attempts' %}">My Quiz</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-order-history' %}">Order
+                                                History</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-courses' %}">My Courses</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-annoucements' %}">Announcements</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-quiz' %}">Quiz
+                                                Attempts</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-assignments' %}">Assignment</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-settings' %}">Settings</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Student</a>
+                                        <ul class="dropdown">
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-dashboard' %}">Dashboard</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-profile' %}">Profile</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-message' %}">Message</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-enrolled-course' %}">Enrolled
+                                                Courses</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-wishlist' %}">Wishlist</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-reviews' %}">Review</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-quiz' %}">My Quiz</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-assignments' %}">Assignment</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'pages:dynamic_pages' template_name='student-settings' %}">Settings</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="{% url 'pages:dynamic_pages' template_name='ecommerce-shop' %}">eCommerce</a>
+                                <ul class="dropdown">
+                                    <li>
+                                        <a href="{% url 'pages:dynamic_pages' template_name='ecommerce-shop' %}">Shop<span class="mega__menu__label">Online
+                                        Store</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'pages:dynamic_pages' template_name='product-details' %}">Product Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'pages:dynamic_pages' template_name='cart' %}">Cart</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'pages:dynamic_pages' template_name='checkout' %}">Checkout</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'pages:dynamic_pages' template_name='wishlist' %}">Wishlist</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="mobile-curr-lang-wrap">
+                <div class="single-mobile-curr-lang">
+                    <a class="mobile-language-active" href="#">Language <i class="icofont-thin-down"></i></a>
+                    <div class="lang-curr-dropdown lang-dropdown-active">
+                        <ul>
+                            <li>
+                                <a href="#">English (US)</a>
+                            </li>
+                            <li>
+                                <a href="#">English (UK)</a>
+                            </li>
+                            <li>
+                                <a href="#">Spanish</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- <div class="single-mobile-curr-lang">
+                  <a class="mobile-currency-active" href="#">Currency <i class="icofont-thin-down"></i></a>
+                  <div class="lang-curr-dropdown curr-dropdown-active">
+                      <ul>
+                          <li><a href="#">USD</a></li>
+                          <li><a href="#">EUR</a></li>
+                          <li><a href="#">Real</a></li>
+                          <li><a href="#">BDT</a></li>
+                      </ul>
+                  </div>
+</div> -->
+                <div class="single-mobile-curr-lang">
+                    <a class="mobile-account-active" href="#">My Account <i class="icofont-thin-down"></i></a>
+                    <div class="lang-curr-dropdown account-dropdown-active">
+                        <ul>
+                            <li>
+                                <a href="{% url 'pages:dynamic_pages' template_name='login' %}">Login</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'pages:dynamic_pages' template_name='login' %}">/ Create Account</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'pages:dynamic_pages' template_name='login' %}">My Account</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-social-wrap">
+                <a class="facebook" href="#"><i class="icofont icofont-facebook"></i></a>
+                <a class="twitter" href="#"><i class="icofont icofont-twitter"></i></a>
+                <a class="pinterest" href="#"><i class="icofont icofont-pinterest"></i></a>
+                <a class="instagram" href="#"><i class="icofont icofont-instagram"></i></a>
+                <a class="google" href="#"><i class="icofont icofont-youtube-play"></i></a>
+            </div>
+        </div>
+    </div>

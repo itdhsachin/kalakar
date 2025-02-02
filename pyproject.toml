@@ -93,3 +93,6 @@ docstring-code-line-length = 60
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.djlint]
+profile="django"

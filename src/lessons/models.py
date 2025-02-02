@@ -1,11 +1,11 @@
 """Module to perform database operations."""
 
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.loader import render_to_string
 
+from accounts.models import User
 from courses.fields import OrderField
 from modules.models import Module
 
