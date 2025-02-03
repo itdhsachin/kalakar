@@ -1,7 +1,8 @@
 """Course database models."""
 
-from django.contrib.auth.models import User
 from django.db import models
+
+from accounts.models import User
 
 
 class Subject(models.Model):
