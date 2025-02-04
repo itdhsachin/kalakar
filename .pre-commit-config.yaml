@@ -6,6 +6,7 @@ repos:
       - id: check-added-large-files
         args:
           - --maxkb=1500
+        exclude: '(alembic|static/fonts)/.*'
       - id: check-merge-conflict
       - id: check-toml
       - id: check-yaml
@@ -13,8 +14,9 @@ repos:
           - --unsafe
       - id: debug-statements
       - id: end-of-file-fixer
-        exclude: alembic/
+        exclude: '(alembic|static)/.*'
       - id: trailing-whitespace
+        exclude: static/
       - id: no-commit-to-branch
       - id: requirements-txt-fixer
   - repo: local
