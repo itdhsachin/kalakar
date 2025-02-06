@@ -87,10 +87,10 @@ def update_profile(request):
         # Check if the logged-in user is a student or teacher and initialize the corresponding form
         if hasattr(request.user, 'student'):
             student = request.user.student
-            form = StudentForm(request.POST or None, instance=student, user=request.user)  # Pass user instance
+            form = StudentForm(request.POST or None,request.FILES or None, instance=student, user=request.user)  # Pass user instance
         elif hasattr(request.user, 'teacher'):
             teacher = request.user.teacher
-            form = TeacherForm(request.POST or None, instance=teacher, user=request.user)  # Pass user instance
+            form = TeacherForm(request.POST or None, request.FILES or None,instance=teacher, user=request.user)  # Pass user instance
         else:
             form = None  # For other users or admins (if applicable)
 
@@ -108,6 +108,6 @@ def update_profile(request):
                 print(form.errors)  
 
         # Render the update profile form
-        return render(request, 'accounts/update_profile.html', {'form': form ,'is_teacher': is_teacher, 'is_student': is_student})
+        return render(request, 'accounts/update_profile.html', {'form': form ,'is_teacher': is_teacher, 'is_student': is_student, 'user_profile': user.teacher if is_teacher else user.student if is_student else None  })
     else:
         return redirect('login')

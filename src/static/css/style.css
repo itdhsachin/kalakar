@@ -10850,7 +10850,7 @@ Breadcrumb Area
   width: 100%;
   border-radius: 100%;
   border: 2px solid var(--darkdeep7);
-  padding: 4px;
+  padding: 4px; 
 }
 .dashboardarea__left__content h4 {
   margin: 0;

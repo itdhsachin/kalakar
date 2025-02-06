@@ -274,7 +274,7 @@ class Student(models.Model):
     )
     birthday = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=255, blank=True)
-    address = models.TextField(blank=True)
+    address = models.CharField(max_length=100, blank=True)
     taluka = models.CharField(max_length=100, blank=True)
     district = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
@@ -310,7 +310,17 @@ class Student(models.Model):
             str: The full name of the student.
         """
         return self.student.get_full_name
+    def get_picture(self):
+        """Get the profile picture URL of the user.
 
+        Returns:
+            str: The URL of the profile picture.
+        """
+        try:
+            return self.picture.url
+        except AttributeError:
+            no_picture = settings.MEDIA_URL + "default.png"
+            return no_picture
     @classmethod
     def get_gender_count(cls):
         """Get the count of students by gender.
@@ -377,7 +387,7 @@ class Teacher(models.Model):
     )
     birthday = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=255, blank=True)
-    address = models.TextField(blank=True)
+    address = models.CharField(max_length=100, blank=True)
     taluka = models.CharField(max_length=100, blank=True)
     district = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
@@ -430,6 +440,18 @@ class Teacher(models.Model):
         females_count = Teacher.objects.filter(teacher__gender="F").count()
         return {"M": males_count, "F": females_count}
 
+    def get_picture(self):
+        """Get the profile picture URL of the user.
+
+        Returns:
+            str: The URL of the profile picture.
+        """
+        try:
+            return self.picture.url
+        except AttributeError:
+            no_picture = settings.MEDIA_URL + "default.png"
+            return no_picture
+        
     def get_absolute_url(self):
         """Get the absolute URL of the teacher profile.
 
