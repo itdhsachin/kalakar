@@ -1,0 +1,154 @@
+{% extends 'layouts/student.html' %} 
+{% load static i18n %}
+{% load widget_tweaks %} 
+
+{% block title %} Update Profile {% endblock %} 
+
+{% block page_content %}
+<div class="col-xl-9 col-lg-9 col-md-12">
+  <div class="dashboard__content__wraper">
+    <div class="dashboard__section__title mb-4">
+      <h4 class="text-center">Update Profile</h4>
+    </div>
+
+    <div class="card p-4 border-0">
+      <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %} 
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+          <strong>There are errors in your form:</strong>
+          <ul>
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li>{{ field|capfirst }}: {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <div class="row g-3">
+          <!-- First Name -->
+          <div class="col-md-12">
+            <label class="form-label">First Name</label>
+            {{ form.first_name|add_class:"form-control" }}
+          </div>
+
+          <!-- Last Name -->
+          <div class="col-md-12">
+            <label class="form-label">Last Name</label>
+            {{ form.last_name|add_class:"form-control" }}
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-12">
+            <label class="form-label">Email</label>
+            {{ form.email|add_class:"form-control" }}
+          </div>
+
+          <!-- Phone -->
+          <div class="col-md-12">
+            <label class="form-label">Phone Number</label>
+            {{ form.phone|add_class:"form-control" }}
+          </div>
+
+          <!-- Address -->
+          <div class="col-md-12">
+            <label class="form-label">Address</label>
+            {{ form.address|add_class:"form-control" }}
+          </div>
+
+          <!-- Taluka -->
+          <div class="col-md-12">
+            <label class="form-label">Taluka</label>
+            {{ form.taluka|add_class:"form-control" }}
+          </div>
+
+          <!-- District -->
+          <div class="col-md-12">
+            <label class="form-label">District</label>
+            {{ form.district|add_class:"form-control" }}
+          </div>
+
+          <!-- State -->
+          <div class="col-md-12">
+            <label class="form-label">State</label>
+            {{ form.state|add_class:"form-control" }}
+          </div>
+
+          <!-- Pincode -->
+          <div class="col-md-12">
+            <label class="form-label">Pin Code</label>
+            {{ form.pincode|add_class:"form-control" }}
+          </div>
+
+          <!-- Profile Picture -->
+          <div class="col-md-12">
+            <label class="form-label">Profile Picture</label>
+            {{ form.picture|add_class:"form-control" }} 
+            {% if user_profile.picture %}
+            <img id="profilePreview" src="{{ user_profile.picture.url }}" class="img-thumbnail mt-2" width="150"/>
+            {% endif %}
+          </div>
+
+          <!-- Education -->
+          <div class="col-md-12">
+            <label class="form-label">Education</label>
+            {{ form.education|add_class:"form-control" }}
+          </div>
+
+          <!-- Gender -->
+          <div class="col-md-12">
+            <label class="form-label">Gender</label>
+            {{ form.gender|add_class:"form-control" }}
+          </div>
+
+          <!-- Hobbies -->
+          <div class="col-md-12">
+            <label class="form-label">Hobbies</label>
+            {{ form.hobbies|add_class:"form-control" }}
+          </div>
+
+          <!-- Ira Rangoli Reference -->
+          <div class="col-md-12">
+            <label class="form-label">Ira Rangoli Arts Reference From</label>
+            {{ form.ira_rangoli_reference|add_class:"form-control" }}
+          </div>
+
+          <!-- Teacher-Specific Fields -->
+          {% if is_teacher %}
+          <div class="col-md-12">
+            <label class="form-label">Last Rangoli Batch Completion Date</label>
+            {{ form.last_rangoli_batch_completion_date|add_class:"form-control" }}
+          </div>
+
+          <div class="col-md-12">
+            <label class="form-label">Level Completed</label>
+            {{ form.level_completed|add_class:"form-control" }}
+          </div>
+          {% endif %}
+
+          <!-- Submit Button -->
+          <div class="col-12 text-center mt-3">
+            <button type="submit" class="btn btn-primary px-4">Update Profile</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Show profile picture preview
+  document.getElementById("id_picture").onchange = function (event) {
+    let reader = new FileReader();
+    reader.onload = function () {
+      let img = document.getElementById("profilePreview");
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+</script>
+
+{% endblock %}

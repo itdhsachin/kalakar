@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "pages",
     "django_bootstrap5",
     "accounts.apps.AccountsConfig",
+    "widget_tweaks"
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+STUDENT_ID_PREFIX = "STU"
+LECTURER_ID_PREFIX = "TEACHER"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

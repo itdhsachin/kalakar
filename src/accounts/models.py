@@ -117,16 +117,33 @@ class User(AbstractUser):
 
     is_student = models.BooleanField(default=False)
     is_lecturer = models.BooleanField(default=False)
-    gender = models.CharField(
-        max_length=1, choices=GENDERS, blank=True, null=True
-    )
+    # full_name = models.CharField(max_length=255,blank=True)
+    # birthday = models.DateField(null=True, blank=True)
+    # gender = models.CharField(
+    #     max_length=1, choices=GENDERS, blank=True, null=True
+    # )
     phone = models.CharField(max_length=60, blank=True, null=True)
-    address = models.CharField(max_length=60, blank=True, null=True)
-    picture = models.ImageField(
-        upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
-    )
     email = models.EmailField(blank=True, null=True)
-
+    # address = models.CharField(max_length=60, blank=True, null=True)
+    # picture = models.ImageField(
+    #     upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
+    # )
+    # education = models.CharField(max_length=255, blank=True)
+    # taluka = models.CharField(max_length=100, blank=True)
+    # District = models.CharField(max_length=100, blank=True)
+    # state = models.CharField(max_length=100, blank=True)
+    # pincode = models.CharField(max_length=6, blank=True)
+    # ira_rangoli_reference = models.CharField(
+    #     max_length=50,
+    #     choices=[
+    #         ("WhatsApp", "WhatsApp"),
+    #         ("YouTube", "YouTube"),
+    #         ("Instagram", "Instagram"),
+    #         ("Friend", "Friend")
+    #     ],
+    #     blank=True,
+    # )
+    # hobbies = models.TextField(blank=True)
     username_validator = ASCIIUsernameValidator()
 
     objects = CustomUserManager()
@@ -251,6 +268,33 @@ class Student(models.Model):
     """
 
     student = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255,blank=True)
+    gender = models.CharField(
+        max_length=1, choices=GENDERS, blank=True, null=True
+    )
+    birthday = models.DateField(null=True, blank=True)
+    education = models.CharField(max_length=255, blank=True)
+    address = models.TextField(blank=True)
+    taluka = models.CharField(max_length=100, blank=True)
+    district = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    pincode = models.CharField(max_length=6, blank=True)
+    picture = models.ImageField(
+        upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
+     )
+    ira_rangoli_reference = models.CharField(
+        max_length=50,
+        choices=[
+            ("WhatsApp", "WhatsApp"),
+            ("YouTube", "YouTube"),
+            ("Instagram", "Instagram"),
+            ("Newspaper", "Newspaper"),
+            ("Friend", "Friend"),
+        ],
+        blank=True,
+    )
+    hobbies = models.TextField(blank=True)
+
 
     objects = StudentManager()
 
@@ -294,4 +338,112 @@ class Student(models.Model):
             **kwargs: Arbitrary keyword arguments.
         """
         self.student.delete()
+        super().delete(*args, **kwargs)
+
+class TeacherManager(models.Manager):
+    """Custom manager for Teacher model.
+
+    Methods:
+        search(query): Search for teachers matching the query.
+    """
+
+    def search(self, query=None):
+        """Search for teachers matching the query.
+
+        Args:
+            query (str): The search query.
+
+        Returns:
+            QuerySet: The filtered queryset.
+        """
+        qs = self.get_queryset()
+        return qs
+
+class Teacher(models.Model):
+    """Model representing a teacher.
+
+    Attributes:
+        teacher (User): The user associated with the teacher.
+        objects (TeacherManager): The custom manager for the Teacher model.
+
+    Meta:
+        ordering (tuple): Default ordering for the model.
+    """
+
+    teacher = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255,blank=True)
+    gender = models.CharField(
+        max_length=1, choices=GENDERS, blank=True, null=True
+    )
+    birthday = models.DateField(null=True, blank=True)
+    education = models.CharField(max_length=255, blank=True)
+    address = models.TextField(blank=True)
+    taluka = models.CharField(max_length=100, blank=True)
+    district = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    pincode = models.CharField(max_length=6, blank=True)
+    picture = models.ImageField(
+         upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
+     )
+    ira_rangoli_reference = models.CharField(
+        max_length=50,
+        choices=[
+            ("WhatsApp", "WhatsApp"),
+            ("YouTube", "YouTube"),
+            ("Instagram", "Instagram"),
+            ("Newspaper", "Newspaper"),
+            ("Friend", "Friend"),
+        ],
+        blank=True,
+    )
+    hobbies = models.TextField(blank=True)
+    last_rangoli_batch_completion_date = models.DateField(null=True, blank=True)
+    level_completed = models.CharField(
+        max_length=50,
+        choices=[('Basic', 'Basic'), ('Special', 'Special'), ('Advanced', 'Advanced'), ('Professional', 'Professional'), ('Extreme', 'Extreme')],
+        blank=True,
+        null=True
+    )
+
+    objects = TeacherManager()  # Custom Manager (if applicable)
+
+    class Meta:
+        """Meta options for the Teacher model."""
+        ordering = ("-teacher__date_joined",)
+
+    def __str__(self):
+        """String representation of the teacher.
+
+        Returns:
+            str: The full name of the teacher.
+        """
+        return self.teacher.get_full_name
+
+    @classmethod
+    def get_gender_count(cls):
+        """Get the count of teachers by gender.
+
+        Returns:
+            dict: A dictionary with the count of male and female teachers.
+        """
+        males_count = Teacher.objects.filter(teacher__gender="M").count()
+        females_count = Teacher.objects.filter(teacher__gender="F").count()
+        return {"M": males_count, "F": females_count}
+
+    def get_absolute_url(self):
+        """Get the absolute URL of the teacher profile.
+
+        Returns:
+            str: The URL of the teacher profile.
+        """
+        return reverse("teacher_profile_single", kwargs={"user_id": self.teacher.id})
+
+    def delete(self, *args, **kwargs):
+        """Delete the teacher model and the associated user.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
+        self.teacher.delete()
         super().delete(*args, **kwargs)

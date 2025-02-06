@@ -5,7 +5,8 @@ This module contains the admin interface options for the User and Student models
 
 from django.contrib import admin
 
-from accounts.models import Student, User
+from accounts.models import Student, User, Teacher
+
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -39,7 +40,6 @@ class UserAdmin(admin.ModelAdmin):
         "is_lecturer",
         "is_staff",
     ]
-
     class Meta:
         """Meta options for the UserAdmin class."""
 
@@ -47,6 +47,16 @@ class UserAdmin(admin.ModelAdmin):
         verbose_name = "User"
         verbose_name_plural = "Users"
 
+class TeacherAdmin(admin.ModelAdmin):
+    """Admin interface for Teacher"""
+    list_display = ['teacher', 'get_full_name','username',]
+    search_fields = ['teacher__username', 'teacher__first_name', 'teacher__last_name', 'teacher__email']
+
+    class Meta:
+        managed = True
+        verbose_name = "Teacher"
+        verbose_name_plural = "Teachers"
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Student)
+admin.site.register(Teacher)

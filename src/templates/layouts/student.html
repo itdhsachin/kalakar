@@ -22,10 +22,10 @@
                                 <div class="dashboardarea__inner student__dashboard__inner">
                                     <div class="dashboardarea__left">
                                         <div class="dashboardarea__left__img">
-                                            <img loading="lazy" src="{% static 'img/teacher/teacher__2.png' %}" alt="">
+                                            <img loading="lazy" src="{{user_profile.picture.url}}" alt="">
                                         </div>
                                         <div class="dashboardarea__left__content">
-                                            <h4>Dond Tond</h4>
+                                            <h4>{{ user.first_name }} {{ user.last_name }}</h4>
                                             <ul>
                                                 <li>
                                                     <svg xmlns="http://www.w3.org/2000/svg"
