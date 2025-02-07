@@ -1,0 +1,29 @@
+
+
+{% block content %}
+  <h2>Student Competitions</h2>
+  <a href="{% url 'student_competition_add' %}">Add New Competition</a>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Status</th>
+        <th>Created Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for competition in competitions %}
+        <tr>
+          <td>{{ competition.user.username }}</td>
+          <td>{{ competition.get_status_display }}</td>
+          <td>{{ competition.created_date }}</td>
+          <td>
+            <a href="{% url 'student_competition_edit' competition.id %}">Edit</a>
+            <a href="{% url 'student_competition_delete' competition.id %}">Delete</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
