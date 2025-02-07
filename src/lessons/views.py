@@ -3,13 +3,13 @@
 This module contains view functions for rendering lesson details in the lessons application.
 """
 
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import View
 
-from lessons.models import (
-    Lesson,  # Adjust the import based on your project structure
-)
+from courses.models import Enrollment
+from lessons.models import Lesson
 
 
 class LessonDetailView(View):
@@ -32,6 +32,19 @@ class LessonDetailView(View):
         """
         lesson_id = kwargs.get("pk")
         lesson = get_object_or_404(Lesson, id=lesson_id)
+        course = lesson.module.course
+
+        # Check if the lesson and course are active
+        if not lesson.state or not course.state:
+            raise PermissionDenied()
+
+        # Check if the user is enrolled in the course and the enrollment is active
+        enrollment = Enrollment.objects.filter(
+            user=request.user, course=course, state=True
+        ).first()
+
+        if not enrollment:
+            return redirect("courses", slug=course.slug)
 
         # Render the content using the render method from ItemBase
         rendered_content = lesson.item.render()

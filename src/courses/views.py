@@ -3,6 +3,7 @@
 # from django.core.cache import cache   # the cache is stopped
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.apps import apps
+from django.contrib import messages
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
@@ -497,14 +498,17 @@ class CourseDetailView(DetailView):
     model = Course
     template_name = "courses/detail.html"
 
-    # def get_queryset(self):
-    #     """Returns the queryset of courses the student is enrolled in.
+    def get(self, request, *args, **kwargs):
+        """Handles GET requests and redirects if course state is not True."""
+        self.object = self.get_object()
 
-    #     Returns:
-    #         QuerySet: The queryset of courses.
-    #     """
-    #     qs = super().get_queryset()
-    #     return qs.filter(enrollments__user=self.request.user)
+        if not self.object.state:
+            messages.error(
+                request, "The course is not available at the moment."
+            )
+            return redirect("courses")
+
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         """Adds additional context data for the template.
