@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "courses",
     "students",
+    "payment",
 ]
 
 MIDDLEWARE = [
@@ -89,11 +90,15 @@ WSGI_APPLICATION = "root.wsgi.application"
 # }
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'kalakar',
+         'USER': 'admin',
+         'PASSWORD': 'password',
+         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+         'PORT': '3306',
+     }
+ }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -135,3 +140,9 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "kishorthite09@gmail.com"  # Replace with your email
+EMAIL_HOST_PASSWORD = "upha bzfu cnih wffg"  # Replace with the generated app password

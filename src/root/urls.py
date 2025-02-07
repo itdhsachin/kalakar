@@ -28,6 +28,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", CourseListView.as_view(), name="course_list"),
     path("students/", include("students.urls")),
+    path("payments/", include("payment.urls")),
 ]
 
 
