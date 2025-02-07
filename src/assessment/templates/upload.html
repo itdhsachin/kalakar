@@ -17,7 +17,7 @@
         {% endif %}
 
         <h2>Upload File</h2>
-        <form method="POST" action="/upload/" enctype="multipart/form-data">
+        <form method="POST" action="/assessment/upload/" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="customFile">Upload a file only in png and jpg</label>
