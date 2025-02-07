@@ -6,8 +6,10 @@ This module contains view functions for rendering profiles in the accounts appli
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from accounts.forms import StudentForm, TeacherForm
+from accounts.forms import StudentForm, TeacherForm, CustomPasswordResetForm
 from accounts.models import Session, Student, Teacher, User
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
 
 
 @login_required
@@ -111,3 +113,10 @@ def update_profile(request):
         return render(request, 'accounts/update_profile.html', {'form': form ,'is_teacher': is_teacher, 'is_student': is_student, 'user_profile': user.teacher if is_teacher else user.student if is_student else None  })
     else:
         return redirect('login')
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = "accounts/password_reset.html"
+    email_template_name = "accounts/password_reset_email.html"
+    subject_template_name = "accounts/password_reset_subject.txt"
+    success_url = reverse_lazy("password_reset_done")
+    form_class = CustomPasswordResetForm

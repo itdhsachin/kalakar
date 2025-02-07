@@ -1,5 +1,6 @@
 from django import forms
 from .models import GENDERS, Student, Teacher, User
+from django.contrib.auth.forms import PasswordResetForm
 
 class StudentForm(forms.ModelForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
@@ -55,4 +56,16 @@ class TeacherForm(forms.ModelForm):
             self.fields['last_name'].initial = user.last_name
             self.fields['email'].initial = user.email
             self.fields['phone'].initial = user.phone
-    
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label="Email",
+        max_length=254,
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Enter your email"}),
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("No user is associated with this email address.")
+        return email

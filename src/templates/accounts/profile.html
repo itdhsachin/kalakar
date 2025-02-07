@@ -150,7 +150,7 @@ User Profile {% endblock %} {% block page_content %}
       </div>
       <div class="col-lg-8 col-md-8">
         <div class="dashboard__form dashboard__form__margin">
-          {{ user.last_rangoli_batch_completion_date }}
+          {{ user_profile.last_rangoli_batch_completion_date }}
         </div>
       </div>
 
@@ -161,17 +161,25 @@ User Profile {% endblock %} {% block page_content %}
       </div>
       <div class="col-lg-8 col-md-8">
         <div class="dashboard__form dashboard__form__margin">
-          {{ user.level_completed }}
+          {{ user_profile.level_completed }}
         </div>
       </div>
       {% endif %}
     </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12">
+    <div class="row mt-5">
+        <div class="col-lg-6 col-md-6">
+       
+            <a href="{% url 'password_reset' %}" class="btn btn-warning"
+              >Reset PassWord</a
+            >
+          </div>
+      <div class="col-lg-6 col-md-6">
         <a href="{% url 'update_profile' %}" class="btn btn-primary"
           >Update Profile</a
         >
+       
       </div>
+      
     </div>
     {{ error }}
   </div>

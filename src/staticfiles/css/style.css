@@ -10838,9 +10838,7 @@ Breadcrumb Area
   width: 120px;
   height: 120px;
   margin-right: 20px;
-  
 }
-
 @media (min-width: 768px) and (max-width: 991px) {
   .dashboardarea__left__img {
     width: 100px;
@@ -10852,7 +10850,7 @@ Breadcrumb Area
   width: 100%;
   border-radius: 100%;
   border: 2px solid var(--darkdeep7);
-  padding: 4px;
+  padding: 4px; 
 }
 .dashboardarea__left__content h4 {
   margin: 0;
