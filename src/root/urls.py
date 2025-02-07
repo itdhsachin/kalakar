@@ -18,15 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-# from courses.views import CourseListView
-
 urlpatterns = [
-    # path("login/", auth_views.LoginView.as_view(), name="login"),
-    # path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("accounts/", include("accounts.urls")),
-    path("course/", include("courses.urls")),
+    path("courses/", include("courses.urls")),
+    path("lessons/", include("lessons.urls")),
     path("admin/", admin.site.urls),
-    # path("", CourseListView.as_view(), name="course_list"),
     path("", include("pages.urls")),
     path("students/", include("students.urls")),
 ]

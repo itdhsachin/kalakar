@@ -1,859 +1,829 @@
 {% extends 'base.html' %}
-
 {% load static i18n %}
-
 {% block title %}Course{% endblock %}
-
 {% block content %}
-{% include 'partials/theme-switch.html' %}
-
-<main class="main_wrapper overflow-hidden">
-
-    <!-- topbar__section__stert -->
-    <!-- topbar__section__end -->
-
-    <!-- headar section start -->
-    {% include 'partials/navbar.html' %}
-    <!-- header section end -->
-
-    <!-- Mobile Menu Start Here -->
-    {% include 'partials/mobile-menu.html' %}
-    <!-- Mobile Menu end Here -->
-
-    <!-- theme fixed shadow -->
-    <div>
-        <div class="theme__shadow__circle"></div>
-        <div class="theme__shadow__circle shadow__right"></div>
-    </div>
-    <!-- theme fixed shadow -->
-    <!-- breadcrumbarea__section__start -->
-
-    <div class="breadcrumbarea">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="breadcrumb__content__wraper" data-aos="fade-up">
-                        <div class="breadcrumb__title">
-                            <h2 class="heading">Featured Courses</h2>
-                        </div>
-                        <div class="breadcrumb__inner">
-                            <ul>
-                                <li><a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home</a></li>
-                                <li> Featured Course</li>
-                            </ul>
+    {% include 'partials/theme-switch.html' %}
+    <main class="main_wrapper overflow-hidden">
+        <!-- headar section start -->
+        {% include 'partials/navbar.html' %}
+        <!-- header section end -->
+        <!-- Mobile Menu Start Here -->
+        {% include 'partials/mobile-menu.html' %}
+        <!-- Mobile Menu end Here -->
+        <!-- theme fixed shadow -->
+        <div>
+            <div class="theme__shadow__circle"></div>
+            <div class="theme__shadow__circle shadow__right"></div>
+        </div>
+        <!-- theme fixed shadow -->
+        <!-- breadcrumbarea__section__start -->
+        <div class="breadcrumbarea">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb__content__wraper" data-aos="fade-up">
+                            <div class="breadcrumb__title">
+                                <h2 class="heading">Featured Courses</h2>
+                            </div>
+                            <div class="breadcrumb__inner">
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home</a>
+                                    </li>
+                                    <li>Featured Course</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-
-
-
+                </div>
+            </div>
+            <div class="shape__icon__2">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__1"
+                     src="{% static 'img/herobanner/herobanner__1.png' %}"
+                     alt="photo">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__2"
+                     src="{% static 'img/herobanner/herobanner__2.png' %}"
+                     alt="photo">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__3"
+                     src="{% static 'img/herobanner/herobanner__3.png' %}"
+                     alt="photo">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__4"
+                     src="{% static 'img/herobanner/herobanner__5.png' %}"
+                     alt="photo">
+            </div>
+        </div>
+        <!-- breadcrumbarea__section__end-->
+        <!-- course__section__start   -->
+        <div class="coursearea sp_top_100 sp_bottom_100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="course__text__wraper" data-aos="fade-up">
+                            <div class="course__text">
+                                <p>Showing 1–12 of 54 Results</p>
+                            </div>
+                            <div class="course__icon">
+                                <ul class="nav property__team__tap" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                    <a href="#"
+                                       class="single__tab__link active"
+                                       data-bs-toggle="tab"
+                                       data-bs-target="#projects__one"><i class="icofont-layout"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                            <a href="#"
+                               class="single__tab__link"
+                               data-bs-toggle="tab"
+                               data-bs-target="#projects__two"><i class="icofont-listine-dots"></i>
+                        </a>
+                    </li>
+                    <li class="short__by__new">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Short by New</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-4 col-12">
+        <div class="course__sidebar__wraper" data-aos="fade-up">
+            <div class="course__heading">
+                <h5>Search here</h5>
+            </div>
+            <div class="course__input">
+                <input type="text" placeholder="Search product">
+                <div class="search__button">
+                    <button>
+                        <i class="icofont-search-1"></i>
+                    </button>
                 </div>
             </div>
         </div>
-
-        <div class="shape__icon__2">
-            <img loading="lazy" class=" shape__icon__img shape__icon__img__1"
-                src="{% static 'img/herobanner/herobanner__1.png' %}" alt="photo">
-            <img loading="lazy" class=" shape__icon__img shape__icon__img__2"
-                src="{% static 'img/herobanner/herobanner__2.png' %}" alt="photo">
-            <img loading="lazy" class=" shape__icon__img shape__icon__img__3"
-                src="{% static 'img/herobanner/herobanner__3.png' %}" alt="photo">
-            <img loading="lazy" class=" shape__icon__img shape__icon__img__4"
-                src="{% static 'img/herobanner/herobanner__5.png' %}" alt="photo">
+        <div class="course__sidebar__wraper" data-aos="fade-up">
+            <div class="categori__wraper">
+                <div class="course__heading">
+                    <h5>Categories</h5>
+                </div>
+                <div class="course__categories__list">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                Mobile Handset
+                                <span>03</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Americano Dish
+                                <span>07</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Raxila Dish nonyte
+                                <span>09</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Fresh Vegetable
+                                <span>01</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Fruites
+                                <span>00</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-
+        <div class="course__sidebar__wraper" data-aos="fade-up">
+            <div class="course__heading">
+                <h5>Tag</h5>
+            </div>
+            <div class="course__tag__list">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <div class="course__check__box active "></div>
+                            <span class="active">Mechanic</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="course__check__box  "></div>
+                            <span>English</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="course__check__box  "></div>
+                            <span>Computer Science</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="course__check__box  "></div>
+                            <span>Data & Tech</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="course__check__box  "></div>
+                            <span>Ux Desgin</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="course__sidebar__wraper" data-aos="fade-up">
+            <div class="course__heading">
+                <h5>Skill Level</h5>
+            </div>
+            <div class="course__skill__list">
+                <ul>
+                    <li>
+                        <a href="#">All</a>
+                    </li>
+                    <li>
+                        <a href="#">Fullstack</a>
+                    </li>
+                    <li>
+                        <a href="#">English Learn</a>
+                    </li>
+                    <li>
+                        <a href="#">Intermediate</a>
+                    </li>
+                    <li>
+                        <a href="#">Wordpress</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <!-- breadcrumbarea__section__end-->
-
-    <!-- course__section__start   -->
-    <div class="coursearea sp_top_100 sp_bottom_100">
-        <div class="container">
+    <div class="col-xl-9 col-lg-9 col-md-8 col-12">
+        <div class="tab-content tab__content__wrapper with__sidebar__content"
+             id="myTabContent">
+            <div class="tab-pane fade  active show"
+                 id="projects__one"
+                 role="tabpanel"
+                 aria-labelledby="projects__one">
+                <div class="row">
+                    {% for course in courses %}
+                        {% with subject=course.subject %}
+                            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-6 col-12"
+                                 data-aos="fade-up">
+                                <div class="gridarea__wraper gridarea__wraper__2">
+                                    <div class="gridarea__img">
+                                        <a href="{% url 'courses' course.slug %}">
+                                            <img loading="lazy" src="{% static 'img/grid/grid_1.png' %}" alt="grid">
+                                        </a>
+                                        <div class="gridarea__small__button">
+                                            <div class="grid__badge">Data & Tech</div>
+                                        </div>
+                                        <div class="gridarea__small__icon">
+                                            <a href="#"><i class="icofont-heart-alt"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="gridarea__content">
+                                        <div class="gridarea__list">
+                                            <ul>
+                                                <li>
+                                                    <i class="icofont-book-alt"></i> 23 Lesson
+                                                </li>
+                                                <li>
+                                                    <i class="icofont-clock-time"></i> 1 hr 30 min
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="gridarea__heading">
+                                            <h3>
+                                                <a href="{% url 'courses' course.slug %}">{{ course.title }}</a>
+                                            </h3>
+                                        </div>
+                                        <div class="gridarea__price">
+                                            {{ course.currency }} {{ course.price }}
+                                            <span> <del class="del__2">{{ course.is_paid }}</del></span>
+                                        </div>
+                                        <div class="gridarea__bottom">
+                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
+                                                <div class="gridarea__small__img">
+                                                    <img loading="lazy"
+                                                         src="{% static 'img/grid/grid_small_1.jpg' %}"
+                                                         alt="grid">
+                                                    <div class="gridarea__small__content">
+                                                        <h6>{{ course.created_by }}</h6>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div class="gridarea__star">
+                                                <i class="icofont-star"></i>
+                                                <i class="icofont-star"></i>
+                                                <i class="icofont-star"></i>
+                                                <i class="icofont-star"></i>
+                                                <span>(44)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tab-pane fade"
+                 id="projects__two"
+                 role="tabpanel"
+                 aria-labelledby="projects__two">
+                <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list"
+                     data-aos="fade-up">
+                    <div class="gridarea__img">
+                        <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">
+                            <img loading="lazy" src="{% static 'img/grid/grid_1.png' %}" alt="grid">
+                        </a>
+                        <div class="gridarea__small__button">
+                            <div class="grid__badge">Data & Tech</div>
+                        </div>
+                        <div class="gridarea__small__icon">
+                            <a href="#"><i class="icofont-heart-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="gridarea__content">
+                        <div class="gridarea__list">
+                            <ul>
+                                <li>
+                                    <i class="icofont-book-alt"></i> 23 Lesson
+                                </li>
+                                <li>
+                                    <i class="icofont-clock-time"></i> 1 hr 30 min
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="gridarea__heading">
+                            <h3>
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Become a product Manager learn the
+                                    skills & job.
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="gridarea__price">
+                            $32.00 <del>/ $67.00</del>
+                            <span>Free.</span>
+                        </div>
+                        <div class="gridarea__bottom">
+                            <div class="gridarea__bottom__left">
+                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
+                                    <div class="gridarea__small__img">
+                                        <img loading="lazy"
+                                             src="{% static 'img/grid/grid_small_1.jpg' %}"
+                                             alt="grid">
+                                        <div class="gridarea__small__content">
+                                            <h6>Mirnsdo .H</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="gridarea__star">
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <span>(44)</span>
+                                </div>
+                            </div>
+                            <div class="gridarea__details">
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
+                                    <i class="icofont-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list"
+                     data-aos="fade-up">
+                    <div class="gridarea__img">
+                        <img loading="lazy" src="{% static 'img/grid/grid_2.png' %}" alt="grid">
+                        <div class="gridarea__small__button">
+                            <div class="grid__badge blue__color">Mechanical</div>
+                        </div>
+                        <div class="gridarea__small__icon">
+                            <a href="#"><i class="icofont-heart-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="gridarea__content">
+                        <div class="gridarea__list">
+                            <ul>
+                                <li>
+                                    <i class="icofont-book-alt"></i> 23 Lesson
+                                </li>
+                                <li>
+                                    <i class="icofont-clock-time"></i> 1 hr 30 min
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="gridarea__heading">
+                            <h3>
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Foundation course to under stand
+                                about softwere</a>
+                            </h3>
+                        </div>
+                        <div class="gridarea__price">
+                            $32.00 <del>/ $67.00</del>
+                            <span>Free.</span>
+                        </div>
+                        <div class="gridarea__bottom">
+                            <div class="gridarea__bottom__left">
+                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
+                                    <div class="gridarea__small__img">
+                                        <img loading="lazy"
+                                             src="{% static 'img/grid/grid_small_1.jpg' %}"
+                                             alt="grid">
+                                        <div class="gridarea__small__content">
+                                            <h6>Mirnsdo .H</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="gridarea__star">
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <span>(44)</span>
+                                </div>
+                            </div>
+                            <div class="gridarea__details">
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
+                                    <i class="icofont-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list"
+                     data-aos="fade-up">
+                    <div class="gridarea__img">
+                        <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">
+                            <img loading="lazy" src="{% static 'img/grid/grid_3.png' %}" alt="grid">
+                        </a>
+                        <div class="gridarea__small__button">
+                            <div class="grid__badge pink__color">Development</div>
+                        </div>
+                        <div class="gridarea__small__icon">
+                            <a href="#"><i class="icofont-heart-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="gridarea__content">
+                        <div class="gridarea__list">
+                            <ul>
+                                <li>
+                                    <i class="icofont-book-alt"></i> 23 Lesson
+                                </li>
+                                <li>
+                                    <i class="icofont-clock-time"></i> 1 hr 30 min
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="gridarea__heading">
+                            <h3>
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Strategy law and with for organization
+                                    Foundation
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="gridarea__price">
+                            $32.00 <del>/ $67.00</del>
+                            <span>Free.</span>
+                        </div>
+                        <div class="gridarea__bottom">
+                            <div class="gridarea__bottom__left">
+                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
+                                    <div class="gridarea__small__img">
+                                        <img loading="lazy"
+                                             src="{% static 'img/grid/grid_small_1.jpg' %}"
+                                             alt="grid">
+                                        <div class="gridarea__small__content">
+                                            <h6>Mirnsdo .H</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="gridarea__star">
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <span>(44)</span>
+                                </div>
+                            </div>
+                            <div class="gridarea__details">
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
+                                    <i class="icofont-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list"
+                     data-aos="fade-up">
+                    <div class="gridarea__img">
+                        <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">
+                            <img loading="lazy" src="{% static 'img/grid/grid_4.png' %}" alt="grid">
+                        </a>
+                        <div class="gridarea__small__button">
+                            <div class="grid__badge green__color">Ui & UX Design</div>
+                        </div>
+                        <div class="gridarea__small__icon">
+                            <a href="#"><i class="icofont-heart-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="gridarea__content">
+                        <div class="gridarea__list">
+                            <ul>
+                                <li>
+                                    <i class="icofont-book-alt"></i> 23 Lesson
+                                </li>
+                                <li>
+                                    <i class="icofont-clock-time"></i> 1 hr 30 min
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="gridarea__heading">
+                            <h3>
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">The business Intelligence analyst with
+                                    Course & 2024
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="gridarea__price">
+                            $32.00 <del>/ $67.00</del>
+                            <span>Free.</span>
+                        </div>
+                        <div class="gridarea__bottom">
+                            <div class="gridarea__bottom__left">
+                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
+                                    <div class="gridarea__small__img">
+                                        <img loading="lazy"
+                                             src="{% static 'img/grid/grid_small_1.jpg' %}"
+                                             alt="grid">
+                                        <div class="gridarea__small__content">
+                                            <h6>Mirnsdo .H</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="gridarea__star">
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <span>(44)</span>
+                                </div>
+                            </div>
+                            <div class="gridarea__details">
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
+                                    <i class="icofont-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list"
+                     data-aos="fade-up">
+                    <div class="gridarea__img">
+                        <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">
+                            <img loading="lazy" src="{% static 'img/grid/grid_5.png' %}" alt="grid">
+                        </a>
+                        <div class="gridarea__small__button">
+                            <div class="grid__badge orange__color">Data & Tech</div>
+                        </div>
+                        <div class="gridarea__small__icon">
+                            <a href="#"><i class="icofont-heart-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="gridarea__content">
+                        <div class="gridarea__list">
+                            <ul>
+                                <li>
+                                    <i class="icofont-book-alt"></i> 23 Lesson
+                                </li>
+                                <li>
+                                    <i class="icofont-clock-time"></i> 1 hr 30 min
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="gridarea__heading">
+                            <h3>
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Become a product Manager learn the skills &
+                                    job.
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="gridarea__price">
+                            $32.00 <del>/ $67.00</del>
+                            <span>Free.</span>
+                        </div>
+                        <div class="gridarea__bottom">
+                            <div class="gridarea__bottom__left">
+                                <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
+                                    <div class="gridarea__small__img">
+                                        <img loading="lazy"
+                                             src="{% static 'img/grid/grid_small_1.jpg' %}"
+                                             alt="grid">
+                                        <div class="gridarea__small__content">
+                                            <h6>Mirnsdo .H</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="gridarea__star">
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <i class="icofont-star"></i>
+                                    <span>(44)</span>
+                                </div>
+                            </div>
+                            <div class="gridarea__details">
+                                <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
+                                    <i class="icofont-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main__pagination__wrapper" data-aos="fade-up">
+            <ul class="main__page__pagination">
+                <li>
+                    <a class="disable" href="#"><i class="icofont-double-left"></i></a>
+                </li>
+                <li>
+                    <a class="active" href="#">1</a>
+                </li>
+                <li>
+                    <a href="#">2</a>
+                </li>
+                <li>
+                    <a href="#">3</a>
+                </li>
+                <li>
+                    <a href="#"><i class="icofont-double-right"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-- course__section__end   -->
+<!-- footer__section__start -->
+<div class="footerarea">
+    <div class="container">
+        <div class="footerarea__newsletter__wraper">
             <div class="row">
-                <div class="col-xl-12">
-                    <div class="course__text__wraper" data-aos="fade-up">
-                        <div class="course__text">
-                            <p>Showing 1–12 of 54 Results</p>
-                        </div>
-                        <div class="course__icon">
-                            <ul class="nav property__team__tap" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <a href="#" class="single__tab__link active" data-bs-toggle="tab"
-                                        data-bs-target="#projects__one"><i class="icofont-layout"></i>
-                                    </a>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <a href="#" class="single__tab__link" data-bs-toggle="tab"
-                                        data-bs-target="#projects__two"><i class="icofont-listine-dots"></i>
-                                    </a>
-                                </li>
-
-                                <li class="short__by__new">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Short by New</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </li>
-
-
-
-                            </ul>
-                        </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"
+                     data-aos="fade-up">
+                    <div class="footerarea__text">
+                        <h3>
+                            Still You Need Our <span>Support</span> ?
+                        </h3>
+                        <p>Don’t wait make a smart & logical quote here. Its pretty easy.</p>
                     </div>
-
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-4 col-12">
-                    <div class="course__sidebar__wraper" data-aos="fade-up">
-                        <div class="course__heading">
-                            <h5>Search here</h5>
-                        </div>
-                        <div class="course__input">
-                            <input type="text" placeholder="Search product">
-                            <div class="search__button">
-                                <button><i class="icofont-search-1"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="course__sidebar__wraper" data-aos="fade-up">
-                        <div class="categori__wraper">
-                            <div class="course__heading">
-                                <h5>Categories</h5>
-                            </div>
-                            <div class="course__categories__list">
-                                <ul>
-
-                                    <li>
-                                        <a href="#">
-                                            Mobile Handset
-                                            <span>03</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Americano Dish
-                                            <span>07</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Raxila Dish nonyte
-                                            <span>09</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Fresh Vegetable
-                                            <span>01</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            Fruites
-                                            <span>00</span>
-                                        </a>
-                                    </li>
-
-
-                                </ul>
-                            </div>
-
-
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"
+                     data-aos="fade-up">
+                    <div class="footerarea__newsletter">
+                        <div class="footerarea__newsletter__input">
+                            <form action="#">
+                                <input type="text" placeholder="Enter your email here">
+                                <div class="footerarea__newsletter__button">
+                                    <button type="submit" class="subscribe__btn">Subscribe Now</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="course__sidebar__wraper" data-aos="fade-up">
-                        <div class="course__heading">
-                            <h5>Tag</h5>
-                        </div>
-                        <div class="course__tag__list">
-                            <ul>
-
-                                <li>
-                                    <a href="#">
-                                        <div class="course__check__box active "></div>
-                                        <span class="active">Mechanic</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="course__check__box  "></div>
-                                        <span>English</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="course__check__box  "></div>
-                                        <span>Computer Science</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="course__check__box  "></div>
-                                        <span>Data & Tech</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="course__check__box  "></div>
-                                        <span>Ux Desgin</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-
-                    <div class="course__sidebar__wraper" data-aos="fade-up">
-                        <div class="course__heading">
-                            <h5>Skill Level</h5>
-                        </div>
-                        <div class="course__skill__list">
-                            <ul>
-
-                                <li>
-                                    <a href="#">
-                                        All
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Fullstack
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        English Learn
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Intermediate
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Wordpress
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-
-                    </div>
-
-
                 </div>
-
-                <div class="col-xl-9 col-lg-9 col-md-8 col-12">
-
-                    <div class="tab-content tab__content__wrapper with__sidebar__content" id="myTabContent">
-
-
-                        <div class="tab-pane fade  active show" id="projects__one" role="tabpanel"
-                            aria-labelledby="projects__one">
-
-                            <div class="row">
-                                
-                                    {% for course in courses %}
-                                        {% with subject=course.subject %}
-                                     
-                                            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-6 col-12" data-aos="fade-up">
-                                                <div class="gridarea__wraper gridarea__wraper__2">
-                                                    <div class="gridarea__img">
-                                                        <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}"><img loading="lazy"
-                                                                src="{% static 'img/grid/grid_1.png' %}" alt="grid"></a>
-                                                        <div class="gridarea__small__button">
-                                                            <div class="grid__badge">Data & Tech</div>
-                                                        </div>
-                                                        <div class="gridarea__small__icon">
-                                                            <a href="#"><i class="icofont-heart-alt"></i></a>
-                                                        </div>
-            
-                                                    </div>
-                                                    <div class="gridarea__content">
-                                                        <div class="gridarea__list">
-                                                            <ul>
-                                                                <li>
-                                                                    <i class="icofont-book-alt"></i> 23 Lesson
-                                                                </li>
-                                                                <li>
-                                                                    <i class="icofont-clock-time"></i> 1 hr 30 min
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="gridarea__heading">
-                                                            <h3><a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">{{ course.title }}</a></h3>
-                                                        </div>
-                                                        <div class="gridarea__price">
-                                                            {{course.currency}} {{course.price}}
-                                                            <span> <del class="del__2">{{course.is_paid}}</del></span>
-            
-                                                        </div>
-                                                        <div class="gridarea__bottom">
-            
-                                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
-                                                                <div class="gridarea__small__img">
-                                                                    <img loading="lazy"
-                                                                        src="{% static 'img/grid/grid_small_1.jpg' %}" alt="grid">
-                                                                    <div class="gridarea__small__content">
-                                                                        <h6>{{course.created_by}}</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-            
-                                                            <div class="gridarea__star">
-                                                                <i class="icofont-star"></i>
-                                                                <i class="icofont-star"></i>
-                                                                <i class="icofont-star"></i>
-                                                                <i class="icofont-star"></i>
-                                                                <span>(44)</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        {% endwith %}
-                                    {% endfor %}
-                                
-
-                                
-                                
-                            </div>
-
+            </div>
+        </div>
+        <div class="footerarea__wrapper footerarea__wrapper__2">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-sm-12 col-md-12" data-aos="fade-up">
+                    <div class="footerarea__inner footerarea__about__us">
+                        <div class="footerarea__heading">
+                            <h3>About us</h3>
                         </div>
-
-
-                        <div class="tab-pane fade" id="projects__two" role="tabpanel" aria-labelledby="projects__two">
-
-                            <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list" data-aos="fade-up">
-                                <div class="gridarea__img">
-                                    <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}"><img loading="lazy"
-                                            src="{% static 'img/grid/grid_1.png' %}" alt="grid"></a>
-                                    <div class="gridarea__small__button">
-                                        <div class="grid__badge">Data & Tech</div>
-                                    </div>
-                                    <div class="gridarea__small__icon">
-                                        <a href="#"><i class="icofont-heart-alt"></i></a>
-                                    </div>
-
-                                </div>
-                                <div class="gridarea__content">
-                                    <div class="gridarea__list">
-                                        <ul>
-                                            <li>
-                                                <i class="icofont-book-alt"></i> 23 Lesson
-                                            </li>
-                                            <li>
-                                                <i class="icofont-clock-time"></i> 1 hr 30 min
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="gridarea__heading">
-                                        <h3><a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Become a product Manager learn the
-                                                skills & job.
-                                            </a></h3>
-                                    </div>
-                                    <div class="gridarea__price">
-                                        $32.00 <del>/ $67.00</del>
-                                        <span>Free.</span>
-
-                                    </div>
-                                    <div class="gridarea__bottom">
-                                        <div class="gridarea__bottom__left">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
-                                                <div class="gridarea__small__img">
-                                                    <img loading="lazy" src="{% static 'img/grid/grid_small_1.jpg' %}"
-                                                        alt="grid">
-                                                    <div class="gridarea__small__content">
-                                                        <h6>Mirnsdo .H</h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="gridarea__star">
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <span>(44)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="gridarea__details">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
-                                                <i class="icofont-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list" data-aos="fade-up">
-                                <div class="gridarea__img">
-                                    <img loading="lazy" src="{% static 'img/grid/grid_2.png' %}" alt="grid">
-                                    <div class="gridarea__small__button">
-                                        <div class="grid__badge blue__color">Mechanical</div>
-                                    </div>
-                                    <div class="gridarea__small__icon">
-                                        <a href="#"><i class="icofont-heart-alt"></i></a>
-                                    </div>
-
-                                </div>
-                                <div class="gridarea__content">
-                                    <div class="gridarea__list">
-                                        <ul>
-                                            <li>
-                                                <i class="icofont-book-alt"></i> 23 Lesson
-                                            </li>
-                                            <li>
-                                                <i class="icofont-clock-time"></i> 1 hr 30 min
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="gridarea__heading">
-                                        <h3><a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Foundation course to under stand
-                                                about softwere</a></h3>
-                                    </div>
-                                    <div class="gridarea__price">
-                                        $32.00 <del>/ $67.00</del>
-                                        <span>Free.</span>
-
-                                    </div>
-                                    <div class="gridarea__bottom">
-                                        <div class="gridarea__bottom__left">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
-                                                <div class="gridarea__small__img">
-                                                    <img loading="lazy" src="{% static 'img/grid/grid_small_1.jpg' %}"
-                                                        alt="grid">
-                                                    <div class="gridarea__small__content">
-                                                        <h6>Mirnsdo .H</h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="gridarea__star">
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <span>(44)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="gridarea__details">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
-                                                <i class="icofont-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list" data-aos="fade-up">
-                                <div class="gridarea__img">
-                                    <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}"><img loading="lazy"
-                                            src="{% static 'img/grid/grid_3.png' %}" alt="grid"></a>
-                                    <div class="gridarea__small__button">
-                                        <div class="grid__badge pink__color">Development</div>
-                                    </div>
-                                    <div class="gridarea__small__icon">
-                                        <a href="#"><i class="icofont-heart-alt"></i></a>
-                                    </div>
-
-                                </div>
-                                <div class="gridarea__content">
-                                    <div class="gridarea__list">
-                                        <ul>
-                                            <li>
-                                                <i class="icofont-book-alt"></i> 23 Lesson
-                                            </li>
-                                            <li>
-                                                <i class="icofont-clock-time"></i> 1 hr 30 min
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="gridarea__heading">
-                                        <h3><a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Strategy law and with for organization
-                                                Foundation
-                                            </a></h3>
-                                    </div>
-                                    <div class="gridarea__price">
-                                        $32.00 <del>/ $67.00</del>
-                                        <span>Free.</span>
-
-                                    </div>
-                                    <div class="gridarea__bottom">
-                                        <div class="gridarea__bottom__left">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
-                                                <div class="gridarea__small__img">
-                                                    <img loading="lazy" src="{% static 'img/grid/grid_small_1.jpg' %}"
-                                                        alt="grid">
-                                                    <div class="gridarea__small__content">
-                                                        <h6>Mirnsdo .H</h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="gridarea__star">
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <span>(44)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="gridarea__details">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
-                                                <i class="icofont-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list" data-aos="fade-up">
-                                <div class="gridarea__img">
-                                    <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}"><img loading="lazy"
-                                            src="{% static 'img/grid/grid_4.png' %}" alt="grid"></a>
-                                    <div class="gridarea__small__button">
-                                        <div class="grid__badge green__color">Ui & UX Design</div>
-                                    </div>
-                                    <div class="gridarea__small__icon">
-                                        <a href="#"><i class="icofont-heart-alt"></i></a>
-                                    </div>
-
-                                </div>
-                                <div class="gridarea__content">
-                                    <div class="gridarea__list">
-                                        <ul>
-                                            <li>
-                                                <i class="icofont-book-alt"></i> 23 Lesson
-                                            </li>
-                                            <li>
-                                                <i class="icofont-clock-time"></i> 1 hr 30 min
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="gridarea__heading">
-                                        <h3><a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">The business Intelligence analyst with
-                                                Course & 2024
-                                            </a></h3>
-                                    </div>
-                                    <div class="gridarea__price">
-                                        $32.00 <del>/ $67.00</del>
-                                        <span>Free.</span>
-
-                                    </div>
-                                    <div class="gridarea__bottom">
-                                        <div class="gridarea__bottom__left">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
-                                                <div class="gridarea__small__img">
-                                                    <img loading="lazy" src="{% static 'img/grid/grid_small_1.jpg' %}"
-                                                        alt="grid">
-                                                    <div class="gridarea__small__content">
-                                                        <h6>Mirnsdo .H</h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="gridarea__star">
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <span>(44)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="gridarea__details">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
-                                                <i class="icofont-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="gridarea__wraper gridarea__wraper__2 gridarea__course__list" data-aos="fade-up">
-                                <div class="gridarea__img">
-                                    <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}"><img loading="lazy"
-                                            src="{% static 'img/grid/grid_5.png' %}" alt="grid"></a>
-                                    <div class="gridarea__small__button">
-                                        <div class="grid__badge orange__color">Data & Tech</div>
-                                    </div>
-                                    <div class="gridarea__small__icon">
-                                        <a href="#"><i class="icofont-heart-alt"></i></a>
-                                    </div>
-
-                                </div>
-                                <div class="gridarea__content">
-                                    <div class="gridarea__list">
-                                        <ul>
-                                            <li>
-                                                <i class="icofont-book-alt"></i> 23 Lesson
-                                            </li>
-                                            <li>
-                                                <i class="icofont-clock-time"></i> 1 hr 30 min
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="gridarea__heading">
-                                        <h3><a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Become a product Manager learn the skills &
-                                                job.
-                                            </a></h3>
-                                    </div>
-                                    <div class="gridarea__price">
-                                        $32.00 <del>/ $67.00</del>
-                                        <span>Free.</span>
-
-                                    </div>
-                                    <div class="gridarea__bottom">
-                                        <div class="gridarea__bottom__left">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
-                                                <div class="gridarea__small__img">
-                                                    <img loading="lazy" src="{% static 'img/grid/grid_small_1.jpg' %}"
-                                                        alt="grid">
-                                                    <div class="gridarea__small__content">
-                                                        <h6>Mirnsdo .H</h6>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="gridarea__star">
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <i class="icofont-star"></i>
-                                                <span>(44)</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="gridarea__details">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='course-details' %}">Know Details
-                                                <i class="icofont-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div class="footerarea__content">
+                            <p>
+                                orporate clients and leisure travelers has been relying on Groundlink for dependable
+                                safe, and professional chauffeured car end service in major cities across World.
+                            </p>
                         </div>
-
+                        <div class="foter__bottom__text">
+                            <div class="footer__bottom__icon">
+                                <i class="icofont-clock-time"></i>
+                            </div>
+                            <div class="footer__bottom__content">
+                                <h6>Opening Houres</h6>
+                                <span>Mon - Sat(8.00 - 6.00)</span>
+                                <span>Sunday - Closed</span>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="main__pagination__wrapper" data-aos="fade-up">
-                        <ul class="main__page__pagination">
-                            <li><a class="disable" href="#"><i class="icofont-double-left"></i></a></li>
-                            <li><a class="active" href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#"><i class="icofont-double-right"></i></a></li>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-sm-6 col-md-6" data-aos="fade-up">
+                    <div class="footerarea__inner">
+                        <div class="footerarea__heading">
+                            <h3>Usefull Links</h3>
+                        </div>
+                        <div class="footerarea__list">
+                            <ul>
+                                <li>
+                                    <a href="#">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="#">Teachers</a>
+                                </li>
+                                <li>
+                                    <a href="#">Partner</a>
+                                </li>
+                                <li>
+                                    <a href="#">Room-Details</a>
+                                </li>
+                                <li>
+                                    <a href="#">Gallery</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-6 col-md-6" data-aos="fade-up">
+                    <div class="footerarea__inner footerarea__padding__left">
+                        <div class="footerarea__heading">
+                            <h3>Course</h3>
+                        </div>
+                        <div class="footerarea__list">
+                            <ul>
+                                <li>
+                                    <a href="#">Ui Ux Design</a>
+                                </li>
+                                <li>
+                                    <a href="#">Web Development</a>
+                                </li>
+                                <li>
+                                    <a href="#">Business Strategy</a>
+                                </li>
+                                <li>
+                                    <a href="#">Softwere Development</a>
+                                </li>
+                                <li>
+                                    <a href="#">Business English</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-sm-12" data-aos="fade-up">
+                    <div class="footerarea__right__wraper footerarea__inner">
+                        <div class="footerarea__heading">
+                            <h3>Recent Post</h3>
+                        </div>
+                        <div class="footerarea__right__list">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <div class="footerarea__right__img">
+                                            <img loading="lazy"
+                                                 src="{% static 'img/footer/footer__1.png' %}"
+                                                 alt="footerphoto">
+                                        </div>
+                                        <div class="footerarea__right__content">
+                                            <span>02 Apr 2024</span>
+                                            <h6>Best Your Business</h6>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="footerarea__right__img">
+                                            <img loading="lazy"
+                                                 src="{% static 'img/footer/footer__2.png' %}"
+                                                 alt="footerphoto">
+                                        </div>
+                                        <div class="footerarea__right__content">
+                                            <span>02 Apr 2024</span>
+                                            <h6>Keep Your Business</h6>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="footerarea__right__img">
+                                            <img loading="lazy"
+                                                 src="{% static 'img/footer/footer__3.png' %}"
+                                                 alt="footerphoto">
+                                        </div>
+                                        <div class="footerarea__right__content">
+                                            <span>02 Apr 2024</span>
+                                            <h6>Nice Your Business</h6>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footerarea__copyright__wrapper footerarea__copyright__wrapper__2">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3">
+                    <div class="copyright__logo">
+                        <a href="/">
+                            <img loading="lazy" src="{% static 'img/logo/logo_2.png' %}" alt="logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6">
+                    <div class="footerarea__copyright__content footerarea__copyright__content__2">
+                        <p>
+                            Copyright © <span>2024</span> by edurock. All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3">
+                    <div class="footerarea__icon footerarea__icon__2">
+                        <ul>
+                            <li>
+                                <a href="//facebook.com"><i class="icofont-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="//twitter.com"><i class="icofont-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="//vimeo.com"><i class="icofont-vimeo"></i></a>
+                            </li>
+                            <li>
+                                <a href="//linkedin.com"><i class="icofont-linkedin"></i></a>
+                            </li>
+                            <li>
+                                <a href="//skype.com"><i class="icofont-skype"></i></a>
+                            </li>
                         </ul>
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>
-    <!-- course__section__end   -->
-
-
-
-    <!-- footer__section__start -->
-    <div class="footerarea">
-        <div class="container">
-            <div class="footerarea__newsletter__wraper">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" data-aos="fade-up">
-                        <div class="footerarea__text">
-                            <h3>Still You Need Our <span>Support</span> ?</h3>
-                            <p>Don’t wait make a smart & logical quote here. Its pretty easy.</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" data-aos="fade-up">
-                        <div class="footerarea__newsletter">
-                            <div class="footerarea__newsletter__input">
-                                <form action="#">
-                                    <input type="text" placeholder="Enter your email here">
-                                    <div class="footerarea__newsletter__button">
-                                        <button type="submit" class="subscribe__btn">Subscribe Now</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footerarea__wrapper footerarea__wrapper__2">
-                <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-sm-12 col-md-12" data-aos="fade-up">
-                        <div class="footerarea__inner footerarea__about__us">
-                            <div class="footerarea__heading">
-                                <h3>About us</h3>
-                            </div>
-                            <div class="footerarea__content">
-                                <p>orporate clients and leisure travelers has been relying on Groundlink for dependable
-                                    safe, and professional chauffeured car end service in major cities across World.</p>
-                            </div>
-                            <div class="foter__bottom__text">
-                                <div class="footer__bottom__icon">
-                                    <i class="icofont-clock-time"></i>
-                                </div>
-                                <div class="footer__bottom__content">
-                                    <h6>Opening Houres</h6>
-                                    <span>Mon - Sat(8.00 - 6.00)</span>
-                                    <span>Sunday - Closed</span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-sm-6 col-md-6" data-aos="fade-up">
-                        <div class="footerarea__inner">
-                            <div class="footerarea__heading">
-                                <h3>Usefull Links</h3>
-                            </div>
-                            <div class="footerarea__list">
-                                <ul>
-                                    <li>
-                                        <a href="#">About Us</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Teachers</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Partner</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Room-Details</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Gallery</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-sm-6 col-md-6" data-aos="fade-up">
-                        <div class="footerarea__inner footerarea__padding__left">
-                            <div class="footerarea__heading">
-                                <h3>Course</h3>
-                            </div>
-                            <div class="footerarea__list">
-                                <ul>
-                                    <li>
-                                        <a href="#">Ui Ux Design</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Web Development</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Business Strategy</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Softwere Development</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Business English</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-lg-3 col-sm-12" data-aos="fade-up">
-                        <div class="footerarea__right__wraper footerarea__inner">
-                            <div class="footerarea__heading">
-                                <h3>Recent Post</h3>
-                            </div>
-                            <div class="footerarea__right__list">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <div class="footerarea__right__img">
-                                                <img loading="lazy" src="{% static 'img/footer/footer__1.png' %}"
-                                                    alt="footerphoto">
-                                            </div>
-                                            <div class="footerarea__right__content">
-                                                <span>02 Apr 2024 </span>
-                                                <h6>Best Your Business</h6>
-                                            </div>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">
-                                            <div class="footerarea__right__img">
-                                                <img loading="lazy" src="{% static 'img/footer/footer__2.png' %}"
-                                                    alt="footerphoto">
-                                            </div>
-                                            <div class="footerarea__right__content">
-                                                <span>02 Apr 2024 </span>
-                                                <h6>Keep Your Business</h6>
-                                            </div>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">
-                                            <div class="footerarea__right__img">
-                                                <img loading="lazy" src="{% static 'img/footer/footer__3.png' %}"
-                                                    alt="footerphoto">
-                                            </div>
-                                            <div class="footerarea__right__content">
-                                                <span>02 Apr 2024 </span>
-                                                <h6>Nice Your Business</h6>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footerarea__copyright__wrapper footerarea__copyright__wrapper__2">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-3">
-                        <div class="copyright__logo">
-                            <a href="/"><img loading="lazy" src="{% static 'img/logo/logo_2.png' %}" alt="logo"></a>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6">
-                        <div class="footerarea__copyright__content footerarea__copyright__content__2">
-                            <p>Copyright © <span>2024</span> by edurock. All Rights Reserved.</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3">
-                        <div class="footerarea__icon footerarea__icon__2">
-                            <ul>
-                                <li><a href="//facebook.com"><i class="icofont-facebook"></i></a></li>
-                                <li><a href="//twitter.com"><i class="icofont-twitter"></i></a></li>
-                                <li><a href="//vimeo.com"><i class="icofont-vimeo"></i></a></li>
-                                <li><a href="//linkedin.com"><i class="icofont-linkedin"></i></a></li>
-                                <li><a href="//skype.com"><i class="icofont-skype"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <!-- footer__section__end -->
-
+</div>
+<!-- footer__section__end -->
 </main>
-
 {% endblock %}

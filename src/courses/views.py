@@ -446,7 +446,7 @@ class CourseListView(TemplateResponseMixin, View):
     """
 
     model = Course
-    template_name = "courses/course/list.html"
+    template_name = "courses/courses.html"
 
     def get(self, request, subject=None):  # pylint: disable=unused-argument
         """Renders the course list based on the subject.
@@ -495,10 +495,19 @@ class CourseDetailView(DetailView):
     """
 
     model = Course
-    template_name = "courses/course/detail.html"
+    template_name = "courses/detail.html"
+
+    # def get_queryset(self):
+    #     """Returns the queryset of courses the student is enrolled in.
+
+    #     Returns:
+    #         QuerySet: The queryset of courses.
+    #     """
+    #     qs = super().get_queryset()
+    #     return qs.filter(enrollments__user=self.request.user)
 
     def get_context_data(self, **kwargs):
-        """Adds the enrollment form to the context data.
+        """Adds additional context data for the template.
 
         Args:
             **kwargs: Additional keyword arguments.
@@ -507,7 +516,16 @@ class CourseDetailView(DetailView):
             dict: The context data for the template.
         """
         context = super().get_context_data(**kwargs)
+
+        # Use self.object directly
         context["enroll_form"] = CourseEnrollForm(
             initial={"course": self.object}
         )
+
+        # Prefetch modules and lessons
+        course_modules = self.object.modules.prefetch_related("lessons")
+
+        # Attach modules to course object
+        context["modules"] = course_modules
+
         return context
