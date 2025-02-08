@@ -1,4 +1,6 @@
 -r requirements.txt
+djlint==1.36.4
+Faker==35.2.0
 pre-commit==4.0.1
 pylint==3.3.3
 pytest==7.4.3
