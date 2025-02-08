@@ -64,7 +64,7 @@
                     <div class="col-xl-12">
                         <div class="course__text__wraper" data-aos="fade-up">
                             <div class="course__text">
-                                <p>Showing {{courses|length}} Results</p>
+                                <p>Showing {{ courses|length }} Results</p>
                             </div>
                             <div class="course__icon">
                                 <ul class="nav property__team__tap" id="myTab" role="tablist">
@@ -84,11 +84,8 @@
                     </li>
                     <li class="short__by__new">
                         <select class="form-select" aria-label="Default select example">
-                            <option selected>Short by Subject</option>
-                           
-                            {% for sub in subjects %}
-                                <option value="3">{{sub.title}}</option>
-                            {% endfor %}
+                            <option selected>Sort by Subject</option>
+                            {% for sub in subjects %}<option value="3">{{ sub.title }}</option>{% endfor %}
                         </select>
                     </li>
                 </ul>
@@ -109,7 +106,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
     <div class="col-xl-9 col-lg-9 col-md-8 col-12">
         <div class="tab-content tab__content__wrapper with__sidebar__content"
@@ -184,9 +180,7 @@
             <div class="tab-pane fade"
                  id="projects__two"
                  role="tabpanel"
-                 aria-labelledby="projects__two">
-
-            </div>
+                 aria-labelledby="projects__two"></div>
         </div>
         <div class="main__pagination__wrapper" data-aos="fade-up">
             <ul class="main__page__pagination">
@@ -213,9 +207,7 @@
 </div>
 <!-- course__section__end   -->
 <!-- footer__section__start -->
-<div class="footerarea">
-    {% include 'partials/footer.html' %}
-</div>
+<div class="footerarea">{% include 'partials/footer.html' %}</div>
 <!-- footer__section__end -->
 </main>
 {% endblock %}
