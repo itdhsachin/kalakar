@@ -20,6 +20,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
 from courses.views import CourseListView
+from payment.views import PaymentWebhook
 
 urlpatterns = [
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
@@ -28,7 +29,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", CourseListView.as_view(), name="course_list"),
     path("students/", include("students.urls")),
-    path("payments/", include("payment.urls")),
+    path('payment-webhook/', PaymentWebhook.as_view(), name='payment_webhook'),
 ]
 
 

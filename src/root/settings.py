@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'accounts.User'
+
 
 # Application definition
 
@@ -42,6 +45,8 @@ INSTALLED_APPS = [
     "courses",
     "students",
     "payment",
+    'rest_framework',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -90,15 +95,15 @@ WSGI_APPLICATION = "root.wsgi.application"
 # }
 
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.mysql',
-         'NAME': 'kalakar',
-         'USER': 'admin',
-         'PASSWORD': 'password',
-         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-         'PORT': '3306',
-     }
- }
+    "default": {
+        "ENGINE": config("DB_ENGINE", default="django.db.backends.sqlite3"),
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST", default="localhost"),
+        "PORT": config("DB_PORT", default="3306"),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -138,11 +143,18 @@ STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "kishorthite09@gmail.com"  # Replace with your email
-EMAIL_HOST_PASSWORD = "upha bzfu cnih wffg"  # Replace with the generated app password
+# Email Configuration
+EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_FROM_ADDRESS = config("EMAIL_FROM_ADDRESS", default="no-reply@example.com")
+
+# Django Secret Key
+SECRET_KEY = config("SECRET_KEY")
+
+

@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import payment_webhook
+from .views import PaymentWebhook
 
 urlpatterns = [
-    path("webhook/", payment_webhook, name="payment_webhook"),
+    path('payment-webhook/', PaymentWebhook.as_view(), name='payment_webhook'),
 ]

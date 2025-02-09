@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from .fields import OrderField
@@ -54,13 +54,15 @@ class Subject(models.Model):
 
 
 class Course(models.Model):
-    owner = models.ForeignKey(User, related_name="courses_created", on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="courses_created", on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, related_name="courses", on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     overview = models.TextField()
     slug = models.CharField(max_length=200, unique=True)
     created = models.DateTimeField(auto_now_add=True)
-    students = models.ManyToManyField(User, related_name="courses_joined", blank=True)
+   
+    students = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="courses_joined", blank=True)
+
 
     class Meta:
         ordering = ['-created']
@@ -95,7 +97,7 @@ class Content(models.Model):
 
 
 class ItemBase(models.Model):
-    owner = models.ForeignKey(User, related_name='%(class)s_related', on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(class)s_related', on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
