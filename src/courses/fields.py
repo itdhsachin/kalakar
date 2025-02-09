@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
 
 """
 - OrderField is a custom field build on PositiveIntegerField to add two functionality :
@@ -20,7 +20,10 @@ class OrderField(models.PositiveIntegerField):
                 qs = self.model.objects.all()
                 # order objects with respect to other fields
                 if self.for_fields:
-                    query = {field: getattr(model_instance, field) for field in self.for_fields}
+                    query = {
+                        field: getattr(model_instance, field)
+                        for field in self.for_fields
+                    }
                     qs = qs.filter(**query)
                 last_item = qs.latest(self.attname)
                 value = last_item.order + 1

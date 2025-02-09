@@ -1,3 +1,3 @@
-from django.db import models
-
 # Create your models here.
+"""Defines database models for the payment system."""
+# Your models here...

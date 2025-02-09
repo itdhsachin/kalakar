@@ -1,3 +1,3 @@
-from django.test import TestCase
-
 # Create your tests here.
+"""Contains test cases for the payment system."""
+# Your tests here...

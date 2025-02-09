@@ -29,7 +29,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", CourseListView.as_view(), name="course_list"),
     path("students/", include("students.urls")),
-    path('payment-webhook/', PaymentWebhook.as_view(), name='payment_webhook'),
+    path("payment-webhook/", PaymentWebhook.as_view(), name="payment_webhook"),
 ]
 
 
