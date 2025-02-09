@@ -96,3 +96,15 @@ convention = "google"
 
 [tool.djlint]
 profile="django"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "root.settings"
+pythonpath = "src"
+addopts = "--reuse-db --nomigrations"
+testpaths="tests"
+norecursedirs = "migrations"
+
+[tool.coverage.run]
+omit = [
+    "*/migrations/*",
+]
