@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Course Details{% endblock %}
+{% block content %}
+    {% include 'partials/theme-switch.html' %}
+    <main class="main_wrapper overflow-hidden">
+        <!-- headar section start -->
+        {% include 'partials/navbar.html' %}
+        <!-- header section end -->
+        <!-- Mobile Menu Start Here -->
+        {% include 'partials/mobile-menu.html' %}
+        <!-- Mobile Menu end Here -->
+        <!-- theme fixed shadow -->
+        <div>
+            <div class="theme__shadow__circle"></div>
+            <div class="theme__shadow__circle shadow__right"></div>
+        </div>
+        <!-- theme fixed shadow -->
+        <!-- breadcrumbarea__section__start -->
+        <div class="breadcrumbarea pt-2 pb-2 p-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb__content__wraper" data-aos="fade-up">
+                            <div class="breadcrumb__title">
+                                <h2 class="heading">Course-Details</h2>
+                            </div>
+                            <div class="breadcrumb__inner">
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'courses' %}">courses</a>
+                                    </li>
+                                    <li>Course-Details</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shape__icon__2">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__1"
+                     src="{% static 'img/herobanner/herobanner__1.png' %}"
+                     alt="photo">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__2"
+                     src="{% static 'img/herobanner/herobanner__2.png' %}"
+                     alt="photo">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__3"
+                     src="{% static 'img/herobanner/herobanner__3.png' %}"
+                     alt="photo">
+                <img loading="lazy"
+                     class=" shape__icon__img shape__icon__img__4"
+                     src="{% static 'img/herobanner/herobanner__5.png' %}"
+                     alt="photo">
+            </div>
+        </div>
+        <!-- breadcrumbarea__section__end-->
+        <div class="blogarea__2 sp_top_100 sp_bottom_100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8">
+                        <div class="blogarae__img__2 course__details__img__2" data-aos="fade-up">
+                            <img loading="lazy" src="{% static 'img/blog/blog_8.png' %}" alt="blog">
+                        </div>
+                        <div class="blog__details__content__wraper">
+                            <div class="course__button__wraper" data-aos="fade-up">
+                                <div class="course__button">
+                                    <a href="#">Featured</a>
+                                    <a class="course__2" href="#">Ux Design</a>
+                                </div>
+                                <div class="course__date">
+                                    <p>
+                                        Last Update:<span>{{ course.updated_at }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="course__details__heading" data-aos="fade-up">
+                                <h3>{{ course.title }}</h3>
+                            </div>
+                            <div class="course__details__price" data-aos="fade-up">
+                                <ul>
+                                    {% if course.is_paid %}
+                                        <li>
+                                            <div class="course__price">{{ course.currency }} {{ course.price }}</div>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <div class="course__price">Free</div>
+                                        </li>
+                                    {% endif %}
+                                    <li>
+                                        <div class="course__details__date">
+                                            <i class="icofont-book-alt"></i> 23 Lesson
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="course__details__date">
+                                            <i class="icofont-teacher"></i> {{ course.created_by }}
+                                        </div>
+                                    </li>
+                                    <!-- <li>
+                                    <div class="course__star">
+                                        <i class="icofont-star"></i>
+                                        <i class="icofont-star"></i>
+                                        <i class="icofont-star"></i>
+                                        <i class="icofont-star"></i>
+                                        <i class="icofont-star"></i>
+                                        <span>(44)</span>
+                                    </div>
+                                </li> -->
+                                </ul>
+                            </div>
+                            <div class="course__details__paragraph" data-aos="fade-up">
+                                <p>{{ course.description }}</p>
+                            </div>
+                            <div class="course__details__tab__wrapper" data-aos="fade-up">
+                                <div class="tab-content tab__content__wrapper" id="myTabContent">
+                                    <div class="tab-pane fade  active show"
+                                         id="projects__two"
+                                         role="tabpanel"
+                                         aria-labelledby="projects__two">
+                                        <div class="accordion content__cirriculum__wrap" id="accordionExample">
+                                            {% for module in object.modules.all %}
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="heading{{ module.id }}">
+                                                        <button class="accordion-button"
+                                                                type="button"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#collapse{{ module.id }}"
+                                                                aria-expanded="true"
+                                                                aria-controls="collapse{{ module.id }}">
+                                                            {{ module.title }} <!-- <span>02hr 35min</span> -->
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapse{{ module.id }}"
+                                                         class="accordion-collapse collapse show"
+                                                         aria-labelledby="heading{{ module.id }}"
+                                                         data-bs-parent="#accordionExample">
+                                                        <div class="accordion-body">
+                                                            {% for content in module.lessons.all %}
+                                                                <div class="scc__wrap">
+                                                                    <div class="scc__info">
+                                                                        {% if content.get_type == 'Video' %}
+                                                                            <i class="icofont-video-alt"></i>
+                                                                        {% elif content.get_type == 'Text' %}
+                                                                            <i class="icofont-file-text"></i>
+                                                                        {% elif content.get_type == 'File' %}
+                                                                            <i class="icofont-file-file"></i>
+                                                                        {% elif content.get_type == 'Image' %}
+                                                                            <i class="icofont-file-image"></i>
+                                                                        {% endif %}
+                                                                        <h5>
+                                                                            <span>{{ content.get_type }} :</span> {{ content.title }}
+                                                                        </h5>
+                                                                    </div>
+                                                                    <div class="scc__meta">
+                                                                        <!-- <span class="time"><i class="icofont-clock-time"></i> 22 minutes</span> -->
+                                                                        <a href="{% url 'lessons' content.id %}" target="blank">
+                                                                            <span class="question"><i class="icofont-external-link"></i> Launch </span>
+                                                                            <!-- <span><i class="icofont-lock"></i></span> -->
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4">
+                        <div class="course__details__sidebar">
+                            <div class="event__sidebar__wraper" data-aos="fade-up">
+                                <div class="event__price__wraper">
+                                    <div class="event__price">
+                                        $32.00 <del>/ $67.00</del>
+                                    </div>
+                                </div>
+                                <div class="course__summery__button">
+                                    <a class="default__button" href="#">Add To Cart</a>
+                                    <a class="default__button default__button--2" href="#">Buy Now</a>
+                                    <span>
+                                        <i class="icofont-ui-rotation"></i>
+                                        45-Days Money-Back Guarantee
+                                    </span>
+                                </div>
+                                <div class="course__summery__lists">
+                                    <ul>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Instructor:</span><span class="sb_content"><a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">D. Willaim</a></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Start Date</span><span class="sb_content">05 Dec
+                                                2024</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Total Duration</span><span class="sb_content">08Hrs
+                                                32Min</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Enrolled</span><span class="sb_content">100</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Lectures</span><span class="sb_content">30</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Skill Level</span><span class="sb_content">Basic</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Language</span><span class="sb_content">Spanish</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Quiz</span><span class="sb_content">Yes</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="course__summery__item">
+                                                <span class="sb_label">Certificate</span><span class="sb_content">Yes</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="course__summery__button">
+                                    <p>More inquery about course.</p>
+                                    <a class="default__button default__button--3" href="tel:+4733378901"><i class="icofont-phone"></i> +47 333 78 901</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer__section__start -->
+        {% include 'partials/footer.html' %}
+        <!-- footer__section__end -->
+    </main>
+{% endblock %}

@@ -3,6 +3,7 @@
 # from django.core.cache import cache   # the cache is stopped
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.apps import apps
+from django.contrib import messages
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
@@ -446,7 +447,7 @@ class CourseListView(TemplateResponseMixin, View):
     """
 
     model = Course
-    template_name = "courses/course/list.html"
+    template_name = "courses/courses.html"
 
     def get(self, request, subject=None):  # pylint: disable=unused-argument
         """Renders the course list based on the subject.
@@ -495,10 +496,22 @@ class CourseDetailView(DetailView):
     """
 
     model = Course
-    template_name = "courses/course/detail.html"
+    template_name = "courses/detail.html"
+
+    def get(self, request, *args, **kwargs):
+        """Handles GET requests and redirects if course state is not True."""
+        self.object = self.get_object()
+
+        if not self.object.state:
+            messages.error(
+                request, "The course is not available at the moment."
+            )
+            return redirect("courses")
+
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        """Adds the enrollment form to the context data.
+        """Adds additional context data for the template.
 
         Args:
             **kwargs: Additional keyword arguments.
@@ -507,7 +520,16 @@ class CourseDetailView(DetailView):
             dict: The context data for the template.
         """
         context = super().get_context_data(**kwargs)
+
+        # Use self.object directly
         context["enroll_form"] = CourseEnrollForm(
             initial={"course": self.object}
         )
+
+        # Prefetch modules and lessons
+        course_modules = self.object.modules.prefetch_related("lessons")
+
+        # Attach modules to course object
+        context["modules"] = course_modules
+
         return context

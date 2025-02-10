@@ -74,6 +74,10 @@ class Lesson(models.Model):
         """Returns the string representation of the Lesson."""
         return str(self.title)
 
+    def get_type(self):
+        """Returns the readable lesson type."""
+        return self.lesson_type.model.capitalize()
+
 
 class LessonTrack(models.Model):
     """Tracks the progress of a lesson with an ID."""
@@ -131,7 +135,7 @@ class ItemBase(models.Model):
     def render(self):
         """Renders the item to a string using a template."""
         return render_to_string(
-            f"courses/content/{self._meta.model_name}.html", {"item": self}
+            f"lessons/layouts/{self._meta.model_name}.html", {"item": self}
         )
 
 

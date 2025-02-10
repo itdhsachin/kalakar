@@ -3,12 +3,25 @@
     Forbidden (403)
 {% endblock title %}
 {% block content %}
-    <h1>Forbidden (403)</h1>
-    <p>
-        {% if exception %}
-            {{ exception }}
-        {% else %}
-            You're not allowed to access this page.
-        {% endif %}
-    </p>
+    <main class="main_wrapper overflow-hidden">
+        <!-- headar section start -->
+        {% include 'partials/navbar.html' %}
+        <!-- header section end -->
+        <!-- Mobile Menu Start Here -->
+        {% include 'partials/mobile-menu.html' %}
+        <div class="custom-bg text-dark">
+            <div class="d-flex align-items-center justify-content-center min-vh-100 px-2">
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold">Forbidden (403)</h1>
+                    {% if exception %}
+                        {{ exception }}
+                    {% else %}
+                        <p class="fs-2 fw-medium mt-4">You are not authorized to view this page</p>
+                    {% endif %}
+                    <a href="/"
+                       class="btn btn-light fw-semibold rounded-pill px-4 py-2 custom-btn">Go Home</a>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock content %}
