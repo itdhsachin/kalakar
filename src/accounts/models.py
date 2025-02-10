@@ -153,7 +153,6 @@ class User(AbstractUser):
 
         ordering = ("-date_joined",)
 
-    
     def get_full_name(self):
         """Get the full name of the user.
 
@@ -242,7 +241,7 @@ class StudentManager(models.Manager):
         search(query): Search for students matching the query.
     """
 
-    def search(self, query=None): # pylint: disable=unused-argument
+    def search(self, query=None):  # pylint: disable=unused-argument
         """Search for students matching the query.
 
         Args:
@@ -358,7 +357,7 @@ class TeacherManager(models.Manager):
         search(query): Search for teachers matching the query.
     """
 
-    def search(self, query=None): # pylint: disable=unused-argument
+    def search(self, query=None):  # pylint: disable=unused-argument
         """Search for teachers matching the query.
 
         Args:

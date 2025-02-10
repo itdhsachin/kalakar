@@ -6,6 +6,7 @@ from accounts.models import Student, Teacher, User
 
 class StudentForm(forms.ModelForm):
     """Form for Student profile updates."""
+
     first_name = forms.CharField(
         widget=forms.TextInput(attrs={"class": "form-control"})
     )
@@ -21,6 +22,7 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         """Meta options for the student form."""
+
         model = Student
         fields = [
             "full_name",
@@ -74,6 +76,7 @@ class TeacherForm(forms.ModelForm):
 
     class Meta:
         """Meta options for the Teacher form."""
+
         model = Teacher
         fields = [
             "full_name",
@@ -116,6 +119,7 @@ class TeacherForm(forms.ModelForm):
 
 class CustomPasswordResetForm(PasswordResetForm):
     """Form for password reset functionality."""
+
     email = forms.EmailField(
         label="Email",
         max_length=254,
@@ -129,6 +133,7 @@ class CustomPasswordResetForm(PasswordResetForm):
 
         Returns:
             str: The cleaned email if it exists in the database.
+
         Raises:
             ValidationError: If the email does not exist.
         """

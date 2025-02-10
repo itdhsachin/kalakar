@@ -43,7 +43,7 @@ def post_save_account_receiver(instance=None, created=False, *args, **kwargs):  
 
 
 @receiver(post_save, sender=User)
-def create_student_profile(sender, instance, created, **kwargs): # pylint: disable=unused-argument
+def create_student_profile(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """Automatically create a Student entry if a User with is_student=True is created."""
     if (
         created and instance.is_student
@@ -52,7 +52,7 @@ def create_student_profile(sender, instance, created, **kwargs): # pylint: disab
 
 
 @receiver(post_save, sender=User)
-def create_teacher_profile(sender, instance, created, **kwargs): # pylint: disable=unused-argument
+def create_teacher_profile(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """Automatically create a Teacher entry if a User with is_lecturer=True is created."""
     if (
         created and instance.is_lecturer
