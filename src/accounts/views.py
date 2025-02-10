@@ -4,12 +4,12 @@ This module contains view functions for rendering profiles in the accounts appli
 """
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
-
-from accounts.forms import StudentForm, TeacherForm, CustomPasswordResetForm
-from accounts.models import Session, Student, Teacher, User
 from django.contrib.auth.views import PasswordResetView
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+
+from accounts.forms import CustomPasswordResetForm, StudentForm, TeacherForm
+from accounts.models import Session, Student, Teacher, User
 
 
 @login_required
@@ -41,7 +41,7 @@ def profile(request):
         # print("teacher")
         teacher = Teacher.objects.get(teacher=request.user)
         teacher.refresh_from_db()
-        context['user_profile'] = teacher
+        context["user_profile"] = teacher
 
         return render(request, "accounts/profile.html", context)
 
@@ -53,12 +53,12 @@ def profile(request):
         # )
         try:
             student = Student.objects.get(student=request.user)
-            # print (student)
-            # print (" value :" , student.student.first_name)
             student.refresh_from_db()
-            context['user_profile'] = student  # Add student to context if needed
+            context["user_profile"] = (
+                student  # Add student to context if needed
+            )
         except Student.DoesNotExist:
-            context['error'] = "Student profile not found."
+            context["error"] = "Student profile not found."
             return render(request, "accounts/profile.html", context)
         # @TODO add user courses in context
         # context.update(
@@ -78,43 +78,69 @@ def profile(request):
 
 # update profile function
 @login_required
-
 def update_profile(request):
     """Update the profile of the logged-in user based on their role (student or teacher)."""
     if request.user.is_authenticated:
-         
         user = request.user
-        is_teacher = hasattr(user, 'teacher')
-        is_student = hasattr(user, 'student')
+        is_teacher = hasattr(user, "teacher")
+        is_student = hasattr(user, "student")
         # Check if the logged-in user is a student or teacher and initialize the corresponding form
-        if hasattr(request.user, 'student'):
+        if hasattr(request.user, "student"):
             student = request.user.student
-            form = StudentForm(request.POST or None,request.FILES or None, instance=student, user=request.user)  # Pass user instance
-        elif hasattr(request.user, 'teacher'):
+            form = StudentForm(
+                request.POST or None,
+                request.FILES or None,
+                instance=student,
+                user=request.user,
+            )  # Pass user instance
+        elif hasattr(request.user, "teacher"):
             teacher = request.user.teacher
-            form = TeacherForm(request.POST or None, request.FILES or None,instance=teacher, user=request.user)  # Pass user instance
+            form = TeacherForm(
+                request.POST or None,
+                request.FILES or None,
+                instance=teacher,
+                user=request.user,
+            )  # Pass user instance
         else:
             form = None  # For other users or admins (if applicable)
 
-        if request.method == 'POST' and form:
+        if request.method == "POST" and form:
             if form.is_valid():
-                form.save()  
-                user = request.user  
-                user.first_name = form.cleaned_data.get('first_name', user.first_name)
-                user.last_name = form.cleaned_data.get('last_name', user.last_name)
-                user.email = form.cleaned_data.get('email', user.email)
-                user.phone = form.cleaned_data.get('phone', user.phone)
+                form.save()
+                user = request.user
+                user.first_name = form.cleaned_data.get(
+                    "first_name", user.first_name
+                )
+                user.last_name = form.cleaned_data.get(
+                    "last_name", user.last_name
+                )
+                user.email = form.cleaned_data.get("email", user.email)
+                user.phone = form.cleaned_data.get("phone", user.phone)
                 user.save()
-                return redirect('profile')  
-            else:
-                print(form.errors)  
+                return redirect("profile")
 
         # Render the update profile form
-        return render(request, 'accounts/update_profile.html', {'form': form ,'is_teacher': is_teacher, 'is_student': is_student, 'user_profile': user.teacher if is_teacher else user.student if is_student else None  })
+        return render(
+            request,
+            "accounts/update_profile.html",
+            {
+                "form": form,
+                "is_teacher": is_teacher,
+                "is_student": is_student,
+                "user_profile": user.teacher
+                if is_teacher
+                else user.student
+                if is_student
+                else None,
+            },
+        )
     else:
-        return redirect('login')
+        return redirect("login")
+
 
 class CustomPasswordResetView(PasswordResetView):
+    """Custom password reset view to override default templates."""
+
     template_name = "accounts/password_reset.html"
     email_template_name = "accounts/password_reset_email.html"
     subject_template_name = "accounts/password_reset_subject.txt"

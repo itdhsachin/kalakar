@@ -153,7 +153,7 @@ class User(AbstractUser):
 
         ordering = ("-date_joined",)
 
-    @property
+    
     def get_full_name(self):
         """Get the full name of the user.
 
@@ -173,7 +173,6 @@ class User(AbstractUser):
         """
         return f"{self.username} ({self.get_full_name})"
 
-    @property
     def get_user_role(self):
         """Get the role of the user.
 
@@ -243,7 +242,7 @@ class StudentManager(models.Manager):
         search(query): Search for students matching the query.
     """
 
-    def search(self, query=None):
+    def search(self, query=None): # pylint: disable=unused-argument
         """Search for students matching the query.
 
         Args:
@@ -268,7 +267,7 @@ class Student(models.Model):
     """
 
     student = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=255,blank=True)
+    full_name = models.CharField(max_length=255, blank=True)
     gender = models.CharField(
         max_length=1, choices=GENDERS, blank=True, null=True
     )
@@ -281,7 +280,7 @@ class Student(models.Model):
     pincode = models.CharField(max_length=6, blank=True)
     picture = models.ImageField(
         upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
-     )
+    )
     ira_rangoli_reference = models.CharField(
         max_length=50,
         choices=[
@@ -294,7 +293,6 @@ class Student(models.Model):
         blank=True,
     )
     hobbies = models.TextField(blank=True)
-
 
     objects = StudentManager()
 
@@ -310,6 +308,7 @@ class Student(models.Model):
             str: The full name of the student.
         """
         return self.student.get_full_name
+
     def get_picture(self):
         """Get the profile picture URL of the user.
 
@@ -321,6 +320,7 @@ class Student(models.Model):
         except AttributeError:
             no_picture = settings.MEDIA_URL + "default.png"
             return no_picture
+
     @classmethod
     def get_gender_count(cls):
         """Get the count of students by gender.
@@ -350,6 +350,7 @@ class Student(models.Model):
         self.student.delete()
         super().delete(*args, **kwargs)
 
+
 class TeacherManager(models.Manager):
     """Custom manager for Teacher model.
 
@@ -357,7 +358,7 @@ class TeacherManager(models.Manager):
         search(query): Search for teachers matching the query.
     """
 
-    def search(self, query=None):
+    def search(self, query=None): # pylint: disable=unused-argument
         """Search for teachers matching the query.
 
         Args:
@@ -368,6 +369,7 @@ class TeacherManager(models.Manager):
         """
         qs = self.get_queryset()
         return qs
+
 
 class Teacher(models.Model):
     """Model representing a teacher.
@@ -381,7 +383,7 @@ class Teacher(models.Model):
     """
 
     teacher = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=255,blank=True)
+    full_name = models.CharField(max_length=255, blank=True)
     gender = models.CharField(
         max_length=1, choices=GENDERS, blank=True, null=True
     )
@@ -393,8 +395,8 @@ class Teacher(models.Model):
     state = models.CharField(max_length=100, blank=True)
     pincode = models.CharField(max_length=6, blank=True)
     picture = models.ImageField(
-         upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
-     )
+        upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
+    )
     ira_rangoli_reference = models.CharField(
         max_length=50,
         choices=[
@@ -410,15 +412,22 @@ class Teacher(models.Model):
     last_rangoli_batch_completion_date = models.DateField(null=True, blank=True)
     level_completed = models.CharField(
         max_length=50,
-        choices=[('Basic', 'Basic'), ('Special', 'Special'), ('Advanced', 'Advanced'), ('Professional', 'Professional'), ('Extreme', 'Extreme')],
+        choices=[
+            ("Basic", "Basic"),
+            ("Special", "Special"),
+            ("Advanced", "Advanced"),
+            ("Professional", "Professional"),
+            ("Extreme", "Extreme"),
+        ],
         blank=True,
-        null=True
+        null=True,
     )
 
     objects = TeacherManager()  # Custom Manager (if applicable)
 
     class Meta:
         """Meta options for the Teacher model."""
+
         ordering = ("-teacher__date_joined",)
 
     def __str__(self):
@@ -451,14 +460,16 @@ class Teacher(models.Model):
         except AttributeError:
             no_picture = settings.MEDIA_URL + "default.png"
             return no_picture
-        
+
     def get_absolute_url(self):
         """Get the absolute URL of the teacher profile.
 
         Returns:
             str: The URL of the teacher profile.
         """
-        return reverse("teacher_profile_single", kwargs={"user_id": self.teacher.id})
+        return reverse(
+            "teacher_profile_single", kwargs={"user_id": self.teacher.id}
+        )
 
     def delete(self, *args, **kwargs):
         """Delete the teacher model and the associated user.
