@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Razorpay Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </head>
+  <body>
+    <form id="payment-form">
+      {% csrf_token %}
+      <input type="text" name="first_name" placeholder="First Name" required />
+      <input type="text" name="last_name" placeholder="Last Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="phone" placeholder="Phone" required />
+      <button type="button" onclick="startPayment()">Pay Now</button>
+    </form>
+
+    <script>
+      function getCSRFToken() {
+        return document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("csrftoken="))
+          ?.split("=")[1];
+      }
+
+      function startPayment() {
+        let formData = new FormData(document.getElementById("payment-form"));
+
+        fetch("/payment/initiate/", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": getCSRFToken(), // Include CSRF token
+          },
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // console.log("Order Created:", data);
+
+            var options = {
+              key: "{{ razorpay_key }}",
+              amount: data.amount,
+              currency: "INR",
+              order_id: data.order_id,
+              name: "KALAKAR",
+              description: "Course Payment",
+              image: "/src/static/img/logo/logo.jpg",
+              prefill: {
+                name:
+                  formData.get("first_name") + " " + formData.get("last_name"),
+                email: formData.get("email"),
+                contact: formData.get("phone"),
+              },
+              theme: {
+                color: "#3399cc", 
+              },
+              handler: function (response) {
+                // console.log("Payment Response:", response);
+                fetch("/payment/callback/", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCSRFToken(),
+                  },
+                  body: JSON.stringify(response),
+                })
+                  .then((res) => res.json())
+                  // .then((resData) => console.log("Callback Response:", resData))
+                  // .catch((error) => console.error("Callback Error:", error));
+              },
+            };
+
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+          })
+          .catch((error) => console.error("Order Creation Error:", error));
+      }
+    </script>
+  </body>
+</html>
