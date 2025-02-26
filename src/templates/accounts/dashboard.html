@@ -1,0 +1,84 @@
+{% extends 'base.html' %} 
+{% load static i18n %} 
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+{% include 'partials/theme-switch.html' %}
+<style>
+  .headName {
+    font-size: 1.8rem; /* Increase size */
+    font-weight: 700; /* Extra bold */
+    color: #333; /* Adjust color */
+  }
+
+  .main_wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure page takes full viewport height */
+  }
+
+  .content_wrapper {
+    margin-top: 10px;
+    flex: 1; /* Take up remaining height */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dashboard-btn {
+    width: 300px !important; /* Fixed button width */
+  }
+
+  @media (max-width: 767px) {
+    .dashboard-btn {
+      width: 100% !important; /* Full width on mobile */
+    }
+  }
+</style>
+
+<main class="main_wrapper overflow-hidden">
+  {% include 'partials/navbar.html' %} {% include 'partials/mobile-menu.html' %}
+
+  <div class="content_wrapper">
+    <!-- Ensures content takes full height -->
+    <div class="text-center mt-5">
+      <p class="headName fw-bold">
+        Welcome,
+        <span class="text-primary"
+          >{{ user.first_name }} {{ user.last_name }}</span
+        >
+      </p>
+    </div>
+
+    <div class="container mt-4">
+      <div class="row justify-content-center g-2">
+        <div class="col-12 col-md-5 d-flex justify-content-center">
+          <a href="#" class="dashboard-btn btn btn-primary btn-lg">Course</a>
+        </div>
+        <div class="col-12 col-md-5 d-flex justify-content-center">
+          <a
+            href="{% url 'profile' %}"
+            class="dashboard-btn btn btn-success btn-lg"
+            >Profile</a
+          >
+        </div>
+        <div class="col-12 col-md-5 d-flex justify-content-center">
+          <a
+            href="{% url 'update_profile' %}"
+            class="dashboard-btn btn btn-warning btn-lg"
+            >Update Profile</a
+          >
+        </div>
+        <div class="col-12 col-md-5 d-flex justify-content-center">
+          <a
+            href="{% url 'password_reset' %}"
+            class="dashboard-btn btn btn-danger btn-lg"
+            >Reset Password</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer sticks to the bottom -->
+  {% include 'partials/footer.html' %}
+</main>
+{% endblock %}
