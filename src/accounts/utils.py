@@ -1,8 +1,11 @@
 """Utility functions and classes for the accounts app.
 
-This module contains functions for generating IDs, sending emails, and the EmailThread class for sending emails asynchronously.
+This module contains functions for generating IDs, sending emails,
+and the EmailThread class for sending emails asynchronously.
 """
 
+import random
+import string
 import threading
 from datetime import datetime
 
@@ -32,8 +35,9 @@ def send_html_email(subject, recipient_list, template, context):
     send_mail(
         subject,
         plain_message,
-        settings.EMAIL_FROM_ADDRESS,
+        settings.DEFAULT_FROM_EMAIL,  # Use DEFAULT_FROM_EMAIL
         recipient_list,
+        fail_silently=False,
         html_message=html_message,
     )
 
@@ -44,7 +48,10 @@ def generate_password():
     Returns:
         str: The generated password.
     """
-    return get_user_model().objects.make_random_password()
+    # return get_user_model().objects.make_random_password()
+    chars = string.ascii_letters + string.digits + "!@#$%^&*()"
+    length = 8
+    return "".join(random.choice(chars) for _ in range(length))
 
 
 def generate_student_id():
