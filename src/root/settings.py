@@ -30,8 +30,8 @@ SECRET_KEY = config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", default=["localhost", "127.0.0.1"], cast=list
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(
+    ","
 )
 
 # change the default user models to our custom model
@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     "pages",
     "django_bootstrap5",
     "accounts.apps.AccountsConfig",
+    "widget_tweaks",
+    "payment",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +69,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "root.urls"
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
 
 TEMPLATES = [
     {
@@ -130,6 +137,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
+
+LOGIN_REDIRECT_URL = "/accounts/dashboard/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -157,3 +168,23 @@ BOOTSTRAP5 = {
         "crossorigin": "anonymous",
     },
 }
+
+# Prefix for username
+STUDENT_ID_PREFIX = "STU"
+LECTURER_ID_PREFIX = "TEACHER"
+
+# Media url
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# smtp connection
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS")
+
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+
+
