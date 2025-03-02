@@ -19,6 +19,7 @@ jobs:
       run: |
         apt-get update && apt-get install -y sshpass
         echo "$SSH_PASSWORD" > password_file
+        cat password_file
         chmod 600 password_file
 
     - name: Debug SSH Credentials
