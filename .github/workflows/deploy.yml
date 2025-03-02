@@ -21,6 +21,10 @@ jobs:
         echo "$SSH_PASSWORD" > password_file
         chmod 600 password_file
 
+    - name: Debug SSH Credentials
+      run: |
+        echo "SSH_USERNAME: $SERVER_USER"
+
     - name: Debug SSH Connection
       env:
         SERVER_IP: ${{ secrets.SERVER_IP }}
