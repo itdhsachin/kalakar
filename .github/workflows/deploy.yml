@@ -25,16 +25,6 @@ jobs:
       run: |
         echo "SSH_USERNAME: $SERVER_USER"
 
-    - name: Debug SSH Connection
-      env:
-        SERVER_IP: ${{ secrets.SERVER_IP }}
-        SERVER_USER: ${{ secrets.SSH_USERNAME }}
-        SERVER_PASS: ${{ secrets.SSH_PASSWORD }}
-        SERVER_PORT: ${{ secrets.SERVER_PORT }}
-      run: |
-        echo "Testing SSH connection..."
-        sshpass -f password_file ssh -vvv -o StrictHostKeyChecking=no -p $SERVER_PORT $SERVER_USER@$SERVER_IP "echo 'SSH connection successful'"
-
     - name: Sync code to server
       env:
         SERVER_IP: ${{ secrets.SERVER_IP }}
