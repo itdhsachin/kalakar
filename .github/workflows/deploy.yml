@@ -27,4 +27,5 @@ jobs:
         SERVER_PORT: ${{ secrets.SERVER_PORT }}
       run: |
         sshpass -p $SERVER_PASS ssh -o StrictHostKeyChecking=no -p $SERVER_PORT $SERVER_USER@$SERVER_IP "sudo mkdir -p /home/kalakar"
-        sshpass -p $SERVER_PASS rsync -avz --delete -e "ssh -p $SERVER_PORT" --exclude-from='.gitignore' ./ $SERVER_USER@$SERVER_IP:/home/kalakar/
+        sshpass -p $SERVER_PASS rsync -avz --delete -e "ssh -p $SERVER_PORT" --exclude-from='.gitignore' ./src $SERVER_USER@$SERVER_IP:/home/kalakar/
+        sshpass -p $SERVER_PASS rsync -avz --delete -e "ssh -p $SERVER_PORT" --exclude-from='.gitignore' ./requirements.txt $SERVER_USER@$SERVER_IP:/home/kalakar/
