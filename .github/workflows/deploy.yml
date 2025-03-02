@@ -1,0 +1,33 @@
+name: Deploy to Ubuntu Server
+
+on:
+  push:
+    branches:
+      - main
+      - development
+      - ci-cd
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH with username and password
+      run: |
+        apt-get update && apt-get install -y sshpass
+        echo "$SSH_PASSWORD" > password_file
+        chmod 600 password_file
+
+    - name: Sync code to server
+      env:
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        SERVER_USER: ${{ secrets.SSH_USERNAME }}
+        SERVER_PASS: ${{ secrets.SSH_PASSWORD }}
+        SERVER_PORT: ${{ secrets.SERVER_PORT }}
+        BRANCH_NAME: ${{ github.ref_name }}
+      run: |
+        sshpass -f password_file ssh -o StrictHostKeyChecking=no -p $SERVER_PORT $SERVER_USER@$SERVER_IP "mkdir -p ~/deployments/$BRANCH_NAME"
+        sshpass -f password_file rsync -avz --delete -e "ssh -p $SERVER_PORT" --exclude-from='.gitignore' ./ $SERVER_USER@$SERVER_IP:~/deployments/$BRANCH_NAME/
