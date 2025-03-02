@@ -43,6 +43,7 @@ jobs:
         SERVER_PORT: ${{ secrets.SERVER_PORT }}
         BRANCH_NAME: ${{ github.ref_name }}
       run: |
+        echo "SSH_USERNAME: $SERVER_USER"
         echo "SECRET_VALUE=${{ secrets.SSH_USERNAME }}" | sed 's/./*/g'
         sshpass -f password_file ssh -o StrictHostKeyChecking=no -p $SERVER_PORT $SERVER_USER@$SERVER_IP "mkdir -p ~/deployments/$BRANCH_NAME"
         sshpass -f password_file rsync -avz --delete -e "ssh -p $SERVER_PORT" --exclude-from='.gitignore' ./ $SERVER_USER@$SERVER_IP:~/deployments/$BRANCH_NAME/
