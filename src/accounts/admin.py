@@ -1,25 +1,20 @@
 """Admin configuration for the accounts app.
 
-This module contains the admin interface options for the User and Student models.
+This module contains the admin interface options for the User, Student, and Teacher models.
 """
 
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import redirect
+from django.urls import path
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from accounts.models import Student, Teacher, User
 
 
 class UserAdmin(admin.ModelAdmin):
-    """Admin interface options for the User model.
-
-    Attributes:
-        list_display (list): Fields to display in the admin list view.
-        search_fields (list): Fields to include in the search functionality.
-
-    Meta:
-        managed (bool): Whether the model is managed by Django.
-        verbose_name (str): Singular name for the User model.
-        verbose_name_plural (str): Plural name for the User model.
-    """
+    """Admin interface options for the User model."""
 
     list_display = [
         "get_full_name",
@@ -29,20 +24,45 @@ class UserAdmin(admin.ModelAdmin):
         "is_student",
         "is_lecturer",
         "is_staff",
+        "delete_button",
     ]
-    search_fields = [
-        "username",
-        "first_name",
-        "last_name",
-        "email",
-        "is_active",
-        "is_lecturer",
-        "is_staff",
-    ]
+    search_fields = ["username", "first_name", "last_name", "email"]
+
+    def delete_button(self, obj):
+        """Generate a delete button for each user row."""
+        return format_html(
+            '<a class="button" style="color:white;" href="delete_user/?id={}">Delete</a>',
+            obj.id,
+        )
+
+    delete_button.short_description = "Delete"
+
+    def get_urls(self):
+        """Add custom URL for deleting a user."""
+        urls = super().get_urls()
+        custom_urls = [
+            path("delete_user/", self.admin_site.admin_view(self.delete_user)),
+        ]
+        return custom_urls + urls
+
+    def delete_user(self, request):
+        """Handles user deletion."""
+        user_id = request.GET.get("id", None)
+
+        if not user_id:
+            messages.error(request, _("User ID not provided."))
+            return redirect("/admin/accounts/user/")
+
+        try:
+            user = User.objects.get(id=user_id)
+            user.delete()
+            messages.success(request, _("User deleted successfully."))
+        except ObjectDoesNotExist:
+            messages.error(request, _("User not found."))
+
+        return redirect("/admin/accounts/user/")
 
     class Meta:
-        """Meta options for the UserAdmin class."""
-
         managed = True
         verbose_name = "User"
         verbose_name_plural = "Users"
@@ -55,6 +75,8 @@ class TeacherAdmin(admin.ModelAdmin):
         "teacher",
         "get_full_name",
         "username",
+        "email",
+        "delete_button",
     ]
     search_fields = [
         "teacher__username",
@@ -63,9 +85,65 @@ class TeacherAdmin(admin.ModelAdmin):
         "teacher__email",
     ]
 
-    class Meta:
-        """Meta options for the Teacher form."""
+    def get_full_name(self, obj):
+        """Get full name from related User model."""
+        return obj.teacher.get_full_name()
 
+    def username(self, obj):
+        """Get username from related User model."""
+        return obj.teacher.username
+
+    def email(self, obj):
+        """Get email from related User model."""
+        return obj.teacher.email
+
+    get_full_name.admin_order_field = "teacher__first_name"
+    get_full_name.short_description = "Full Name"
+
+    username.admin_order_field = "teacher__username"
+    username.short_description = "Username"
+
+    email.admin_order_field = "teacher__email"
+    email.short_description = "Email"
+
+    def delete_button(self, obj):
+        """Generate a delete button for each teacher row."""
+        return format_html(
+            '<a class="button" style="color:white;" href="delete_teacher/?id={}">Delete</a>',
+            obj.id,
+        )
+
+    delete_button.short_description = "Delete"
+
+    def get_urls(self):
+        """Add custom URL for deleting a teacher."""
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "delete_teacher/",
+                self.admin_site.admin_view(self.delete_teacher),
+            ),
+        ]
+        return custom_urls + urls
+
+    def delete_teacher(self, request):
+        """Handles teacher deletion."""
+        teacher_id = request.GET.get("id", None)
+
+        if not teacher_id:
+            messages.error(request, _("Teacher ID not provided."))
+            return redirect("/admin/accounts/teacher/")
+
+        try:
+            teacher = Teacher.objects.get(id=teacher_id)
+            teacher.delete()
+            messages.success(request, _("Teacher deleted successfully."))
+        except ObjectDoesNotExist:
+            messages.error(request, _("Teacher not found."))
+
+        return redirect("/admin/accounts/teacher/")
+
+    class Meta:
         managed = True
         verbose_name = "Teacher"
         verbose_name_plural = "Teachers"
@@ -74,22 +152,84 @@ class TeacherAdmin(admin.ModelAdmin):
 class StudentAdmin(admin.ModelAdmin):
     """Admin interface for Student."""
 
-    list_display = ["student", "get_full_name", "username", "email"]
+    list_display = [
+        "student",
+        "get_full_name",
+        "username",
+        "email",
+        "delete_button",
+    ]
     search_fields = [
         "student__username",
         "student__first_name",
         "student__last_name",
-        "student__email",
     ]
 
-    class Meta:
-        """Meta options for the Student form."""
+    def get_full_name(self, obj):
+        """Get full name from related User model."""
+        return obj.student.get_full_name()
 
+    def username(self, obj):
+        """Get username from related User model."""
+        return obj.student.username
+
+    def email(self, obj):
+        """Get email from related User model."""
+        return obj.student.email
+
+    get_full_name.admin_order_field = "student__first_name"
+    get_full_name.short_description = "Full Name"
+
+    username.admin_order_field = "student__username"
+    username.short_description = "Username"
+
+    email.admin_order_field = "student__email"
+    email.short_description = "Email"
+
+    def delete_button(self, obj):
+        """Generate a delete button for each student row."""
+        return format_html(
+            '<a class="button" style="color:white;" href="delete_student/?id={}">Delete</a>',
+            obj.id,
+        )
+
+    delete_button.short_description = "Delete"
+
+    def get_urls(self):
+        """Add custom URL for deleting a student."""
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "delete_student/",
+                self.admin_site.admin_view(self.delete_student),
+            ),
+        ]
+        return custom_urls + urls
+
+    def delete_student(self, request):
+        """Handles student deletion."""
+        student_id = request.GET.get("id", None)
+
+        if not student_id:
+            messages.error(request, _("Student ID not provided."))
+            return redirect("/admin/accounts/student/")
+
+        try:
+            student = Student.objects.get(id=student_id)
+            student.delete()
+            messages.success(request, _("Student deleted successfully."))
+        except ObjectDoesNotExist:
+            messages.error(request, _("Student not found."))
+
+        return redirect("/admin/accounts/student/")
+
+    class Meta:
         managed = True
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
 
+# Register models with admin panel
 admin.site.register(User, UserAdmin)
-admin.site.register(Student)
-admin.site.register(Teacher)
+admin.site.register(Student, StudentAdmin)
+admin.site.register(Teacher, TeacherAdmin)

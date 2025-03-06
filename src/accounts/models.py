@@ -6,6 +6,7 @@ including User and Student models.
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
@@ -103,10 +104,8 @@ class User(AbstractUser):
     Attributes:
         is_student (bool): Indicates if the user is a student.
         is_lecturer (bool): Indicates if the user is a lecturer.
-        gender (str): The gender of the user.
         phone (str): The phone number of the user.
         address (str): The address of the user.
-        picture (ImageField): The profile picture of the user.
         email (EmailField): The email address of the user.
         username_validator (ASCIIUsernameValidator): Validator for the username.
         objects (CustomUserManager): The custom manager for User model.
@@ -117,33 +116,8 @@ class User(AbstractUser):
 
     is_student = models.BooleanField(default=False)
     is_lecturer = models.BooleanField(default=False)
-    # full_name = models.CharField(max_length=255,blank=True)
-    # birthday = models.DateField(null=True, blank=True)
-    # gender = models.CharField(
-    #     max_length=1, choices=GENDERS, blank=True, null=True
-    # )
     phone = models.CharField(max_length=60, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    # address = models.CharField(max_length=60, blank=True, null=True)
-    # picture = models.ImageField(
-    #     upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
-    # )
-    # education = models.CharField(max_length=255, blank=True)
-    # taluka = models.CharField(max_length=100, blank=True)
-    # District = models.CharField(max_length=100, blank=True)
-    # state = models.CharField(max_length=100, blank=True)
-    # pincode = models.CharField(max_length=6, blank=True)
-    # ira_rangoli_reference = models.CharField(
-    #     max_length=50,
-    #     choices=[
-    #         ("WhatsApp", "WhatsApp"),
-    #         ("YouTube", "YouTube"),
-    #         ("Instagram", "Instagram"),
-    #         ("Friend", "Friend")
-    #     ],
-    #     blank=True,
-    # )
-    # hobbies = models.TextField(blank=True)
     username_validator = ASCIIUsernameValidator()
 
     objects = CustomUserManager()
@@ -222,16 +196,21 @@ class User(AbstractUser):
         except (FileNotFoundError, AttributeError):
             pass
 
-    def delete(self, *args, **kwargs):
-        """Delete the user model and the profile picture if it's not the default picture.
 
-        Args:
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
-        """
-        if self.picture.url != settings.MEDIA_URL + "default.png":
-            self.picture.delete()
-        super().delete(*args, **kwargs)
+def delete(self, *args, **kwargs):
+    """Delete the user model and the profile picture if applicable."""
+    for relation in ["student", "teacher"]:
+        try:
+            obj = getattr(self, relation)  # Dynamically get related object
+            if (
+                obj.picture
+                and obj.picture.url != settings.MEDIA_URL + "default.png"
+            ):
+                obj.picture.delete()
+        except ObjectDoesNotExist:
+            pass  # No related object, move on
+
+    super().delete(*args, **kwargs)
 
 
 class StudentManager(models.Manager):
@@ -266,7 +245,7 @@ class Student(models.Model):
     """
 
     student = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=255, blank=True)
+    full_name = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(
         max_length=1, choices=GENDERS, blank=True, null=True
     )
@@ -382,7 +361,7 @@ class Teacher(models.Model):
     """
 
     teacher = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=255, blank=True)
+    full_name = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(
         max_length=1, choices=GENDERS, blank=True, null=True
     )
