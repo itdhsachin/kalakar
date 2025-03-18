@@ -6,7 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from accounts.models import Student, User
 from accounts.utils import generate_password, send_html_email
 from payment.models import Payment
-
+import requests
+from decouple import config
 
 @csrf_exempt
 def payment_callback(request):
@@ -89,7 +90,7 @@ def payment_callback(request):
                     )
 
                     email_context = {
-                        "name": f"{first_name} {last_name}",
+                        "name": fullname,
                         "username": email,
                         "password": password,
                         "Amount": amount / 100,
@@ -101,7 +102,30 @@ def payment_callback(request):
                         template="../templates/payment/emails/account_credentials.html",
                         context=email_context,
                     )
+                    if phone.startswith("+"):
+                        whatsAppPhone = phone[1:]
+                        print(whatsAppPhone)
+                    WATI_API_URL = config("WATI_API_URL")
+                    WATI_API_KEY = config("WATI_API_KEY")
+                    whatsapp_url = f"{WATI_API_URL}?whatsappNumber={whatsAppPhone}"
 
+                    payload = json.dumps({
+                        "parameters": [
+                            {"name": "name", "value": fullname}
+                            # {"name": "username", "value": email},
+                            # {"name": "password", "value": password}
+                        ],
+                        "template_name": "new_chat_v1",
+                        "broadcast_name": "new_chat_v1_170320251849"
+                    })
+                    headers = {
+                        "content-type": "application/json-patch+json",
+                        "Authorization": WATI_API_KEY
+                        }
+
+                    response = requests.post(whatsapp_url, data=payload, headers=headers)
+
+                    print(response.text)
                     return JsonResponse(
                         {
                             "status": "success",
@@ -109,6 +133,7 @@ def payment_callback(request):
                             "username": email,
                         }
                     )
+                
 
                 except Exception as e:
                     return JsonResponse(
