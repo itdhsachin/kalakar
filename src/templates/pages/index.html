@@ -3,32 +3,38 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
+        <title>Home  - Kala Guru by Ira Rangoli Art</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
               rel="stylesheet"
-              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
               crossorigin="anonymous">
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FSFRJPHEE"></script>
+        <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-3FSFRJPHEE');
+        </script>
     </head>
     <body>
         <!-- Header -->
-        <header class="sticky-top bg-white py-2 ">
-            <div class="container mt-2 ">
-                <div class="d-flex justify-content-center ">
-                    <div class="headerarea_logo">
-                        <a href="#">
-                            <img src="static\img\home\logo.jpg"
-                                 alt="logo"
-                                 style="height: 100px;
-                                        width: 300px">
-                        </a>
-                    </div>
+        <!-- <header class="sticky-top bg-white py-2 ">
+        <div class="container mt-2 ">
+            <div class="d-flex justify-content-center ">
+                <div class="headerarea_logo">
+                    <a href="#">
+                        <img src="static/img/home/logo.jpg" alt="logo" style="height: 100px; width: 300px;">
+                    </a>
                 </div>
             </div>
-        </header>
+        </div>
+    </header> -->
+        {% include 'partials/navbar.html' %}
         <!-- Hero Section -->
         <section class=" text-dark text-center mt-4 text-md-start py-5"
                  style="background-color: #f3eec3">
@@ -42,12 +48,13 @@
                             Ira Rangoli Art offers a vibrant and artistic journey into the world of creativity.
                         </p>
                         <div class="d-flex justify-content-center justify-content-md-start gap-3 mt-3">
-                            <a href="#" class="btn btn-warning btn-lg shadow-sm">Explore Now</a>
+                            <button onclick="document.getElementById('courseContent').scrollIntoView({ behavior: 'smooth' });"
+                                    class="btn btn-warning btn-lg shadow-sm">Explore Now</button>
                         </div>
                     </div>
                     <div class="col-lg-6 text-center mt-4 mt-lg-0">
                         <img loading="lazy"
-                             src="static\img\home\banner.webp"
+                             src="static/img/home/banner.webp"
                              alt="Ira Rangoli"
                              class="img-fluid rounded shadow-lg"
                              style="height: 430px;
@@ -62,7 +69,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6 text-center">
                         <img loading="lazy"
-                             src="static\img\home\aboutus.jpg"
+                             src="static/img/home/aboutus.jpg"
                              alt="About Us"
                              class="img-fluid rounded shadow-lg"
                              style="height: 450px;
@@ -70,23 +77,65 @@
                     </div>
                     <div class="col-md-6">
                         <h2 class="fw-bold text-dark">
-                            Welcome to the <span class="text-warning">KalakarGuru</span><span class="text-dark">by Ira Rangoli Art</span>
+                            Welcome to the <span class="text-warning">Kala Guru</span><span class="text-dark">by Ira Rangoli Art</span>
                         </h2>
                         <p class="lead text-secondary">
-                            Kalaguru is a vibrant platform dedicated to celebrating the beauty
+                            Kala Guru is a vibrant platform dedicated to celebrating the beauty
                             and creativity of art, with a special focus on Rangoli Art. Rooted in tradition and innovation,
                             we bring together passionate artists who express their skills through mesmerizing patterns,
                             colors, and cultural inspirations.
-                            At Kalaguru, we believe that art is not just a form of expression but a language that connects
+                            At Kala guru, we believe that art is not just a form of expression but a language that connects
                             hearts and traditions. Our mission is to promote artistic talent, inspire creativity, and
                             preserve the heritage of Rangoli while embracing modern design influences.
                             Join us in our journey to transform spaces with intricate and captivating Rangoli designs, where
                             every pattern tells a story and every color adds life!
                         </p>
                     </div>
+                    <span id="courseContent">&nbsp;</span>
                 </div>
             </div>
         </section>
+        <!-- Cousrses -->
+        <div>
+            <div class="container my-5">
+                <div class="text-center">
+                    <h2 class="mb-3">Our Course</h2>
+                </div>
+                <div class="card mx-auto shadow-lg p-4" style="max-width: 800px;">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">Basic Rangoli</h4>
+                        <h5 class="text-success">₹ 75.00</h5>
+                        <p>For 17 days</p>
+                        <div class="mb-3">
+                            <div class="ratio ratio-16x9">
+                                <video controls>
+                                    <source src="https://irarangoliarts.com/media/courses/basic_rangoli_2/Introduction%20video%20video%20no%200.mp4"
+                                            type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                        <h5>Basic Rangoli Topics:</h5>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">Which Rangoli should be taken?</li>
+                            <li class="list-group-item">How to stop</li>
+                            <li class="list-group-item">How to release Rangoli</li>
+                            <li class="list-group-item">How are the basic symbols</li>
+                            <li class="list-group-item">How to draw the basic symbol</li>
+                            <li class="list-group-item">Complete Rangoli from basic symbols</li>
+                            <li class="list-group-item">How the color scheme should be</li>
+                            <li class="list-group-item">Which sieve to use</li>
+                            <li class="list-group-item">How the hand should be while releasing Rangoli</li>
+                            <li class="list-group-item">How to draw Rangoli in less time</li>
+                            <li class="list-group-item">What is the correct method of drawing Rangoli</li>
+                        </ul>
+                        <a target="_blank"
+                           href="https://razorpay.com/emidemo/"
+                           class="btn btn-success btn-lg w-100">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- How to Access Courses -->
         <section class="bg-light py-5">
             <div class="container">
@@ -97,40 +146,33 @@
                             <div class="list-group-item d-flex align-items-start">
                                 <div class="badge bg-primary rounded-circle me-3">1</div>
                                 <div>
-                                    <strong>Create an Account</strong> – Sign up or log in to your account on the chosen
-                                    platform.
+                                    <strong>Purchase</strong> – Buy Basic Rangoli course.
                                 </div>
                             </div>
                             <div class="list-group-item d-flex align-items-start">
                                 <div class="badge bg-primary rounded-circle me-3">2</div>
                                 <div>
-                                    <strong>Check Course Details</strong> – Read the course description, syllabus,
-                                    duration, and requirements.
+                                    <strong>Automatic Account Creation</strong>– After succesful purchase, your account is created
+                                    instantly.
                                 </div>
                             </div>
                             <div class="list-group-item d-flex align-items-start">
                                 <div class="badge bg-primary rounded-circle me-3">3</div>
                                 <div>
-                                    <strong>Enroll</strong> – Click the QR scanner
+                                    <strong>Receive Login Credentials</strong> – Systm will sent login credentails to your email or WhatsApp.
                                 </div>
                             </div>
                             <div class="list-group-item d-flex align-items-start">
                                 <div class="badge bg-primary rounded-circle me-3">4</div>
                                 <div>
-                                    <strong>Start Learning</strong> – Access the course materials, including videos,
-                                    readings, and assignments.
+                                    <strong>LogIn</strong> – Access your account using the provided credentials and learn course day by day.
                                 </div>
                             </div>
                             <div class="list-group-item d-flex align-items-start">
                                 <div class="badge bg-primary rounded-circle me-3">5</div>
                                 <div>
-                                    <strong>Complete Assessments</strong> – Take quizzes,assignments and exams.
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex align-items-start">
-                                <div class="badge bg-primary rounded-circle me-3">6</div>
-                                <div>
-                                    <strong>Earn a Certificate</strong> – Receive certification upon completion.
+                                    <strong>Get Certified</strong> – Receive a certificate after successfully
+                                    completing the course.
                                 </div>
                             </div>
                         </div>
@@ -141,65 +183,22 @@
         <!-- QR Code Section -->
         <section class="text-center py-5">
             <div class="container">
-                <h2 class="fw-bold mb-3 text-dark">Scan the QR Code</h2>
-                <a href="#">
-                    <img src="static\img\home\qrcode.png"
+                <h2 class="fw-bold mb-3 text-dark">Scan to buy the course</h2>
+                <a href="https://razorpay.com/emidemo/">
+                    <img src="static/img/home/qrcode.png"
                          alt="QR Code"
                          class="img-fluid rounded shadow-lg"
                          width="200">
                 </a>
                 <p class="mt-3">
-                    <a href="#" class="btn btn-primary btn-lg shadow">Click to Join Our Course</a>
+                    <a href="https://razorpay.com/emidemo/"
+                       target="_blank"
+                       class="btn btn-primary btn-lg shadow">Click
+                    to Join Course</a>
                 </p>
             </div>
         </section>
         <!-- Footer -->
-        <footer class="bg-dark text-white py-4">
-            <div class="container">
-                <div class="row">
-                    <!-- Terms and Privacy - Left Aligned -->
-                    <div class="col-md-6 text-md-start text-center">
-                        <a href="terms&condition"
-                           target="_blank"
-                           class="text-white text-decoration-none">
-                            <h5 class="mt-3">📜 Terms and Conditions</h5>
-                        </a>
-                        <a href="privacy&policy"
-                           target="_blank"
-                           class="text-white text-decoration-none">
-                            <h5 class="mt-3">🔒 Privacy Policy</h5>
-                        </a>
-                    </div>
-                    <!-- Follow Us-->
-                    <div class="col-md-6 text-md-end text-center mt-3 mt-md-0">
-                        <h5>📢 Follow Us</h5>
-                        <ul class="list-inline mt-2">
-                            <li class="list-inline-item">
-                                <a href="//facebook.com" class="text-white fs-4"><i class="fa-brands fa-facebook"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="//twitter.com" class="text-white fs-4"><i class="fa-brands fa-twitter"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="//vimeo.com" class="text-white fs-4"><i class="fa-brands fa-vimeo"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="//linkedin.com" class="text-white fs-4"><i class="fa-brands fa-linkedin"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="//skype.com" class="text-white fs-4"><i class="fa-brands fa-skype"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <hr class="border-light">
-                <div class="row align-items-center">
-                    <!-- Copyright Section -->
-                    <div class="col-md-12 text-center">
-                        <p class="mb-0">© 2024 ITDEVHUB. All Rights Reserved.</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        {% include 'partials/footer.html' %}
     </body>
 </html>
