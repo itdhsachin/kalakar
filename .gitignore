@@ -166,3 +166,4 @@ cython_debug/
 .pypirc
 
 *.db
+src/.env.example
