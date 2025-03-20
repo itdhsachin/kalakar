@@ -8,9 +8,11 @@ Each route uses the appropriate view and assigns a unique name for URL reversing
 from django.urls import path
 
 from courses import views
+from courses.views import course_purchase
 
 urlpatterns = [
     path("", views.CourseListView.as_view(), name="courses"),
+    path('course-purchase/', course_purchase, name='course_purchase'),
     path(
         "mine/", views.ManageCourseListView.as_view(), name="manage_course_list"
     ),

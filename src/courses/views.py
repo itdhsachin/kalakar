@@ -22,6 +22,7 @@ from courses.models import Course, Subject
 from lessons.models import Lesson
 from modules.models import Module
 from students.forms import CourseEnrollForm
+from django.shortcuts import render
 
 
 class OwnerMixin:
@@ -533,3 +534,8 @@ class CourseDetailView(DetailView):
         context["modules"] = course_modules
 
         return context
+
+
+
+def course_purchase(request):
+    return render(request, 'pages/course_purchase.html')

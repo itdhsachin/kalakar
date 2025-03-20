@@ -30,9 +30,8 @@ SECRET_KEY = config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(
-    ","
-)
+# ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="82.29.166.251,0.0.0.0").split(",")
+ALLOWED_HOSTS = ['82.29.166.251', 'localhost','kalagurubyirarangoliarts.com']
 
 # change the default user models to our custom model
 AUTH_USER_MODEL = "accounts.User"
@@ -55,7 +54,6 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "widget_tweaks",
     "payment",
-    "rest_framework",
     "assessment"
 ]
 
@@ -138,9 +136,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
-RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
-
 LOGIN_REDIRECT_URL = "/accounts/dashboard/"
 
 # Static files (CSS, JavaScript, Images)
@@ -186,6 +181,6 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS")
 
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+# DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 

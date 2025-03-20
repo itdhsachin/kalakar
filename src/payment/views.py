@@ -8,13 +8,29 @@ from accounts.utils import generate_password, send_html_email
 from payment.models import Payment
 import requests
 from decouple import config
+import logging
+import os
+
+LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+
+LOG_FILE = os.path.join(LOG_DIR, "razorpay_webhook.log")
+
+# Configure logging
+logging.basicConfig(
+    filename=LOG_FILE,  # Save log in 'logs/razorpay_webhook.log'
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+
 
 @csrf_exempt
 def payment_callback(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            print(data)
+            # print(data)
+            logging.info("Received Webhook Data: %s", json.dumps(data, indent=4))
 
             if data.get("event") != "payment.captured":
                 return JsonResponse(
@@ -22,9 +38,7 @@ def payment_callback(request):
                     status=200,
                 )
 
-            payment_info = (
-                data.get("payload", {}).get("payment", {}).get("entity", {})
-            )
+            payment_info = data.get("payload", {}).get("payment", {}).get("entity", {})
 
             razorpay_payment_id = payment_info.get("id")
             razorpay_order_id = payment_info.get("order_id")
@@ -33,11 +47,11 @@ def payment_callback(request):
             amount = payment_info.get("amount", 0)
 
             # print("Amount:", amount)
-            if not (3000 <= amount <= 5000):
+            if not (0 <= amount <= 5000):
                 return JsonResponse(
                     {
                         "status": "error",
-                        "message": "Invalid payment amount. Must be between ₹30 and ₹50.",
+                        "message": "Invalid payment amount.",
                     },
                     status=400,
                 )
@@ -87,6 +101,7 @@ def payment_callback(request):
                         email=email,
                         phone=phone,
                         status=status,
+                        pincode=pincode,
                     )
 
                     email_context = {
@@ -104,26 +119,30 @@ def payment_callback(request):
                     )
                     if phone.startswith("+"):
                         whatsAppPhone = phone[1:]
-                        print(whatsAppPhone)
+                        # print(whatsAppPhone)
                     WATI_API_URL = config("WATI_API_URL")
                     WATI_API_KEY = config("WATI_API_KEY")
                     whatsapp_url = f"{WATI_API_URL}?whatsappNumber={whatsAppPhone}"
 
-                    payload = json.dumps({
-                        "parameters": [
-                            {"name": "name", "value": fullname}
-                            # {"name": "username", "value": email},
-                            # {"name": "password", "value": password}
-                        ],
-                        "template_name": "new_chat_v1",
-                        "broadcast_name": "new_chat_v1_170320251849"
-                    })
+                    payload = json.dumps(
+                        {
+                            "parameters": [
+                                {"name": "name", "value": fullname}
+                                # {"name": "username", "value": email},
+                                # {"name": "password", "value": password}
+                            ],
+                            "template_name": "new_chat_v1",
+                            "broadcast_name": "new_chat_v1_170320251849",
+                        }
+                    )
                     headers = {
                         "content-type": "application/json-patch+json",
-                        "Authorization": WATI_API_KEY
-                        }
+                        "Authorization": WATI_API_KEY,
+                    }
 
-                    response = requests.post(whatsapp_url, data=payload, headers=headers)
+                    response = requests.post(
+                        whatsapp_url, data=payload, headers=headers
+                    )
 
                     print(response.text)
                     return JsonResponse(
@@ -133,7 +152,6 @@ def payment_callback(request):
                             "username": email,
                         }
                     )
-                
 
                 except Exception as e:
                     return JsonResponse(
