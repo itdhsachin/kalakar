@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+ 
+<main>
+    {% include 'partials/navbar.html' %}
+    {% include 'partials/mobile-menu.html' %}
+    
+    <div class="container d-flex flex-column align-items-center justify-content-center mt-5">
+
+
+        <!-- Instruction Box -->
+        {% if not has_submitted %}
+        <div class="alert alert-info shadow-lg rounded p-4 w-100 text-start mt-3">
+            <h4 class="text-primary fw-bold mb-3"><i class="bi bi-info-circle"></i> Instructions</h4>
+            <ul class="ps-3 mb-0">
+                <li class="d-block mb-2"><strong>Ensure</strong> your work is in <strong>PNG</strong> or <strong>JPG</strong> format.</li>
+                <li class="d-block mb-2"><strong>The file size</strong> should not exceed <strong>5MB</strong>.</li>
+                <li class="d-block mb-2"><strong>Double-check</strong> your work before submitting, as resubmissions may not be allowed.</li>
+                <li class="d-block mb-2">Click the <strong>"Submit"</strong> button after selecting your file.</li>
+            </ul>
+        </div>
+        
+        {% endif %}
+        {% if has_submitted %}
+        <div class="alert alert-info text-center shadow-lg p-4 rounded">
+            <i class="icofont-check-circled text-success display-4"></i>
+            <h3 class="text-primary mt-3">Submission Received!</h3>
+            <p class="text-muted">
+                You have already submitted your work. Submissions are allowed only once.
+            </p>
+            <p class="text-muted">
+                Our team will review your submission and contact you soon. Thank you for your participation!
+            </p>
+        </div>
+        {% else %}
+        <h2 class="text-center">Submit Your Course Work</h2>
+        <div class="alert alert-warning text-start shadow-sm rounded p-3 mt-3 w-100">
+            <h5 class="text-danger fw-bold mb-2"><i class="bi bi-exclamation-circle"></i> Important / महत्वाचे</h5>
+            <p class="mb-1">
+                <strong>Note:</strong> Your submission will <u>only be considered</u> if you have completed your profile with all the required details.
+            </p>
+            <p class="mb-0">
+                <strong>टीप:</strong> तुमची सबमिशन <u>तेव्हाच ग्राह्य धरली जाईल</u> जेव्हा तुम्ही तुमची प्रोफाइलमधील सर्व माहिती पूर्णपणे भरलेली असेल.
+            </p>
+        </div>
+        <div class="card shadow-lg p-4 bg-white rounded w-100">
+            <h2 class="text-center text-primary fw-bold">Upload Your Work</h2>
+            <div class="text-center fw-semibold p-2 rounded text-muted">
+                <i class="bi bi-exclamation-triangle-fill text-danger"></i> 
+                <span class="text-danger">Note:</span> Please read the instructions before submitting your work.
+            </div>
+
+            <form method="POST" action="/assessment/upload/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group text-center">
+                    <label for="customFile" class="d-block fw-semibold mb-2">Choose a File</label>
+                    <input type="file"
+                           class="form-control border-primary"
+                           id="customFile"
+                           name="work"
+                           accept=".png, .jpg"
+                           required />
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-success px-5 fw-bold">Submit</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary mt-3">Back to Dashboard</a>
+    </div>
+
+    {% include 'partials/footer.html' %}
+</main>
+
+{% endblock %}

@@ -1,90 +1,158 @@
-{% extends 'base.html' %}
-{% load static i18n %}
-{% block title %}Course Details{% endblock %}
-{% block content %}
-    {% include 'partials/theme-switch.html' %}
-    <main class="main_wrapper overflow-hidden">
-        <!-- headar section start -->
-        {% include 'partials/navbar.html' %}
-        <!-- header section end -->
-        <!-- Mobile Menu Start Here -->
-        {% include 'partials/mobile-menu.html' %}
-        <!-- Mobile Menu end Here -->
-        <!-- theme fixed shadow -->
-        <div>
-            <div class="theme__shadow__circle"></div>
-            <div class="theme__shadow__circle shadow__right"></div>
-        </div>
-        <!-- theme fixed shadow -->
-        <!-- breadcrumbarea__section__start -->
-        <div class="breadcrumbarea pt-2 pb-2 p-1">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="breadcrumb__content__wraper" data-aos="fade-up">
-                            <div class="breadcrumb__title">
-                                <h2 class="heading">Course-Details</h2>
-                            </div>
-                            <div class="breadcrumb__inner">
-                                <ul>
-                                    <li>
-                                        <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home</a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'courses' %}">courses</a>
-                                    </li>
-                                    <li>Course-Details</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{% extends 'base.html' %} 
+{% load static i18n %}  
+{% block title %}Course Details{% endblock %} 
+{% load tz %} 
+{% block content %} 
+{% now "Y-m-d G:i:s" as today_date %}
+
+<style>
+  .lesson-box {
+    background: #ffffff;
+    border: 1px solid #e3e6ef;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .lesson-box:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .lesson-box .scc__info h5 {
+    font-size: 1.125rem;
+    margin-bottom: 0;
+  }
+
+  .lesson-box i {
+    color: #0d6efd;
+    margin-right: 8px;
+  }
+
+  .lesson-box .scc__meta a {
+    text-decoration: none;
+    color: #198754;
+    font-weight: 500;
+  }
+
+  .lesson-box .scc__meta a:hover {
+    color: #157347;
+    text-decoration: underline;
+  }
+
+</style>
+<!-- <p>todays date = {{ today_date }}</p> -->
+<meta name="csrf-token" content="{{ csrf_token }}">
+<main class="main_wrapper overflow-hidden">
+  <!-- headar section start -->
+  {% include 'partials/navbar.html' %}
+  <!-- header section end -->
+  <!-- Mobile Menu Start Here -->
+  {% include 'partials/mobile-menu.html' %}
+  <!-- Mobile Menu end Here -->
+  <!-- theme fixed shadow -->
+  <div>
+    <div class="theme__shadow__circle"></div>
+    <div class="theme__shadow__circle shadow__right"></div>
+  </div>
+  <!-- theme fixed shadow -->
+  <!-- breadcrumbarea__section__start -->
+  <div class="breadcrumbarea pt-2 pb-2 p-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="breadcrumb__content__wraper" data-aos="fade-up">
+            <div class="breadcrumb__title">
+              <h2 class="heading">Course-Details</h2>
             </div>
-            <div class="shape__icon__2">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__1"
-                     src="{% static 'img/herobanner/herobanner__1.png' %}"
-                     alt="photo">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__2"
-                     src="{% static 'img/herobanner/herobanner__2.png' %}"
-                     alt="photo">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__3"
-                     src="{% static 'img/herobanner/herobanner__3.png' %}"
-                     alt="photo">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__4"
-                     src="{% static 'img/herobanner/herobanner__5.png' %}"
-                     alt="photo">
+            <div class="breadcrumb__inner">
+              <ul>
+                <li>
+                  <a href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                <li>
+                  <a href="{% url 'courses' %}">courses</a>
+                </li>
+                <li>Course-Details</li>
+              </ul>
             </div>
+          </div>
         </div>
-        <!-- breadcrumbarea__section__end-->
-        <div class="blogarea__2 sp_top_100 sp_bottom_100">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-8 col-lg-8">
-                        <div class="blogarae__img__2 course__details__img__2" data-aos="fade-up">
-                            <img loading="lazy" src="{% static 'img/blog/blog_8.png' %}" alt="blog">
-                        </div>
-                        <div class="blog__details__content__wraper">
-                            <div class="course__button__wraper" data-aos="fade-up">
-                                <div class="course__button">
+      </div>
+    </div>
+    <div class="shape__icon__2">
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__1"
+        src="{% static 'img/herobanner/herobanner__1.png' %}"
+        alt="photo"
+      />
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__2"
+        src="{% static 'img/herobanner/herobanner__2.png' %}"
+        alt="photo"
+      />
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__3"
+        src="{% static 'img/herobanner/herobanner__3.png' %}"
+        alt="photo"
+      />
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__4"
+        src="{% static 'img/herobanner/herobanner__5.png' %}"
+        alt="photo"
+      />
+    </div>
+  </div>
+  <!-- breadcrumbarea__section__end-->
+  <div class="blogarea__2 sp_top_100 sp_bottom_100">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-8 col-lg-8">
+          <div
+            class="blogarae__img__2 course__details__img__2"
+            data-aos="fade-up"
+          >
+            {% if course.id == 1 or course.id == 9 or course.id == 15 %}
+            <img loading="lazy" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
+            {% elif course.id == 4 or course.id == 10 %}
+            <img loading="lazy" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+            {% elif course.id == 5 or course.id == 11 %}
+            <img loading="lazy" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
+            {% elif course.id == 6 or course.id == 12 %}
+            <img loading="lazy" src="{% static 'img/home/warli_art.png' %}" alt="grid" />
+            {% elif course.id == 7 or course.id == 13 %}
+            <img loading="lazy" src="{% static 'img/home/haar_mala.png' %}" alt="grid" />
+            {% elif course.id == 8 or course.id == 14 %}
+            <img loading="lazy" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
+            {% elif course.id ==  16 %}
+            <img loading="lazy" src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+            {% else %}
+            <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+            {% endif %}
+          </div>
+          <div class="blog__details__content__wraper">
+            <div class="course__button__wraper" data-aos="fade-up">
+              <!-- <div class="course__button">
                                     <a href="#">Featured</a>
                                     <a class="course__2" href="#">Ux Design</a>
-                                </div>
-                                <div class="course__date">
-                                    <p>
-                                        Last Update:<span>{{ course.updated_at }}</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="course__details__heading" data-aos="fade-up">
-                                <h3>{{ course.title }}</h3>
-                            </div>
-                            <div class="course__details__price" data-aos="fade-up">
-                                <ul>
-                                    {% if course.is_paid %}
+                                </div> -->
+              <div class="course__date">
+                <p>Last Update:<span>{{ course.updated_at }}</span></p>
+              </div>
+            </div>
+            <div class="course__details__heading" data-aos="fade-up">
+              <h3>{{ course.title }} </p></h3>
+            </div>
+
+            <div class="course__details__price" data-aos="fade-up">
+              <ul>
+                <!-- {% if course.is_paid %}
                                         <li>
                                             <div class="course__price">{{ course.currency }} {{ course.price }}</div>
                                         </li>
@@ -92,18 +160,19 @@
                                         <li>
                                             <div class="course__price">Free</div>
                                         </li>
-                                    {% endif %}
-                                    <li>
-                                        <div class="course__details__date">
-                                            <i class="icofont-book-alt"></i> 23 Lesson
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="course__details__date">
-                                            <i class="icofont-teacher"></i> {{ course.created_by }}
-                                        </div>
-                                    </li>
-                                    <!-- <li>
+                                    {% endif %} -->
+                <li>
+                  <div class="course__details__date">
+                    <i class="icofont-book-alt"></i>
+                    {{ object.modules.all|length }}
+                  </div>
+                </li>
+                <li>
+                  <div class="course__details__date">
+                    <i class="icofont-teacher"></i> {{ course.created_by }}
+                  </div>
+                </li>
+                <!-- <li>
                                     <div class="course__star">
                                         <i class="icofont-star"></i>
                                         <i class="icofont-star"></i>
@@ -113,149 +182,501 @@
                                         <span>(44)</span>
                                     </div>
                                 </li> -->
-                                </ul>
-                            </div>
-                            <div class="course__details__paragraph" data-aos="fade-up">
-                                <p>{{ course.description }}</p>
-                            </div>
-                            <div class="course__details__tab__wrapper" data-aos="fade-up">
-                                <div class="tab-content tab__content__wrapper" id="myTabContent">
-                                    <div class="tab-pane fade  active show"
-                                         id="projects__two"
-                                         role="tabpanel"
-                                         aria-labelledby="projects__two">
-                                        <div class="accordion content__cirriculum__wrap" id="accordionExample">
-                                            {% for module in object.modules.all %}
-                                                <div class="accordion-item">
-                                                    <h2 class="accordion-header" id="heading{{ module.id }}">
-                                                        <button class="accordion-button"
-                                                                type="button"
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#collapse{{ module.id }}"
-                                                                aria-expanded="true"
-                                                                aria-controls="collapse{{ module.id }}">
-                                                            {{ module.title }} <!-- <span>02hr 35min</span> -->
-                                                        </button>
-                                                    </h2>
-                                                    <div id="collapse{{ module.id }}"
-                                                         class="accordion-collapse collapse show"
-                                                         aria-labelledby="heading{{ module.id }}"
-                                                         data-bs-parent="#accordionExample">
-                                                        <div class="accordion-body">
-                                                            {% for content in module.lessons.all %}
-                                                                <div class="scc__wrap">
-                                                                    <div class="scc__info">
-                                                                        {% if content.get_type == 'Video' %}
-                                                                            <i class="icofont-video-alt"></i>
-                                                                        {% elif content.get_type == 'Text' %}
-                                                                            <i class="icofont-file-text"></i>
-                                                                        {% elif content.get_type == 'File' %}
-                                                                            <i class="icofont-file-file"></i>
-                                                                        {% elif content.get_type == 'Image' %}
-                                                                            <i class="icofont-file-image"></i>
-                                                                        {% endif %}
-                                                                        <h5>
-                                                                            <span>{{ content.get_type }} :</span> {{ content.title }}
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div class="scc__meta">
-                                                                        <!-- <span class="time"><i class="icofont-clock-time"></i> 22 minutes</span> -->
-                                                                        <a href="{% url 'lessons' content.id %}" target="blank">
-                                                                            <span class="question"><i class="icofont-external-link"></i> Launch </span>
-                                                                            <!-- <span><i class="icofont-lock"></i></span> -->
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            {% endfor %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+              </ul>
+            </div>
+
+            {% if course.id ==  16 %}
+            <div class="cimgs">
+              <div class="container mt-4">
+                <div class="row">
+                    <!-- Image 1 -->
+                    <div class="col-md-4">
+                        <img src="{% static 'img/home/mehendi_1.jpeg' %}" class="img-fluid" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{% static 'img/home/mehendi_1.jpeg' %}')" alt="Image 1">
+                    </div>
+                    <!-- Image 2 -->
+                    <div class="col-md-4">
+                        <img src="{% static 'img/home/mehendi_2.jpeg' %}" class="img-fluid" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{% static 'img/home/mehendi_2.jpeg' %}')" alt="Image 2">
+                    </div>
+                    <!-- Image 3 -->
+                    <div class="col-md-4">
+                        <img src="{% static 'img/home/mehendi_3.jpeg' %}" class="img-fluid" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{% static 'img/home/mehendi_3.jpeg' %}')" alt="Image 3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Popup -->
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <img id="modalImage" class="img-fluid" src="" alt="Popup Image">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-4">
-                        <div class="course__details__sidebar">
-                            <div class="event__sidebar__wraper" data-aos="fade-up">
-                                <div class="event__price__wraper">
+                </div>
+            </div>
+            <br>
+            <script>
+                function showImage(imageSrc) {
+                    document.getElementById("modalImage").src = imageSrc;
+                }
+            </script>
+            </div>
+            {% endif %}
+            
+            <div class="course__details__paragraph" data-aos="fade-up">
+             <p>{{ course.description|linebreaksbr }}</p>
+            </div>
+            <div class="course__details__tab__wrapper" data-aos="fade-up">
+              <div class="tab-content tab__content__wrapper" id="myTabContent">
+                <div
+                  class="tab-pane fade active show"
+                  id="projects__two"
+                  role="tabpanel"
+                  aria-labelledby="projects__two"
+                >
+                  <!-- <div
+                    class="accordion content__cirriculum__wrap"
+                    id="accordionExample"
+                  >
+                  {% with course.enroll_start_date|date:"Y-m-d" as start_date %}
+                  {% with course.enroll_end_date|date:"Y-m-d" as end_date %}
+                      {% if not start_date or start_date <= today_date %}
+                          {% if not end_date or today_date <= end_date %}
+                              {% for module in object.modules.all %}
+                                  <div class="accordion-item">
+                                      <h2 class="accordion-header" id="heading{{ module.id }}">
+                                          <button class="accordion-button"
+                                                  type="button"
+                                                  data-bs-toggle="collapse"
+                                                  data-bs-target="#collapse{{ module.id }}"
+                                                  aria-expanded="true"
+                                                  aria-controls="collapse{{ module.id }}">
+                                              {{ module.title }}
+                                          </button>
+                                      </h2>
+                                      <div id="collapse{{ module.id }}"
+                                           class="accordion-collapse collapse show"
+                                           aria-labelledby="heading{{ module.id }}"
+                                           data-bs-parent="#accordionExample">
+                                          <div class="accordion-body">
+                                              {% for content in module.lessons.all %}
+                                                  {% with content.available_date|date:"Y-m-d" as lesson_start_date %}
+                                                  {% with content.target_date|date:"Y-m-d" as lesson_end_date %}
+                                                      {% if not lesson_start_date or lesson_start_date <= today_date %}
+                                                          {% if not lesson_end_date or today_date <= lesson_end_date %}
+                                                              <div class="scc__wrap">
+                                                                  <div class="scc__info">
+                                                                      {% if content.get_type == 'Video' %}
+                                                                          <i class="icofont-video-alt"></i>
+                                                                      {% endif %}
+                                                                      <h5>
+                                                                          <span>{{ content.get_type }} :</span> {{ content.title }}
+                                                                      </h5>
+                                                                  </div>
+                                                                  <div class="scc__meta">
+                                                                      <a href="{% url 'lessons' content.id %}" target="blank">
+                                                                          <span class="question"><i class="icofont-external-link"></i> View Now </span>
+                                                                      </a>
+                                                                  </div>
+                                                              </div>
+                                                          {% else %}
+                                                              <p class="text-danger">
+                                                                  <i class="icofont-close-circled"></i> This lesson is no longer available. The end date was {{ lesson_end_date }}.
+                                                              </p>
+                                                          {% endif %}
+                                                      {% else %}
+                                                          <p class="text-warning">
+                                                              <i class="icofont-clock-time"></i> This lesson will be available on {{ lesson_start_date }}.
+                                                          </p>
+                                                      {% endif %}
+                                                  {% endwith %}
+                                                  {% endwith %}
+                                              {% endfor %}
+                                          </div>
+                                      </div>
+                                  </div>
+                              {% endfor %}
+                          {% else %}
+                          <div class="alert alert-danger d-flex align-items-center p-3">
+                            <i class="icofont-close-circled fs-4 me-2"></i>
+                            <div>
+                                <strong>Course Ended:</strong> This course was completed on <span class="fw-bold">{{ end_date }}</span>.  
+                                If you have any questions, please contact support.
+                            </div>
+                        </div>
+                          {% endif %}
+                      {% else %}
+                      <div class="alert alert-warning d-flex align-items-center p-3">
+                        <i class="icofont-clock-time fs-4 me-2"></i>
+                        <div>
+                            <strong>Upcoming Course:</strong> This course will start on <span class="fw-bold">{{ start_date }}</span>.  
+                            Please check back later or set a reminder!
+                        </div>
+                    </div>
+                      {% endif %}
+                  {% endwith %}
+                  {% endwith %}
+                  </div> -->
+
+
+                  <div class="accordion content__cirriculum__wrap" id="accordionExample">
+                    {% now "Y-m-d H:i:s" as today_date %}
+                    {% with course.enroll_start_date|date:"Y-m-d" as start_date %}
+                    <!-- {% with course.enroll_end_date|date:"Y-m-d" as end_date %} -->
+                  
+                      {% for module in object.modules.all %}
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="heading{{ module.id }}">
+                            <button class="accordion-button"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapse{{ module.id }}"
+                                    aria-expanded="true"
+                                    aria-controls="collapse{{ module.id }}">
+                              {{ module.title }}
+                            </button>
+                          </h2>
+                          <div id="collapse{{ module.id }}"
+                               class="accordion-collapse collapse show"
+                               aria-labelledby="heading{{ module.id }}"
+                               data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+
+                              {% for content in module.lessons.all %}
+                                {% with content.available_date|date:"Y-m-d" as lesson_start_date %}
+                                {% with content.target_date|date:"Y-m-d" as lesson_end_date %}
+                                {% with lesson_start_date|stringformat:"s"|add:" 07:00:00" as lesson_start_dt %}
+                                {% with lesson_end_date|stringformat:"s"|add:" 07:00:00" as lesson_end_dt %}
+                  
+                                  {% if not lesson_start_date and not lesson_end_date %}
+                                    <!-- Always show lessons with no date -->
+                                    <div class="lesson-box">
+                                      <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                        <div class="scc__info d-flex align-items-center mb-2 mb-md-0">
+                                          {% if content.get_type == 'Video' %}
+                                            <i class="icofont-video-alt fs-4"></i>
+                                          {% endif %}
+                                          <h5 class="mb-0">
+                                            <span class="text-muted">{{ content.get_type }} :</span>
+                                            <strong>{{ content.title }}</strong>
+                                          </h5>
+                                        </div>
+                                        <div class="scc__meta">
+                                          <a href="{% url 'lessons' content.id %}" target="_blank">
+                                            <i class="icofont-external-link"></i> View Now
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
+                  
+                                  {% else %}
+                                    {% if is_enrolled %}
+
+                                      {% if not start_date or start_date <= today_date|slice:":10" %}
+                                        
+
+                                          {% if not lesson_start_date or today_date >= lesson_start_dt %}
+                                            {% if not lesson_end_date or today_date < lesson_end_dt %}
+                                            <div class="lesson-box">
+                                              <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                                <div class="scc__info d-flex align-items-center mb-2 mb-md-0">
+                                                  {% if content.get_type == 'Video' %}
+                                                    <i class="icofont-video-alt fs-4"></i>
+                                                  {% endif %}
+                                                  <h5 class="mb-0">
+                                                    <span class="text-muted">{{ content.get_type }} :</span>
+                                                    <strong>{{ content.title }}</strong>
+                                                  </h5>
+                                                </div>
+                                                <div class="scc__meta">
+                                                  <a href="{% url 'lessons' content.id %}" target="_blank">
+                                                    <i class="icofont-external-link"></i> View Now
+                                                  </a>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            {% else %}
+                                              <p class="text-danger">
+                                                <i class="icofont-close-circled"></i> This lesson ended at 7:00 AM on {{ lesson_end_date }}.
+                                              </p>
+                                            {% endif %}
+                                          {% else %}
+                                          <div class="alert alert-warning d-flex align-items-center p-3 rounded-3">
+                                            <i class="icofont-clock-time fs-4 me-2"></i>
+                                            <div>
+                                              <strong>Heads up!</strong> This lesson will be available from <strong>7:00 AM on {{ lesson_start_date }}</strong>.
+                                            </div>
+                                          </div>
+                                          {% endif %}
+                                      {% endif %}
+                                    {% endif %}
+                                  {% endif %}
+                  
+                                {% endwith %}
+                                {% endwith %}
+                                {% endwith %}
+                                {% endwith %}
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+
+                      {% if not is_enrolled %}
+                      <div class="text-center mt-4">
+
+                        <input type="checkbox" id="terms_{{ course.id }}" name="terms_{{ course.id }}" value="agree">
+                        <label for="terms_{{ course.id }}">I agree to the <a href="https://kalagurubyirarangoliarts.com/terms_condition/" target="_blank">Terms and Conditions</a></label><br><br>
+
+                        <button id="buyButton_{{ course.id }}" class="rzp-button btn-primary btn btn-lg" data-course-id="{{ course.id }}" data-course-couponcode="{{ couponCode }}" disabled>
+                            Buy ₹{{ final_price }}
+                        </button>
+                        <script>
+
+                            document.getElementById('terms_{{ course.id }}').addEventListener('change', function() {
+                                document.getElementById('buyButton_{{ course.id }}').disabled = !this.checked;
+                            });
+                        </script>
+
+                       <br>
+                       <br>
+                      </div>
+                    {% endif %}
+                  
+                      <!-- Course Not Started -->
+                      {% if start_date and start_date > today_date|slice:":10" %}
+                        <div class="alert alert-warning d-flex align-items-center p-3">
+                          <i class="icofont-clock-time fs-4 me-2"></i>
+                          <div>
+                            <strong>Upcoming Course:</strong> This course will start on <span class="fw-bold">{{ start_date }}</span>.  
+                            Please check back later or set a reminder!
+                          </div>
+                        </div>
+                      {% endif %}
+                  
+                      <!-- Course Ended -->
+                      <!-- {% if end_date and today_date|slice:":10" > end_date %}
+                        <div class="alert alert-danger d-flex align-items-center p-3">
+                          <i class="icofont-close-circled fs-4 me-2"></i>
+                          <div>
+                            <strong>Course Ended:</strong> This course was completed on <span class="fw-bold">{{ end_date }}</span>.  
+                            If you have any questions, please contact support.
+                          </div>
+                        </div>
+                      {% endif %} -->
+                  
+                    {% endwith %}
+                    {% endwith %}
+                  </div>
+                  
+
+                  
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-4">
+          <div class="course__details__sidebar">
+            <div class="event__sidebar__wraper" data-aos="fade-up">
+              <!-- <div class="event__price__wraper">
                                     <div class="event__price">
                                         $32.00 <del>/ $67.00</del>
                                     </div>
-                                </div>
-                                <div class="course__summery__button">
+                                </div> -->
+              <!-- <div class="course__summery__button">
                                     <a class="default__button" href="#">Add To Cart</a>
                                     <a class="default__button default__button--2" href="#">Buy Now</a>
                                     <span>
                                         <i class="icofont-ui-rotation"></i>
                                         45-Days Money-Back Guarantee
                                     </span>
-                                </div>
-                                <div class="course__summery__lists">
-                                    <ul>
-                                        <li>
+                                </div> -->
+              <div class="course__summery__lists">
+
+                 {% if course.id ==  16 %}
+                <div class="text-center">
+                    <h2>Master the Art of Mehndi in Just 23 Days!</h2>
+                    <p><b>Course starts June 17, 2025 – Become competition-ready!</b></p>
+                </div>
+                {% endif %}
+                <ul>
+                  <!-- <li>
                                             <div class="course__summery__item">
                                                 <span class="sb_label">Instructor:</span><span class="sb_content"><a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">D. Willaim</a></span>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="course__summery__item">
-                                                <span class="sb_label">Start Date</span><span class="sb_content">05 Dec
-                                                2024</span>
-                                            </div>
-                                        </li>
-                                        <li>
+                                        </li> -->
+                  <li>
+                    <div class="course__summery__item">
+                      <span class="sb_label">Start Date</span
+                      ><span class="sb_content"
+                        >{{course.enroll_start_date}}</span
+                      >
+                    </div>
+                  </li>
+                  <!-- <li>
                                             <div class="course__summery__item">
                                                 <span class="sb_label">Total Duration</span><span class="sb_content">08Hrs
                                                 32Min</span>
                                             </div>
-                                        </li>
-                                        <li>
+                                        </li> -->
+                  <!-- <li>
                                             <div class="course__summery__item">
                                                 <span class="sb_label">Enrolled</span><span class="sb_content">100</span>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="course__summery__item">
-                                                <span class="sb_label">Lectures</span><span class="sb_content">30</span>
-                                            </div>
-                                        </li>
-                                        <li>
+                                        </li> -->
+                  <!-- <li>
+                    <div class="course__summery__item">
+                      <span class="sb_label">Lectures</span
+                      ><span class="sb_content"
+                        >{{ object.modules.all|length }}</span
+                      >
+                    </div>
+                  </li> -->
+                  <!-- <li>
                                             <div class="course__summery__item">
                                                 <span class="sb_label">Skill Level</span><span class="sb_content">Basic</span>
                                             </div>
-                                        </li>
-                                        <li>
+                                        </li> -->
+                  <!-- <li>
                                             <div class="course__summery__item">
                                                 <span class="sb_label">Language</span><span class="sb_content">Spanish</span>
                                             </div>
-                                        </li>
-                                        <li>
+                                        </li> -->
+                  <!-- <li>
                                             <div class="course__summery__item">
                                                 <span class="sb_label">Quiz</span><span class="sb_content">Yes</span>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="course__summery__item">
-                                                <span class="sb_label">Certificate</span><span class="sb_content">Yes</span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="course__summery__button">
-                                    <p>More inquery about course.</p>
-                                    <a class="default__button default__button--3" href="tel:+4733378901"><i class="icofont-phone"></i> +47 333 78 901</a>
-                                </div>
-                            </div>
-                        </div>
+                                        </li> -->
+                  <li>
+                    <div class="course__summery__item">
+                      <span class="sb_label">Certificate</span
+                      ><span class="sb_content">Yes</span>
                     </div>
+                  </li>
+                </ul>
+                {% if course.id ==  16 %}
+                <div>
+                    <p>Complete the course and qualify for the Exclusive Mehndi Competition happening from August 17 to September 14, 2025.</p>
+                    <p>🏆 Exciting Rewards Await! Full competition details, including prize information, will be revealed on August 10, 2025 - stay tuned!</p>
+                    <p>Join now and take the first step toward mastering Mehndi artistry! Let me know if you need further refinements. 🚀</p>
+                    <p>कोर्स पूर्ण करा आणि विशेष मेहंदी स्पर्धेसाठी पात्र ठरा जी १७ ऑगस्ट ते १४ सप्टेंबर २०२५ दरम्यान आयोजित केली जाईल.</p>
+                    <p>🏆 आकर्षक बक्षिसे वाट पाहत आहेत! स्पर्धेचे संपूर्ण तपशील आणि बक्षिसांची माहिती १० ऑगस्ट २०२५ रोजी जाहीर केली जाईल - त्यासाठी तयार राहा!</p>
+                    <p>आता सहभागी व्हा आणि मेहंदी कलाकार म्हणून तुमची पहिली पायरी निश्चित करा!
+                    </p>
                 </div>
+                {% endif %}
+                {% if not is_enrolled %}
+                <div class="text-center mx-auto">
+                        <input type="checkbox" id="rterms_{{ course.id }}" name="rterms_{{ course.id }}" value="agree">
+                        <label for="rterms_{{ course.id }}">I agree to the <a href="https://kalagurubyirarangoliarts.com/terms_condition/" target="_blank">Terms and Conditions</a></label><br><br>
+
+                        <button id="rbuyButton_{{ course.id }}" class="rzp-button btn-warning btn btn-lg" data-course-couponcode="{{ couponCode }}"  data-course-id="{{ course.id }}" disabled>
+                            Buy ₹{{ final_price }}
+                        </button>
+                        <script>
+
+                            document.getElementById('rterms_{{ course.id }}').addEventListener('change', function() {
+                                document.getElementById('rbuyButton_{{ course.id }}').disabled = !this.checked;
+                            });
+                        </script>
+                </div>
+                {% if course.id ==  16 %}
+                  <div>    
+                    <br><br>
+                    <h5>Terms & Conditions</h5>
+
+                    <ul>
+                        <li>Admission fee ₹125 for registrations between June 1 to June 17</li>
+                        <li>Admission fee ₹206 for registrations between June 18 to July 5</li>
+                        <li>Admission fee ₹503 for professional artists registering between July 8 to July 11</li>
+                        <li>Certificates can be obtained after filling "My Profile" between June 17 to July 9</li>
+                        <li>Participants can upload their Mehndi photos on the website between July 9 to July 12</li>
+                    </ul>
+
+                    <h5>अटी आणि शर्ती</h5>
+
+                    <ul>
+                        <li>१ जून ते १७ जून दरम्यान प्रवेश शुल्क १२५ रुपये</li>
+                        <li>१८ जून ते ५ जुलै दरम्यान प्रवेश शुल्क २०६ रुपये</li>
+                        <li>८ जुलै ते ११ जुलै दरम्यान व्यावसायिक कलाकारांसाठी प्रवेश शुल्क ५०३ रुपये</li>
+                        <li>१७ जून ते ९ जुलै दरम्यान "माय प्रोफाईल" भरल्यानंतर प्रमाणपत्र मिळू शकते</li>
+                        <li>९ जुलै ते १२ जुलै दरम्यान वेबसाईटवर मेंदीचे फोटो अपलोड करू शकता</li>
+                    </ul>
+                  </div>
+                  {% endif %}
+                {% endif %}
+              </div>
+              <!-- <div class="course__summery__button">
+                                    <p>More inquery about course.</p>
+                                    <a class="default__button default__button--3" href="tel:+918552966091"><i class="icofont-phone"></i> +918552966091</a>
+                                </div> -->
             </div>
+          </div>
         </div>
-        <!-- footer__section__start -->
-        {% include 'partials/footer.html' %}
-        <!-- footer__section__end -->
-    </main>
+      </div>
+    </div>
+  </div>
+  <!-- footer__section__start -->
+  {% include 'partials/footer.html' %}
+  <!-- footer__section__end -->
+</main>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.querySelectorAll('.rzp-button').forEach(button => {
+    button.addEventListener('click', function (e) {
+        const courseId = this.getAttribute('data-course-id');
+        const couponCode = this.getAttribute('data-course-couponcode');
+        const csrftoken = document.querySelector('[name=csrf-token]').content;
+
+        fetch("{% url 'razorpay_order' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: `course_id=${courseId}&coupon=${couponCode}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            const options = {
+                "key": data.key,
+                "amount": data.amount,
+                "currency": "INR",
+                "name": "KalaGuru By Ira Rangoli Arts",
+                "description": "Course ID: " + data.course_id,
+                "order_id": data.order_id,
+                "callback_url": data.callback_url,
+                "prefill": {
+                    "name": data.user_name,
+                    "email": data.user_email,
+                    "contact":data.user_phone
+                },
+                "notes": {
+                    "course_id": data.course_id
+                },
+                "theme": {
+                    "color": "#9F86C6"
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(err => {
+            console.error('Payment init error:', err);
+        });
+
+        e.preventDefault();
+    });
+});
+</script>
+
 {% endblock %}
+
+
+<!-- {% if not end_date or today_date|slice:":10" <= end_date %} -->
+                                        <!-- {% endif %} -->

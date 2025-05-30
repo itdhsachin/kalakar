@@ -8,13 +8,13 @@ import random
 import string
 import threading
 from datetime import datetime
+# import razorpay
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
 
 def send_html_email(subject, recipient_list, template, context):
     """Send an HTML email.
@@ -49,8 +49,8 @@ def generate_password():
         str: The generated password.
     """
     # return get_user_model().objects.make_random_password()
-    chars = string.ascii_letters + string.digits + "!@#$%^&*()"
-    length = 8
+    chars =  string.digits 
+    length = 7
     return "".join(random.choice(chars) for _ in range(length))
 
 
@@ -140,3 +140,30 @@ def send_new_account_email(user, password):
         "context": {"user": user, "password": password},
     }
     EmailThread(**email).start()
+
+# def get_user_attendance_percentage(user, course):
+#     """Calculate user's lesson completion percentage in a course."""
+#     total_lessons = 2  
+#     completed_lessons = LessonTrack.objects.filter(user=user, course=course, completed_at__isnull=False).count()
+
+#     if total_lessons == 0:
+#         return 0  
+
+#     return (completed_lessons / total_lessons) * 100
+
+# razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+# def get_payment_url(payment_id):
+#     """Retrieve Payment URL using Razorpay Payment ID"""
+#     try:
+#         payment = razorpay_client.payment.fetch(payment_id)
+#         order_id = payment.get("order_id")
+
+#         if order_id:
+#             order = razorpay_client.order.fetch(order_id)
+#             receipt = order.get("receipt", "Unknown")
+#             return receipt  # Return the URL directly
+        
+#         return None  # Return None if no order is found
+
+#     except Exception as e:
+#         return f"Error fetching payment URL: {str(e)}" 

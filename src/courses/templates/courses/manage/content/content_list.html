@@ -12,7 +12,6 @@
 
 {% block content %}
     {% with course=module.course %}
-    {#  the modules list  #}
         <div class="contents hover-style">
             <h3 class="hover-style">
                 Modules
@@ -38,49 +37,58 @@
             </p>
         </div>
 
-    {# the seleceted module  #}
         <div class="module shadow-style" style="width: 60%">
-
-            <h5 class="display-6">Module{{ module.order|add:1 }}  "{{ module.title }}"</h5>
+            <h5 class="display-6">Module{{ module.order|add:1 }} "{{ module.title }}"</h5>
 
             <div id="module-contents">
                 {% for content in module.lessons.all %}
                     <div data-id="{{ content.id }}">
                         {% with item=content.item %}
+                            {% if item and item.id and item|model_name %}
+                                <p>{{ item }} ({{ item|model_name }})</p>
 
-                            <p>{{ item }} ({{ item|model_name }})</p>
+                                <a class="btn btn-outline-primary text-primary m-1"
+                                   href="{% url 'module_content_update' module.id item|model_name item.id %}">
+                                    Edit
+                                </a>
 
-                            <a class="btn btn-outline-primary text-primary m-1" href="{% url 'module_content_update' module.id item|model_name item.id %}">Edit</a>
+                                <form method="post" action="{% url 'module_content_delete' content.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-danger m-1" type="submit" value="Delete">Delete</button>
+                                </form>
+                            {% else %}
+                                <p class="text-muted">No content added yet ({{ content.content_type.name }})</p>
 
-                            <form method="post" action="{% url 'module_content_delete' content.id %}">
-                                {% csrf_token %}
-                                <button class="btn btn-outline-danger m-1" type="submit" value="Delete">Delete</button>
-                            </form>
-
+                                {% if content.content_type.model %}
+                                <a class="btn btn-outline-success m-1"
+                                   href="{% url 'module_content_create' module.id content.content_type.model %}">
+                                    Add {{ content.content_type.name }}
+                                </a>
+                            {% else %}
+                                <p class="text-danger">Invalid content type – please fix in admin panel.</p>
+                            {% endif %}
+                            {% endif %}
                         {% endwith %}
-
                     </div>
                 {% empty %}
-                    <p>this module has no content yet</p>
+                    <p>This module has no content yet.</p>
                 {% endfor %}
             </div>
         </div>
 
-    {# adding new content #}
         <div id="add-nav" class="module shadow-style">
-        <h3 class="">Add new content:</h3>
-        <ul class="list-unstyled list-inline p-0 m-0">
-            <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'text' %}">Text</a></li>
-            <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'image' %}">Image</a></li>
-            <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'video' %}">Video</a></li>
-            <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'file' %}">File</a></li>
-        </ul>
+            <h3 class="">Add new content:</h3>
+            <ul class="list-unstyled list-inline p-0 m-0">
+                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'text' %}">Text</a></li>
+                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'image' %}">Image</a></li>
+                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'video' %}">Video</a></li>
+                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'file' %}">File</a></li>
+            </ul>
         </div>
 
     {% endwith %}
 {% endblock %}
 
-{# allow you to reorder the items in the modules by draging and droping them #}
 {% block domready %}
     $('#modules').sortable({
         stop: function(event, ui) {
@@ -101,19 +109,18 @@
 
     $('#module-contents').sortable({
         stop: function(event, ui) {
-                contents_order = {};
-                $('#module-contents').children().each(function(){
-                    contents_order[$(this).data('id')] = $(this).index();
-                });
+            contents_order = {};
+            $('#module-contents').children().each(function(){
+                contents_order[$(this).data('id')] = $(this).index();
+            });
 
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "content_order" %}',
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    data: JSON.stringify(contents_order),
-                });
+            $.ajax({
+                type: 'POST',
+                url: '{% url "content_order" %}',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(contents_order),
+            });
         }
     });
-
 {% endblock %}

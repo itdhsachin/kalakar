@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<main class="main_wrapper overflow-hidden">
+    {% include 'partials/navbar.html' %}
+    {% include 'partials/mobile-menu.html' %}
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h2 class="fw-bold text-dark">
+                        Welcome to <span class="text-warning">Kala Guru</span> <span class="text-dark">by Ira Rangoli
+                            Arts</span>
+                    </h2>
+                    <div class="card shadow-lg border-0 mt-4">
+                        <div class="card-body p-4">
+                            {% if user.is_authenticated %}
+                                <h2 class="text-success fw-bold">Thank You for Purchasing!</h2>
+                                <p class="fs-5 text-muted mt-3">
+                                    You can now access your purchased courses from your dashboard. 🎉
+                                </p>
+                                <a href="{% url 'my_courses' %}" class="btn btn-success">My Courses</a>
+                            {% else %}
+                                <h2 class="text-success fw-bold">Thank You for Purchasing!</h2>
+                                <p class="fs-5 text-muted mt-3">
+                                    Your details have been sent to your <strong>email</strong> and
+                                    <strong>WhatsApp</strong>. Please check your inbox for further information. 📩📱
+                                </p>
+                                <a href="{% url 'login' %}" class="btn btn-success">Login</a>
+                            {% endif %}
+
+                            <p class="mt-4">
+                                If you have any questions, feel free to contact us:
+                                <br>📞 <a href="tel:+918552966091" class="text-primary fw-bold">+91 85529 66091</a>
+                                <br>📧 <a href="mailto:info@kalagurubyirarangoliarts.com"
+                                    class="text-primary fw-bold">info@kalagurubyirarangoliarts.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'partials/footer.html' %}
+</main>
+{% endblock %}

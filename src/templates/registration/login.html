@@ -2,8 +2,13 @@
 {% load static i18n %}
 {% block title %}Login/Register{% endblock %}
 {% block content %}
-    {% include 'partials/theme-switch.html' %}
     {% load django_bootstrap5 %}
+
+    <style>
+        input#password {
+    height: 55px;
+}
+    </style>
     <main class="main_wrapper overflow-hidden">
         <!-- headar section start -->
         {% include 'partials/navbar.html' %}
@@ -87,19 +92,40 @@
                                     </p> -->
                                     </div>
                                     <form action="{% url 'login' %}" method="post">
-                                        {% bootstrap_form form layout='floating' %}
                                         {% csrf_token %}
+                                    
+                                        <!-- Display Non-Field Errors -->
+                                        {% if form.non_field_errors %}
+                                            <div class="alert alert-danger">
+                                                {{ form.non_field_errors }}
+                                            </div>
+                                        {% endif %}
+                                    
+                                        <!-- Username Field -->
+                                        {% bootstrap_field form.username layout='floating' %}
+                                    
+                                        <!-- Password Field with Floating Label and Toggle -->
+                                        <div class="form-floating position-relative">
+                                            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                                            <label for="password">Password</label>
+                                            <span class="password-toggle position-absolute end-0 top-50 translate-middle-y me-3" style="cursor: pointer;">
+                                                <i class="icofont-eye" id="togglePassword"></i>
+                                            </span>
+                                        </div>
+                                    
                                         <input type="hidden" name="next" value="{{ next }}">
-                                        <div class="login__form d-flex justify-content-between flex-wrap gap-2">
+                                    
+                                        <div class="login__form d-flex justify-content-between flex-wrap gap-2 mt-3">
                                             <div class="form__check">
                                                 <input id="forgot" type="checkbox">
                                                 <label for="forgot">Remember me</label>
                                             </div>
                                             <div class="text-end login__form__link">
-                                                <a href="#">Forgot your password?</a>
+                                                <a href="{% url 'password_reset' %}">Forgot your password?</a>
                                             </div>
                                         </div>
-                                        <div class="login__button">
+                                    
+                                        <div class="login__button mt-3">
                                             {% bootstrap_button "Log In" button_type="submit" button_class="form-control submit btn-block btn btn-primary btn-lg" %}
                                         </div>
                                     </form>
@@ -219,4 +245,19 @@
         {% include 'partials/footer.html' %}
         <!-- footer__section__end -->
     </main>
+    <script>
+        document.getElementById("togglePassword").addEventListener("click", function() {
+            const passwordField = document.getElementById("password");
+            const icon = this;
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("icofont-eye");
+                icon.classList.add("icofont-eye-blocked");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("icofont-eye-blocked");
+                icon.classList.add("icofont-eye");
+            }
+        });
+    </script>
 {% endblock content %}

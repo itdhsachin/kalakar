@@ -20,10 +20,12 @@ class CouponsAdmin(admin.ModelAdmin):
         "user_id",
         "coupon_code",
         "payment_link",
+         "price",
         "delete_button",
     ]
     # list_filter = ("user_id",)
     search_fields = ("coupon_code",)
+    list_filter = ("user_id", "price")
 
     def delete_button(self, obj):
         """Generate a delete button for each  row."""

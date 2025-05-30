@@ -12,7 +12,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
-
+from django.templatetags.static import static
 from accounts.validators import ASCIIUsernameValidator
 
 
@@ -165,11 +165,9 @@ class User(AbstractUser):
         Returns:
             str: The URL of the profile picture.
         """
-        try:
+        if self.picture and self.picture.name: 
             return self.picture.url
-        except AttributeError:
-            no_picture = settings.MEDIA_URL + "default.png"
-            return no_picture
+        return static("img/dashboardicons/profileicon.png")
 
     def get_absolute_url(self):
         """Get the absolute URL of the user profile.
@@ -212,6 +210,20 @@ def delete(self, *args, **kwargs):
 
     super().delete(*args, **kwargs)
 
+class State(models.Model):
+    """state model to add states."""
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class District(models.Model):
+    """District model to add Districts."""
+    state = models.ForeignKey(State, on_delete=models.CASCADE, related_name="districts")
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.name} ({self.state.name})"
 
 class StudentManager(models.Manager):
     """Custom manager for Student model.
@@ -251,10 +263,16 @@ class Student(models.Model):
     )
     birthday = models.DateField(null=True, blank=True)
     education = models.CharField(max_length=255, blank=True)
+
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
+    district = models.ForeignKey(District, on_delete=models.SET_NULL, null=True, blank=True)
+
+
     address = models.CharField(max_length=100, blank=True)
+
     taluka = models.CharField(max_length=100, blank=True)
-    district = models.CharField(max_length=100, blank=True)
-    state = models.CharField(max_length=100, blank=True)
+    other_state = models.CharField(max_length=100, blank=True, null=True)
+    other_district = models.CharField(max_length=100, blank=True, null=True)
     pincode = models.CharField(max_length=6, blank=True)
     picture = models.ImageField(
         upload_to="profile_pictures/%y/%m/%d/", default="default.png", null=True
@@ -293,11 +311,9 @@ class Student(models.Model):
         Returns:
             str: The URL of the profile picture.
         """
-        try:
+        if self.picture and self.picture.name: 
             return self.picture.url
-        except AttributeError:
-            no_picture = settings.MEDIA_URL + "default.png"
-            return no_picture
+        return static("img/dashboardicons/profileicon.png")
 
     @classmethod
     def get_gender_count(cls):
@@ -433,11 +449,9 @@ class Teacher(models.Model):
         Returns:
             str: The URL of the profile picture.
         """
-        try:
+        if self.picture and self.picture.name: 
             return self.picture.url
-        except AttributeError:
-            no_picture = settings.MEDIA_URL + "default.png"
-            return no_picture
+        return static("img/dashboardicons/profileicon.png")
 
     def get_absolute_url(self):
         """Get the absolute URL of the teacher profile.
@@ -458,3 +472,5 @@ class Teacher(models.Model):
         """
         self.teacher.delete()
         super().delete(*args, **kwargs)
+
+

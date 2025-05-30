@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+{% include 'partials/theme-switch.html' %}
+<main>
+    <div class="container">
+        <h1>Assigned work</h1>
+        {% for work in assigned_works %}
+        <p>
+            Student: {{ work.user_id.username }} - {{ work.filename }}
+            <a href="{% url 'submit_review' work.id %}">Submit Review</a>
+        </p>
+        {% endfor %}
+    </div>
+    {% include 'partials/footer.html' %}
+</main>
+
+
+{% endblock %}

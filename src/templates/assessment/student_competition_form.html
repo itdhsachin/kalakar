@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+{% include 'partials/theme-switch.html' %}
+<main>
+    <div class="contianer">
+        <h2>
+            {% if form.instance.pk %}
+            Edit Competition
+            {% else %}
+            Add Competition
+            {% endif %}
+        </h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+    {% include 'partials/footer.html' %}
+</main>
+
+{% endblock %}

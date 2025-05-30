@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+<main>
+    {% include 'partials/navbar.html' %}
+    {% include 'partials/mobile-menu.html' %}
+    <style>
+        /* .container {
+            margin-top: 15%;
+            width: 400px;
+            height: 250px;
+            background-color: rgb(190, 148, 96);
+            text-align: center;
+            padding-top: 100px;
+        } */
+            .submission{
+                height: 270px;
+            }
+    </style> 
+
+    <div class="container text-center mt-5 submission">
+        <h2 class="text-success fw-bold">Thank You for Your Submission...!</h2>
+        <p class="text-muted">Your file has been successfully uploaded. We will contact you soon.</p>
+        
+        <a href="{% url 'dashboard' %}" class="btn btn-primary mt-3">Go to Dashboard</a>
+    </div>
+    
+    {% include 'partials/footer.html' %}
+</main>
+
+{% endblock %}

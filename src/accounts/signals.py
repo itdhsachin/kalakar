@@ -29,7 +29,7 @@ def post_save_account_receiver(instance=None, created=False, *args, **kwargs):  
     if created:
         if instance.is_student:
             username, password = generate_student_credentials()
-            instance.username = username
+            instance.username = instance.email
             instance.set_password(password)
             instance.save()
             # Send email with the generated credentials
@@ -37,7 +37,7 @@ def post_save_account_receiver(instance=None, created=False, *args, **kwargs):  
 
         if instance.is_lecturer:
             username, password = generate_lecturer_credentials()
-            instance.username = username
+            instance.username = instance.email
             instance.set_password(password)
             instance.save()
 

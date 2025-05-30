@@ -2,12 +2,18 @@
 
 # from django.core.cache import cache   # the cache is stopped
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
+# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.apps import apps
 from django.contrib import messages
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
 )
+import razorpay
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404, redirect
@@ -17,12 +23,18 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
+from django.views.generic.base import TemplateView
 from courses.forms import ModuleFormSet
-from courses.models import Course, Subject
+from courses.models import Course, Subject,Enrollment
 from lessons.models import Lesson
 from modules.models import Module
 from students.forms import CourseEnrollForm
 from django.shortcuts import render
+from django.conf import settings
+from django.utils import timezone
+from django.db.models import Q
+
+from coupon.models import Coupons
 
 
 class OwnerMixin:
@@ -223,7 +235,7 @@ class ModuleContentListView(TemplateResponseMixin, View):
     template_name = "courses/manage/content/content_list.html"
 
     def get(self, request, module_id):
-        """Renders the content list for a module.
+        """`s the content list for a module.
 
         Args:
             request (HttpRequest): The request object.
@@ -435,7 +447,74 @@ class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
         return self.render_json_response({"saved": "ok"})
 
 
+# Razorpay order Creation
+
+# @login_required
+@csrf_exempt
+def create_razorpay_order(request):
+    if request.method == 'POST':
+        try:
+            course_id = request.POST.get('course_id')
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            coupon_code = request.POST.get('coupon')
+
+            course = get_object_or_404(Course, id=course_id)
+
+            # Handle coupon code from URL (Fixed `self` reference)
+            # coupon_code = request.GET.get("coupon", "").strip()
+            final_price = course.price  # Default price
+
+            # Apply coupon discount if available
+            if coupon_code:
+                coupon = Coupons.objects.filter(coupon_code=coupon_code).first()
+                if coupon:
+                    final_price = coupon.price  # Use coupon's price
+
+            # Override user details if authenticated
+            if request.user.is_authenticated:
+                name = request.user.get_full_name() or request.user.username
+                email = request.user.email
+                phone = getattr(request.user, "phone", phone)  # Keep existing if not available
+
+            # Create Razorpay Order
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            payment = client.order.create({
+                "amount": int(float(final_price) * 100),  # Convert to smallest currency unit
+                "currency": "INR",
+                "payment_capture": 1
+            })
+
+            return JsonResponse({
+                "key": settings.RAZORPAY_KEY_ID,
+                "order_id": payment['id'],
+                "course_id": course.id,
+                "user_name": name,
+                "user_email": email,
+                "user_phone": phone,
+                "final_price": final_price,  # Include updated price in response
+                "callback_url": "https://kalagurubyirarangoliarts.com/accounts/thank_you/",
+            })
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+@login_required
+def my_courses(request):
+    user = request.user
+    enrollments = Enrollment.objects.filter(user=user, state=True).select_related("course")
+    
+    return render(request, "courses/my_courses.html", {
+        "enrollments": enrollments
+    })
+
+
 # ---------------Course catalog--------------------
+
 class CourseListView(TemplateResponseMixin, View):
     """View to display the list of courses.
 
@@ -446,9 +525,12 @@ class CourseListView(TemplateResponseMixin, View):
     Methods:
         get(request, subject=None): Renders the course list based on the subject.
     """
-
+    # login_url = "accounts/login/"  
+    # redirect_field_name = "login" 
     model = Course
     template_name = "courses/courses.html"
+
+
 
     def get(self, request, subject=None):  # pylint: disable=unused-argument
         """Renders the course list based on the subject.
@@ -465,7 +547,19 @@ class CourseListView(TemplateResponseMixin, View):
         subjects = Subject.objects.annotate(total_courses=Count("courses"))
         # cache.set('all_subjects', subjects)
 
-        all_courses = Course.objects.annotate(total_modules=Count("modules"))
+        # all_courses = Course.objects.annotate(total_modules=Count("modules"))
+        all_courses = Course.objects.filter(state=1).annotate(total_modules=Count("modules")).order_by("id")
+
+
+        today = timezone.now().date()  # Get only the date part
+
+        # Filter courses with enroll_end_date >= today
+        all_courses = Course.objects.filter(
+            state=1
+        ).filter(
+            Q(enroll_end_date__gte=today) | Q(enroll_end_date__isnull=True)
+        ).order_by("id")[:8]
+        # courses = Course.objects.filter(state=1).order_by("id")[:8]  # limit to 8
 
         if subject:
             subject = get_object_or_404(Subject, slug=subject)
@@ -479,22 +573,24 @@ class CourseListView(TemplateResponseMixin, View):
             # if not courses:
             courses = all_courses
             # cache.set('all_courses', courses)
+        purchased_course_ids = set()
+        if request.user.is_authenticated:
+            purchased_course_ids = set(
+                Enrollment.objects.filter(user=request.user).values_list("course_id", flat=True)
+            )
 
         return self.render_to_response(
-            {"subjects": subjects, "subject": subject, "courses": courses}
+            {
+             "subjects": subjects, 
+             "subject": subject,
+             "courses": courses,
+             "purchased_course_ids": purchased_course_ids,
+             "today": today,
+            }
         )
 
-
 class CourseDetailView(DetailView):
-    """View to display the details of a course.
-
-    Attributes:
-        model (Model): The model representing a course.
-        template_name (str): The template to use for rendering the course details.
-
-    Methods:
-        get_context_data(**kwargs): Adds the enrollment form to the context data.
-    """
+    """View to display the details of a course with coupon-based pricing."""
 
     model = Course
     template_name = "courses/detail.html"
@@ -504,38 +600,55 @@ class CourseDetailView(DetailView):
         self.object = self.get_object()
 
         if not self.object.state:
-            messages.error(
-                request, "The course is not available at the moment."
-            )
+            messages.error(request, "The course is not available at the moment.")
             return redirect("courses")
 
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        """Adds additional context data for the template.
-
-        Args:
-            **kwargs: Additional keyword arguments.
-
-        Returns:
-            dict: The context data for the template.
-        """
+        """Adds additional context data for the template."""
         context = super().get_context_data(**kwargs)
 
-        # Use self.object directly
-        context["enroll_form"] = CourseEnrollForm(
-            initial={"course": self.object}
+        # Initialize enrollment form
+        context["enroll_form"] = CourseEnrollForm(initial={"course": self.object})
+
+        # Prefetch modules & lessons for efficiency
+        context["modules"] = self.object.modules.prefetch_related("lessons")
+
+        # Determine user enrollment status
+        user = self.request.user
+        context["is_enrolled"] = (
+            Enrollment.objects.filter(user=user, course=self.object).exists()
+            if user.is_authenticated else False
         )
 
-        # Prefetch modules and lessons
-        course_modules = self.object.modules.prefetch_related("lessons")
+        # Handle coupon code from URL
+        coupon_code = self.request.GET.get("coupon", "").strip()
+        final_price = self.object.price  # Default price
 
-        # Attach modules to course object
-        context["modules"] = course_modules
+        if coupon_code:
+            coupon = Coupons.objects.filter(coupon_code=coupon_code).first()
+            if coupon:
+                final_price = coupon.price  # Apply coupon price
+
+        context["final_price"] = final_price  # Pass updated price to template
+        context["couponCode"] = coupon_code  # Pass updated price to template
 
         return context
 
 
+# class DashboardView(LoginRequiredMixin, TemplateView):
+#     template_name = "accounts/dashboard.html"
 
-def course_purchase(request):
-    return render(request, 'pages/course_purchase.html')
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+
+#         # Fetch the first course associated with the user
+#         user_course = Course.objects.filter(created_by=self.request.user, slug__isnull=False).exclude(slug="").first()
+
+#         # Add course to context
+#         context["my_course"] = user_course
+
+#         return context
+
+

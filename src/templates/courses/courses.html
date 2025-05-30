@@ -1,138 +1,183 @@
-{% extends 'base.html' %}
-{% load static i18n %}
-{% block title %}Course{% endblock %}
+{% extends 'base.html' %} {% load static i18n %} 
+{% block title %}Course{% endblock %} 
 {% block content %}
-    {% include 'partials/theme-switch.html' %}
-    <main class="main_wrapper overflow-hidden">
-        <!-- headar section start -->
-        {% include 'partials/navbar.html' %}
-        <!-- header section end -->
-        <!-- Mobile Menu Start Here -->
-        {% include 'partials/mobile-menu.html' %}
-        <!-- Mobile Menu end Here -->
-        <!-- theme fixed shadow -->
-        <div>
-            <div class="theme__shadow__circle"></div>
-            <div class="theme__shadow__circle shadow__right"></div>
-        </div>
-        <!-- theme fixed shadow -->
-        <!-- breadcrumbarea__section__start -->
-        <div class="breadcrumbarea pt-2 pb-2 p-1">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="breadcrumb__content__wraper" data-aos="fade-up">
-                            <div class="breadcrumb__title">
-                                <h2 class="heading">Featured Courses</h2>
-                            </div>
-                            <div class="breadcrumb__inner">
-                                <ul>
-                                    <li>
-                                        <a href="{% url 'pages:dynamic_pages' template_name='index' %}">Home</a>
-                                    </li>
-                                    <li>Featured Course</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<main class="main_wrapper overflow-hidden">
+  <!-- headar section start -->
+  {% include 'partials/navbar.html' %}
+  <!-- header section end -->
+  <!-- Mobile Menu Start Here -->
+  {% include 'partials/mobile-menu.html' %}
+  <!-- Mobile Menu end Here -->
+  <!-- theme fixed shadow -->
+  <div>
+    <div class="theme__shadow__circle"></div>
+    <div class="theme__shadow__circle shadow__right"></div>
+  </div>
+  <!-- theme fixed shadow -->
+  <!-- breadcrumbarea__section__start -->
+  <div class="breadcrumbarea pt-2 pb-2 p-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="breadcrumb__content__wraper" data-aos="fade-up">
+            <div class="breadcrumb__title">
+              <h2 class="heading">Featured Courses</h2>
             </div>
-            <div class="shape__icon__2">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__1"
-                     src="{% static 'img/herobanner/herobanner__1.png' %}"
-                     alt="photo">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__2"
-                     src="{% static 'img/herobanner/herobanner__2.png' %}"
-                     alt="photo">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__3"
-                     src="{% static 'img/herobanner/herobanner__3.png' %}"
-                     alt="photo">
-                <img loading="lazy"
-                     class=" shape__icon__img shape__icon__img__4"
-                     src="{% static 'img/herobanner/herobanner__5.png' %}"
-                     alt="photo">
+            <div class="breadcrumb__inner">
+              <ul>
+                <li>
+                  <a href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                <li>Featured Course</li>
+              </ul>
             </div>
+          </div>
         </div>
-        <!-- breadcrumbarea__section__end-->
-        <!-- course__section__start   -->
-        <div class="coursearea sp_top_100 sp_bottom_100">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="course__text__wraper" data-aos="fade-up">
-                            <div class="course__text">
-                                <p>Showing {{ courses|length }} Results</p>
-                            </div>
-                            <div class="course__icon">
-                                <ul class="nav property__team__tap" id="myTab" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                    <a href="#"
-                                       class="single__tab__link active"
-                                       data-bs-toggle="tab"
-                                       data-bs-target="#projects__one"><i class="icofont-layout"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                            <a href="#"
-                               class="single__tab__link"
-                               data-bs-toggle="tab"
-                               data-bs-target="#projects__two"><i class="icofont-listine-dots"></i>
-                        </a>
-                    </li>
-                    <li class="short__by__new">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Sort by Subject</option>
-                            {% for sub in subjects %}<option value="3">{{ sub.title }}</option>{% endfor %}
-                        </select>
-                    </li>
-                </ul>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-4 col-12">
-        <div class="course__sidebar__wraper" data-aos="fade-up">
+    <div class="shape__icon__2">
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__1"
+        src="{% static 'img/herobanner/herobanner__1.png' %}"
+        alt="photo"
+      />
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__2"
+        src="{% static 'img/herobanner/herobanner__2.png' %}"
+        alt="photo"
+      />
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__3"
+        src="{% static 'img/herobanner/herobanner__3.png' %}"
+        alt="photo"
+      />
+      <img
+        loading="lazy"
+        class="shape__icon__img shape__icon__img__4"
+        src="{% static 'img/herobanner/herobanner__5.png' %}"
+        alt="photo"
+      />
+    </div>
+  </div>
+  <!-- breadcrumbarea__section__end-->
+  <!-- course__section__start   -->
+  <div class="coursearea sp_top_100 sp_bottom_100">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="course__text__wraper" data-aos="fade-up">
+            <div class="course__text">
+              <p>Showing {{ courses|length }} Results</p>
+            </div>
+            <div class="course__icon">
+              <ul class="nav property__team__tap" id="myTab" role="tablist">
+                <!-- <li class="nav-item" role="presentation">
+                  <a
+                    href="#"
+                    class="single__tab__link active"
+                    data-bs-toggle="tab"
+                    data-bs-target="#projects__one"
+                    ><i class="icofont-layout"></i>
+                  </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <a
+                    href="#"
+                    class="single__tab__link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#projects__two"
+                    ><i class="icofont-listine-dots"></i>
+                  </a>
+                </li> -->
+                <!-- <li class="short__by__new">
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Sort by Subject</option>
+                    {% for sub in subjects %}
+                    <option value="3">{{ sub.title }}</option>
+                    {% endfor %}
+                  </select>
+                </li> -->
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-xl-3 col-lg-3 col-md-4 col-12">
+          <div class="course__sidebar__wraper" data-aos="fade-up">
             <div class="course__heading">
-                <h5>Search here</h5>
+              <h5>Search here</h5>
             </div>
             <div class="course__input">
-                <input type="text" placeholder="Search Course">
-                <div class="search__button">
-                    <button>
-                        <i class="icofont-search-1"></i>
-                    </button>
-                </div>
+              <input type="text" placeholder="Search Course" />
+              <div class="search__button">
+                <button>
+                  <i class="icofont-search-1"></i>
+                </button>
+              </div>
             </div>
-        </div>
-    </div>
-    <div class="col-xl-9 col-lg-9 col-md-8 col-12">
-        <div class="tab-content tab__content__wrapper with__sidebar__content"
-             id="myTabContent">
-            <div class="tab-pane fade  active show"
-                 id="projects__one"
-                 role="tabpanel"
-                 aria-labelledby="projects__one">
-                <div class="row">
-                    {% for course in courses %}
-                        {% with subject=course.subject %}
-                            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-6 col-12"
-                                 data-aos="fade-up">
-                                <div class="gridarea__wraper gridarea__wraper__2">
-                                    <div class="gridarea__img">
-                                        <a href="{% url 'courses' course.slug %}">
-                                            <img loading="lazy" src="{% static 'img/grid/grid_1.png' %}" alt="grid">
-                                        </a>
-                                        <div class="gridarea__small__button">
+          </div>
+        </div> -->
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+          <div
+            class="tab-content tab__content__wrapper with__sidebar__content"
+            id="myTabContent"
+          >
+            <div
+              class="tab-pane fade active show"
+              id="projects__one"
+              role="tabpanel"
+              aria-labelledby="projects__one"
+            >
+<div class="alert alert-warning text-center" role="alert">
+  <b>📌 Please Note:<br>
+  📅 Each lesson will be available only for 48 hours.<br>
+  🔓 New lessons will unlock daily.<br><br>
+  The courses will begin on June 01, 2025. Make sure to mark your calendar and get ready to join!</b>
+</div>
+
+              <div class="row">
+                {% for course in courses %} 
+                <!-- {% with subject=course.subject %} -->
+                <div
+                  class="col-xl-4 col-lg-6 col-md-12 col-sm-6 col-12"
+                  data-aos="fade-up"
+                >
+                  <div class="gridarea__wraper gridarea__wraper__2">
+                    <div class="gridarea__img">
+                      <a href="{% url 'courses' course.slug %}">
+                        {% if course.id == 1 or course.id == 9 or course.id == 15 %}
+                        <img loading="lazy" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
+                        {% elif course.id == 4 or course.id == 10 %}
+                        <img loading="lazy" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+                        {% elif course.id == 5 or course.id == 11 %}
+                        <img loading="lazy" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
+                        {% elif course.id == 6 or course.id == 12 %}
+                        <img loading="lazy" src="{% static 'img/home/warli_art.png' %}" alt="grid" />
+                        {% elif course.id == 7 or course.id == 13 %}
+                        <img loading="lazy" src="{% static 'img/home/haar_mala.png' %}" alt="grid" />
+                        {% elif course.id == 8 or course.id == 14 %}
+                        <img loading="lazy" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
+                        {% elif course.id ==  16 %}
+                        <img loading="lazy" src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+                        {% else %}
+                        <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+                        {% endif %}
+                      </a>
+                      <!-- <div class="gridarea__small__button">
                                             <div class="grid__badge">Data & Tech</div>
-                                        </div>
-                                        <div class="gridarea__small__icon">
-                                            <a href="#"><i class="icofont-heart-alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="gridarea__content">
-                                        <div class="gridarea__list">
+                                        </div> -->
+                      <!-- <div class="gridarea__small__icon">
+                        <a href="#"><i class="icofont-heart-alt"></i></a>
+                      </div> -->
+                    </div>
+                    <div class="gridarea__content">
+                      <!-- <div class="gridarea__list">
                                             <ul>
                                                 <li>
                                                     <i class="icofont-book-alt"></i> 23 Lesson
@@ -141,18 +186,21 @@
                                                     <i class="icofont-clock-time"></i> 1 hr 30 min
                                                 </li>
                                             </ul>
-                                        </div>
-                                        <div class="gridarea__heading">
-                                            <h3>
-                                                <a href="{% url 'courses' course.slug %}">{{ course.title }}</a>
-                                            </h3>
-                                        </div>
-                                        <div class="gridarea__price">
+                                        </div> -->
+                      <div class="gridarea__heading">
+                        <h3 class="text-center">
+                          <a href="{% url 'courses' course.slug %}"
+                            >{{ course.title }}</a
+                          >
+                          <!-- {{ course.title }} -->
+                        </h3>
+                      </div>
+                      <!-- <div class="gridarea__price">
                                             {{ course.currency }} {{ course.price }}
                                             <span> <del class="del__2">{{ course.is_paid }}</del></span>
-                                        </div>
-                                        <div class="gridarea__bottom">
-                                            <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
+                                        </div> -->
+                      <div class="gridarea__bottom">
+                        <!-- <a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">
                                                 <div class="gridarea__small__img">
                                                     <img loading="lazy"
                                                          src="{% static 'img/grid/grid_small_1.jpg' %}"
@@ -168,21 +216,72 @@
                                                 <i class="icofont-star"></i>
                                                 <i class="icofont-star"></i>
                                                 <span>(44)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endwith %}
-                    {% endfor %}
+                                            </div> -->
+
+                        <div
+  class="course__details__paragraph"
+  data-aos="fade-up"
+  style="height: 250px; width: 100%; overflow: auto; border: 1px solid #eaeaea; border-radius: 5px; background-color: #f9f9f9; padding: 10px;"
+>
+  <p>{{ course.description|linebreaksbr }}</p>
+</div>
+
+                       
+                      </div>
+                      <!-- <div class="course__summery__button ">
+                        <a
+                          class="default__button"
+                          href="{% url 'courses' course.slug %}"
+                          >View Course</a
+                        >
+                      </div> -->
+
+
+
+                      <!-- add payment button -->
+
+                      <!-- {{ course.id }} -->
+                      
+<div class="text-center"> 
+              <!-- <div>{{today}} // {{course.enroll_end_date}}</div> -->
+                      {% if user.is_authenticated and course.id in purchased_course_ids %}
+                      <a class="btn btn-success" href="{% url 'courses' course.slug %}">View Course</a>
+                      {% else %}
+                        {% if course.enroll_end_date and course.enroll_end_date|date:"Y-m-d" >= today|stringformat:"s" %}
+                              <div class="text-center">
+                              <input type="checkbox" id="terms_{{ course.id }}" name="terms_{{ course.id }}" value="agree">
+                                <label for="terms_{{ course.id }}">I agree to the <a href="https://kalagurubyirarangoliarts.com/terms_condition/" target="_blank">Terms and Conditions</a></label><br><br>
+
+                                <button id="buyButton_{{ course.id }}" class="rzp-button btn-primary btn" data-course-id="{{ course.id }}" disabled>
+                                    Buy ₹{{ course.price }}
+                                </button>
+                                <script>
+
+                                    document.getElementById('terms_{{ course.id }}').addEventListener('change', function() {
+                                        document.getElementById('buyButton_{{ course.id }}').disabled = !this.checked;
+                                    });
+                                </script>
+                              </div>
+                          {% else %}
+                              <a class="btn btn-warning" href="{% url 'courses' course.slug %}">View Course</a>
+                          {% endif %}
+                      {% endif %}
+                    </div>
+                    </div>
+                  </div>
                 </div>
+                <!-- {% endwith %} -->
+                 {% endfor %}
+              </div>
             </div>
-            <div class="tab-pane fade"
-                 id="projects__two"
-                 role="tabpanel"
-                 aria-labelledby="projects__two"></div>
-        </div>
-        <div class="main__pagination__wrapper" data-aos="fade-up">
+            <div
+              class="tab-pane fade"
+              id="projects__two"
+              role="tabpanel"
+              aria-labelledby="projects__two"
+            ></div>
+          </div>
+          <!-- <div class="main__pagination__wrapper" data-aos="fade-up">
             <ul class="main__page__pagination">
                 <li>
                     <a class="disable" href="#"><i class="icofont-double-left"></i></a>
@@ -200,14 +299,70 @@
                     <a href="#"><i class="icofont-double-right"></i></a>
                 </li>
             </ul>
+        </div> -->
         </div>
+      </div>
     </div>
-</div>
-</div>
-</div>
-<!-- course__section__end   -->
-<!-- footer__section__start -->
-<div class="footerarea">{% include 'partials/footer.html' %}</div>
-<!-- footer__section__end -->
+  </div>
+  <!-- course__section__end   -->
+  <!-- footer__section__start -->
+  <div class="footerarea">{% include 'partials/footer.html' %}</div>
+  <!-- footer__section__end -->
 </main>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.querySelectorAll('.rzp-button').forEach(button => {
+    button.addEventListener('click', function (e) {
+        const courseId = this.getAttribute('data-course-id');
+
+        // console.log(courseId);
+        const csrftoken = document.querySelector('[name=csrf-token]').content;
+
+        fetch('razorpay_order/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: `course_id=${courseId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          // console.log(data);
+            const options = {
+                "key": data.key,
+                "amount": data.amount,
+                "currency": "INR",
+                "name": "KalaGuru By Ira Rangoli Arts",
+                "description": "Course ID: " + data.course_id,
+                "order_id": data.order_id,
+                "callback_url": data.callback_url,
+                "prefill": {
+                    "name": data.user_name,
+                    "email": data.user_email,
+                    "contact":data.user_phone
+                },
+                "notes": {
+                    "course_id": data.course_id
+                },
+                "theme": {
+                    "color": "#9F86C6"
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(err => {
+            console.error('Payment init error:', err);
+        });
+
+        e.preventDefault();
+    });
+});
+</script>
+
+
+
 {% endblock %}

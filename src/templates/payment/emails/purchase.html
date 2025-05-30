@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Course Purchase Confirmation</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px 0;
+            background-color: #9F86C6;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Thank you for your purchase!</h2>
+        <p>Hi {{ name }},</p>
+        <p>We’re excited to welcome you to <strong>KalaGuru By Ira Rangoli Arts</strong>.</p>
+        <p>You now have access to your purchased course(s). To get started, please log in to your account and visit your course dashboard.</p>
+
+        <a href="https://kalagurubyirarangoliarts.com/accounts/login/" class="button">Log In</a>
+        <a href="https://kalagurubyirarangoliarts.com/courses/my_courses" class="button">Go to My Courses</a>
+
+        <p>If the buttons above don’t work, you can also copy and paste these links into your browser:</p>
+        <p>Log in: <a href="https://kalagurubyirarangoliarts.com/accounts/login/">https://kalagurubyirarangoliarts.com/accounts/login/</a></p>
+        <p>My Courses: <a href="https://kalagurubyirarangoliarts.com/courses/my_courses">https://kalagurubyirarangoliarts.com/courses/my_courses</a></p>
+
+        <p>If you have any questions, feel free to reply to this email — we’re happy to help!</p>
+
+        <p>Best regards,<br>
+        The KalaGuru Team</p>
+    </div>
+</body>
+</html>

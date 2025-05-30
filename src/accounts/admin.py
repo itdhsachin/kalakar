@@ -10,7 +10,7 @@ from django.urls import path
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from accounts.models import Student, Teacher, User
+from accounts.models import Student, Teacher, User,State,District
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -229,7 +229,19 @@ class StudentAdmin(admin.ModelAdmin):
         verbose_name_plural = "Students"
 
 
+class StateAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("name",)
+    ordering = ("name",)
+
+class DistrictAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "state")
+    search_fields = ("name", "state__name")
+    list_filter = ("state",)
+    ordering = ("state", "name")
 # Register models with admin panel
 admin.site.register(User, UserAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Teacher, TeacherAdmin)
+admin.site.register(State, StateAdmin)
+admin.site.register(District, DistrictAdmin)

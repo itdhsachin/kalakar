@@ -1,102 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home  - Kala Guru by Ira Rangoli Art</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-              rel="stylesheet"
-              crossorigin="anonymous">
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FSFRJPHEE"></script>
-        <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'G-3FSFRJPHEE');
-        </script>
-    </head>
-    <body>
-        <!-- Header -->
-        <!-- <header class="sticky-top bg-white py-2 ">
-        <div class="container mt-2 ">
-            <div class="d-flex justify-content-center ">
-                <div class="headerarea_logo">
-                    <a href="#">
-                        <img src="static/img/home/logo.jpg" alt="logo" style="height: 100px; width: 300px;">
-                    </a>
+{% extends 'base.html' %} 
+{% load static i18n %} 
+{% block title %}Home{% endblock %}
+{% block content %}
+<meta name="csrf-token" content="{{ csrf_token }}">
+<main class="main_wrapper overflow-hidden">
+    {% include 'partials/navbar.html' %} 
+    {% include 'partials/mobile-menu.html' %}
+   <!-- Hero Section -->
+   <section class="text-dark text-center mt-4 text-md-start py-5" style="background-color: #f3eec3">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Image First on Mobile, Last on PC -->
+            <div class="col-lg-6 order-first order-lg-last text-center mb-4 mb-lg-0">
+                <img loading="lazy"
+                     src="{% static 'img/home/banner.jpg' %}"
+                     alt="Ira Rangoli"
+                     class="img-fluid rounded shadow-lg"
+                     style="height: 430px; width: 550px;">
+            </div>
+            <!-- Text Below Image on Mobile, Left on PC -->
+            <div class="col-lg-6 order-last order-lg-first">
+                <h1 class="fw-bold display-5">Express Your Creativity</h1>
+                <h2 class="lead">Transform Your Art with Expert-Led Rangoli Courses</h2>
+                <p>
+                    Dive into the mesmerizing world of Rangoli with <strong>Kala Guru by Ira Rangoli Arts</strong>. 
+                    Our structured courses offer step-by-step guidance from industry experts, 
+                    helping you master techniques, patterns, and color combinations like never before.
+                    Whether you're a beginner or an advanced artist, we provide the tools and inspiration 
+                    you need to create breathtaking designs.
+                </p>
+                <p class="fw-bold text-success">Join thousands of learners and take your Rangoli skills to the next level!</p>
+                <div class="d-flex justify-content-center justify-content-md-start gap-3 mt-3">
+                    <button onclick="document.getElementById('explore').scrollIntoView({ behavior: 'smooth' });"
+                            class="btn btn-warning btn-lg shadow-sm">Start Learning Today</button>
                 </div>
+                <!-- <div class="d-flex justify-content-center justify-content-md-start gap-3 mt-3">
+                    <a href="https://rzp.io/rzp/kalagurubyirarangoliarts"
+                            class="btn btn-warning btn-lg shadow-sm">Start Learning Today</a>
+                </div> -->
             </div>
         </div>
-    </header> -->
-        {% include 'partials/navbar.html' %}
-        <!-- Hero Section -->
-        <section class=" text-dark text-center mt-4 text-md-start py-5"
-                 style="background-color: #f3eec3">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6">
-                        <h1 class="fw-bold display-5">Express Your Creativity</h1>
-                        <h2 class="lead">Bringing Art to Life with Rangoli</h2>
-                        <p>
-                            Experience the beauty of traditional Indian art with our stunning rangoli designs. Kalaguru by
-                            Ira Rangoli Art offers a vibrant and artistic journey into the world of creativity.
-                        </p>
-                        <div class="d-flex justify-content-center justify-content-md-start gap-3 mt-3">
-                            <button onclick="document.getElementById('courseContent').scrollIntoView({ behavior: 'smooth' });"
-                                    class="btn btn-warning btn-lg shadow-sm">Explore Now</button>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 text-center mt-4 mt-lg-0">
-                        <img loading="lazy"
-                             src="static/img/home/banner.webp"
-                             alt="Ira Rangoli"
-                             class="img-fluid rounded shadow-lg"
-                             style="height: 430px;
-                                    width: 550px">
-                    </div>
-                </div>
-            </div>
-        </section>
+    </div>
+</section>
+
         <!-- About Us Section -->
         <section class="py-5">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-6 text-center">
                         <img loading="lazy"
-                             src="static/img/home/aboutus.jpg"
+                             src="{% static 'img/home/aboutus.jpg' %}"
                              alt="About Us"
-                             class="img-fluid rounded shadow-lg"
-                             style="height: 450px;
-                                    width: 500px">
+                             class="img-fluid rounded shadow-lg mb-5"
+                             style="max-width: 100%; height: auto; max-height: 450px; object-fit: contain;">
                     </div>
                     <div class="col-md-6">
                         <h2 class="fw-bold text-dark">
-                            Welcome to the <span class="text-warning">Kala Guru</span><span class="text-dark">by Ira Rangoli Art</span>
+                            Welcome to the <span class="text-warning">Kala Guru </span><span class="text-dark">by Ira Rangoli Arts</span>
                         </h2>
                         <p class="lead text-secondary">
-                            Kala Guru is a vibrant platform dedicated to celebrating the beauty
-                            and creativity of art, with a special focus on Rangoli Art. Rooted in tradition and innovation,
-                            we bring together passionate artists who express their skills through mesmerizing patterns,
-                            colors, and cultural inspirations.
-                            At Kala guru, we believe that art is not just a form of expression but a language that connects
-                            hearts and traditions. Our mission is to promote artistic talent, inspire creativity, and
-                            preserve the heritage of Rangoli while embracing modern design influences.
-                            Join us in our journey to transform spaces with intricate and captivating Rangoli designs, where
-                            every pattern tells a story and every color adds life!
+                            KalaGuru is a unique platform dedicated to providing structured and professional art training at an incredibly affordable cost. But it’s not just about learning—the platform also hosts engaging mini-competitions designed to help artists refine their skills and present their creations in the best possible way. Our goal is to nurture talent, encourage creativity, and provide a space where artists can grow and shine.
                         </p>
                     </div>
-                    <span id="courseContent">&nbsp;</span>
+                    
                 </div>
             </div>
         </section>
+        <!-- Mission Section -->
+<section class="bg-warning bg-opacity-25 py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-dark">Our <span class="text-warning">Mission</span></h2>
+            <p class="lead text-secondary">Empowering artists through structured training and fostering creativity.</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="list-group">
+                    <div class="list-group-item border-0 d-flex align-items-start">
+                        <div class="badge bg-warning rounded-circle me-3 text-dark fw-bold" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">1</div>
+                        <div>
+                            <strong>Providing Professional Art Training</strong> – We aim to offer structured and expert-led art education to everyone at an affordable cost.
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 d-flex align-items-start">
+                        <div class="badge bg-warning rounded-circle me-3 text-dark fw-bold" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">2</div>
+                        <div>
+                            <strong>Spreading Art Awareness</strong> – Promoting the importance and beauty of art across communities.
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 d-flex align-items-start">
+                        <div class="badge bg-warning rounded-circle me-3 text-dark fw-bold" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">3</div>
+                        <div>
+                            <strong>Reaching Every Corner</strong> – From small villages to big cities, making art education accessible to all.
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 d-flex align-items-start">
+                        <div class="badge bg-warning rounded-circle me-3 text-dark fw-bold" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">4</div>
+                        <div>
+                            <strong>Encouraging Participation</strong> – Motivating individuals to actively engage in artistic endeavors and showcase their talents.
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 d-flex align-items-start">
+                        <div class="badge bg-warning rounded-circle me-3 text-dark fw-bold" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">5</div>
+                        <div>
+                            <strong>Building a Creative Community</strong> – Connecting artists and enthusiasts through the love of art.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    <!-- Competition Announcement Section -->
+<section class="py-5 bg-light border-top border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Image -->
+            <div class="col-lg-6 mb-4 mb-lg-0 text-center">
+                <img src="{% static 'img/home/competition.jpg' %}" alt="Competition Announcement" class="img-fluid rounded shadow-lg" style="max-height: 450px; object-fit: cover;">
+            </div>
+            <!-- Text Content -->
+            <div class="col-lg-6">
+                <h2 class="fw-bold text-dark text-center mb-3">📢 Announcement</h2>
+                <p><strong>Hello!</strong> In the first year of our <strong>KalaGuru</strong> initiative, we chose <strong>Rangoli Art</strong> as the first artistic form to promote. The district-level competition was conducted both online and offline in Pune.</p>
+                <p>You can now view the winners of the district-level competition on our official <strong>KalaGuru Facebook</strong> page.</p>
+                <ul class="list-unstyled">
+                    <li>✅ Districts with only one submission have their artist declared the winner directly.</li>
+                    <li>✅ In districts with more than 3 entries, shortlisted submissions will be posted for <strong>public voting</strong>.</li>
+                    <li>🏆 The entry with the most likes will be the winner from that district.</li>
+                </ul>
+                <p>This process began on <strong>6th April 2026</strong>, with <strong>21 days of free training</strong> offered until <strong>26th April 2026</strong>.</p>
+                <p>Only the artists who:</p>
+                <ul class="list-unstyled">
+                    <li>🎨 Uploaded their artwork after training</li>
+                    <li>🎥 Watched more than 50% of training videos</li>
+                    <li>💰 Paid the ₹500 registration fee</li>
+                </ul>
+                <p>will be featured in the final artwork list. This initiative received tremendous response with many participants enrolling and receiving <strong>free training</strong>.</p>
+                <p class="fw-bold">Stay tuned for more creative competitions! Follow us on Facebook, YouTube, and Instagram to stay updated.</p>
+                <p class="mt-3 mb-0">— <em>Team Ira Rangoli Arts®</em><br><strong>KalaGuru by Ira Rangoli Arts™</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
         <!-- Cousrses -->
-        <div>
+        <!-- <div id="courseContent">
             <div class="container my-5">
                 <div class="text-center">
                     <h2 class="mb-3">Our Course</h2>
@@ -104,8 +156,8 @@
                 <div class="card mx-auto shadow-lg p-4" style="max-width: 800px;">
                     <div class="card-body text-center">
                         <h4 class="card-title">Basic Rangoli</h4>
-                        <h5 class="text-success">₹ 75.00</h5>
-                        <p>For 17 days</p>
+                        <h5 class="text-success">₹ 100.00</h5>
+                        <p>For 21 days</p>
                         <div class="mb-3">
                             <div class="ratio ratio-16x9">
                                 <video controls>
@@ -115,34 +167,48 @@
                                 </video>
                             </div>
                         </div>
-                        <h5>Basic Rangoli Topics:</h5>
-                        <ul class="list-group mb-3">
-                            <li class="list-group-item">Which Rangoli should be taken?</li>
-                            <li class="list-group-item">How to stop</li>
-                            <li class="list-group-item">How to release Rangoli</li>
-                            <li class="list-group-item">How are the basic symbols</li>
-                            <li class="list-group-item">How to draw the basic symbol</li>
-                            <li class="list-group-item">Complete Rangoli from basic symbols</li>
-                            <li class="list-group-item">How the color scheme should be</li>
-                            <li class="list-group-item">Which sieve to use</li>
-                            <li class="list-group-item">How the hand should be while releasing Rangoli</li>
-                            <li class="list-group-item">How to draw Rangoli in less time</li>
-                            <li class="list-group-item">What is the correct method of drawing Rangoli</li>
-                        </ul>
+                        <h5>About This Course</h5>
+                        <p>
+                            Unlock the art of rangoli with our <strong>Basic Rangoli Course</strong>, designed for beginners and enthusiasts alike.  
+                            In this 21-day structured training, you will learn how to create stunning rangoli designs with precision  
+                            and confidence. 
+                        </p>
+                        
+                        <p class="fw-bold text-danger">
+                            📅 This course will start on <strong>April 6th</strong> and end on <strong>April 26th</strong>. 
+                            Make sure to enroll before the start date to secure your spot!
+                        </p>
+                        
+                        <p>
+                            From understanding the importance of selecting the right type of rangoli to mastering  
+                            essential techniques like proper spacing, hand positioning, and color harmony, this course covers it all.  
+                            Our expert-led lessons will guide you through traditional symbols, their meanings, and how they come together  
+                            to form intricate rangoli patterns. You will also discover how to use sieves effectively, achieve smooth  
+                            color transitions, and develop speed without compromising quality. By the end of the course, you’ll have  
+                            the skills and techniques to create breathtaking rangoli effortlessly.
+                        </p>
+                        
+                        <p class="fw-bold text-success">Join us and bring your creativity to life with the timeless beauty of rangoli!</p>
                         <a target="_blank"
-                           href="https://razorpay.com/emidemo/"
-                           class="btn btn-success btn-lg w-100">Buy Now</a>
+                           href="https://rzp.io/rzp/kalagurubyirarangoliarts"
+                           class="btn btn-success btn-lg w-100">Register Now</a>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>         -->
         <!-- How to Access Courses -->
         <section class="bg-light py-5">
-            <div class="container">
-                <h2 class="text-center fw-bold mb-4 text-dark">How to Access the Courses</h2>
+            <div class="container" id="explore">
+                <h2 class="text-center fw-bold mb-4 text-dark">Explore Our Courses</h2>
                 <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="list-group">
+<div class="alert alert-warning text-center" role="alert">
+  <b>📌 Please Note:<br>
+  📅 Each lesson will be available only for 48 hours.<br>
+  🔓 New lessons will unlock daily.<br><br>
+  The courses will begin on June 01, 2025. Make sure to mark your calendar and get ready to join!</b>
+</div>
+
+                        <!-- <div class="list-group">
                             <div class="list-group-item d-flex align-items-start">
                                 <div class="badge bg-primary rounded-circle me-3">1</div>
                                 <div>
@@ -175,30 +241,146 @@
                                     completing the course.
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> -->
+                            {% for course in courses %}
+                              {% with subject=course.subject %}
+                              <div class="col-xl-4 col-lg-6 col-md-12 col-sm-6 col-12" data-aos="fade-up">
+                                <div class="gridarea__wraper gridarea__wraper__2">
+                                  <div class="gridarea__img">
+                                    <a href="{% url 'courses' course.slug %}">
+                                        {% if course.id == 1 or course.id == 9 or course.id == 15%}
+                                        <img loading="lazy" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
+                                        {% elif course.id == 4 or course.id == 10 %}
+                                        <img loading="lazy" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+                                        {% elif course.id == 5 or course.id == 11 %}
+                                        <img loading="lazy" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
+                                        {% elif course.id == 6 or course.id == 12 %}
+                                        <img loading="lazy" src="{% static 'img/home/warli_art.png' %}" alt="grid" />
+                                        {% elif course.id == 7 or course.id == 13 %}
+                                        <img loading="lazy" src="{% static 'img/home/haar_mala.png' %}" alt="grid" />
+                                        {% elif course.id == 8 or course.id == 14 %}
+                                        <img loading="lazy" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
+                                        {% elif course.id ==  16 %}
+                                        <img loading="lazy" src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+                                        {% else %}
+                                        <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+                                        {% endif %}
+                                    </a>
+                                  </div>
+                                  <div class="gridarea__content">
+                                    <div class="gridarea__heading">
+                                      <h3 class="text-center">
+                                        <a href="{% url 'courses' course.slug %}"
+                                        >{{ course.title }}</a>
+                                      </h3>
+                                    </div>
+                                    <!-- <div class="gridarea__bottom">
+                                      <div class="course__details__paragraph" data-aos="fade-up"
+                                        style="height: 250px; width: 100%; overflow: auto; border: 1px solid #eaeaea; border-radius: 5px; background-color: #f9f9f9; padding: 10px;">
+                                        <p>{{ course.description }}</p>
+                                      </div>
+                                    </div> -->
+                                    <div class="text-center">
+                                        {% if user.is_authenticated and course.id in purchased_course_ids %}
+                                          <a class="btn btn-success" href="{% url 'courses' course.slug %}">View Course</a>
+                                          {% else %}
+                                            {% if course.enroll_end_date and course.enroll_end_date|date:"Y-m-d" >= today|stringformat:"s" %}
+                                                <input type="checkbox" id="terms_{{ course.id }}" name="terms_{{ course.id }}" value="agree">
+                                                <label for="terms_{{ course.id }}">I agree to the <a href="https://kalagurubyirarangoliarts.com/terms_condition/" target="_blank">Terms and Conditions</a></label><br><br>
+
+                                                <button id="buyButton_{{ course.id }}" class="rzp-button btn-primary btn" data-course-id="{{ course.id }}" disabled>
+                                                    Buy ₹{{ course.price }}
+                                                </button>
+                                                <script>
+        
+                                                    document.getElementById('terms_{{ course.id }}').addEventListener('change', function() {
+                                                        document.getElementById('buyButton_{{ course.id }}').disabled = !this.checked;
+                                                    });
+                                                </script>
+                                          {% else %}
+                                              <a class="btn btn-warning" href="{% url 'courses' course.slug %}">View Course</a>
+                                          {% endif %}
+                                        {% endif %}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              {% endwith %}
+                            {% endfor %}
                 </div>
             </div>
         </section>
         <!-- QR Code Section -->
-        <section class="text-center py-5">
+        <!-- <section class="text-center py-5">
             <div class="container">
                 <h2 class="fw-bold mb-3 text-dark">Scan to buy the course</h2>
-                <a href="https://razorpay.com/emidemo/">
-                    <img src="static/img/home/qrcode.png"
+                
+                    <img src="{% static 'img/home/kalakarQR.png' %}"
                          alt="QR Code"
                          class="img-fluid rounded shadow-lg"
                          width="200">
-                </a>
+
+                <div><p class="text-center fs-2 mb-3 mt-3">or</p></div>
+
                 <p class="mt-3">
-                    <a href="https://razorpay.com/emidemo/"
+                    <a href="https://kalagurubyirarangoliarts.com/coupon/coupon/"
                        target="_blank"
                        class="btn btn-primary btn-lg shadow">Click
                     to Join Course</a>
                 </p>
             </div>
-        </section>
-        <!-- Footer -->
+        </section> -->
         {% include 'partials/footer.html' %}
-    </body>
-</html>
+    </main>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.querySelectorAll('.rzp-button').forEach(button => {
+    button.addEventListener('click', function (e) {
+        const courseId = this.getAttribute('data-course-id');
+
+        // console.log(courseId);
+        const csrftoken = document.querySelector('[name=csrf-token]').content;
+
+        fetch("{% url 'razorpay_order' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: `course_id=${courseId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+        //   console.log(data);
+            const options = {
+                "key": data.key,
+                "amount": data.amount,
+                "currency": "INR",
+                "name": "KalaGuru By Ira Rangoli Arts",
+                "description": "Course ID: " + data.course_id,
+                "order_id": data.order_id,
+                "callback_url": data.callback_url,
+                "prefill": {
+                    "name": data.user_name,
+                    "email": data.user_email,
+                    "contact":data.user_phone
+                },
+                "notes": {
+                    "course_id": data.course_id
+                },
+                "theme": {
+                    "color": "#9F86C6"
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(err => {
+            console.error('Payment init error:', err);
+        });
+
+        e.preventDefault();
+    });
+});
+</script>
+    {% endblock %}

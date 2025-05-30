@@ -10,13 +10,14 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
         <title>
             {% block title %}
-                Kalakar
+                Kala Guru
             {% endblock title %}
         - Education</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description"
               content="Kalakar - LMS Online Courses & Education Portal">
         <meta name="author" content="https://itdevhub.com/" />
+        <meta property="og:image" content="{% if meta_image %}{{ meta_image }}{% else %}{{ request.build_absolute_uri }}static/img/default-image.png{% endif %}">
         <link rel="icon" href="{% static 'img/favicon.ico' %}" />
         {% block css %}
             {% block extra_css %}
@@ -34,20 +35,103 @@
         {% endblock css %}
         <script>
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (localStorage.getItem("theme-color") === "dark" || (!("theme-color" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      document.documentElement.setAttribute('data-bs-theme','dark')
-      document.documentElement.classList.add("is_dark");
+// Force light theme regardless of user settings
+document.documentElement.setAttribute('data-bs-theme', 'light');
+document.documentElement.classList.remove("is_dark");
+
+// Remove any stored theme preference to prevent switching
+localStorage.removeItem("theme-color");
+
+// Prevent dark mode from being applied via system settings
+window.matchMedia("(prefers-color-scheme: dark)").addListener((e) => {
+    if (e.matches) {
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+        document.documentElement.classList.remove("is_dark");
     }
-    if (localStorage.getItem("theme-color") === "light") {
-      // document.documentElement.setAttribute('data-bs-theme','light')
-      document.documentElement.removeAttribute('data-bs-theme','dark')
-      document.documentElement.classList.remove("is_dark");
-    }
+});
+
         </script>
     </head>
+    <style>
+        /* Hide Google Translate toolbar */
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+        
+        /* Hide the Google Translate 'powered by' logo */
+        .goog-logo-link {
+            display: none !important;
+        }
+    
+        /* Hide Google Translate iframe */
+        .goog-te-gadget {
+            font-size: 0px !important;
+        }
+    
+        /* Show only the dropdown and move it to the right */
+        #google_translate_element {
+            display: inline-block;
+            position: relative;
+            top: 10px;
+            /* right: 20px; */
+            /* left: 85%; */
+            z-index: 2000;
+        }
+    
+        /* Ensure the language dropdown is visible */
+        .goog-te-gadget select {
+            font-size: 14px !important;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+            /* Responsive styles for mobile screens */
+    @media screen and (max-width: 768px) {
+        #google_translate_element {
+            top: 5px;
+            right: 5px;
+            transform: scale(0.8); /* Make it smaller */
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        #google_translate_element {
+            top: 5px;
+            right: 5px;
+            transform: scale(0.7); /* Even smaller on very small screens */
+        }
+    }
+    </style>
     <body {% block body_attribute %}
           class="body__wrapper"
           {% endblock body_attribute %}>
+
+
+          <div id="google_translate_element"></div>
+
+          <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',  // Default language
+                    includedLanguages: 'en,hi,mr',  // Available languages
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+            }
+        
+            // Remove the Google Translate iframe from the top of the page
+            setInterval(function() {
+                var frame = document.querySelector('.goog-te-banner-frame');
+                if (frame) {
+                    frame.style.display = 'none';
+                }
+            }, 100);
+        </script>
+        
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
         {% block preloader %}{% endblock %}
         {% block content %}{% endblock %}
         {% block modal %}{% endblock %}
@@ -75,12 +159,57 @@
         {% endblock javascript %}
         <script>
   // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-  if (localStorage.getItem("theme-color") === "dark" || (!("theme-color" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-    document.getElementById("light--to-dark-button")?.classList.add("dark--mode");
-  }
-  if (localStorage.getItem("theme-color") === "light") {
-    document.getElementById("light--to-dark-button")?.classList.remove("dark--mode");
-  }
+  document.documentElement.setAttribute('data-bs-theme', 'light');
+document.documentElement.classList.remove("is_dark");
+
+// Remove any stored theme preference to prevent switching
+localStorage.removeItem("theme-color");
+
+// Prevent dark mode from being applied via system settings
+window.matchMedia("(prefers-color-scheme: dark)").addListener((e) => {
+    if (e.matches) {
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+        document.documentElement.classList.remove("is_dark");
+    }
+});
         </script>
+
+<script>
+                var url = 'https://wati-integration-prod-service.clare.ai/v2/watiWidget.js?10796';
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = url;
+                var options = {
+                "enabled":true,
+                "chatButtonSetting":{
+                    "backgroundColor":"#00e785",
+                    "ctaText":"Chat with us",
+                    "borderRadius":"25",
+                    "marginLeft": "0",
+                    "marginRight": "20",
+                    "marginBottom": "20",
+                    "ctaIconWATI":false,
+                    "position":"right"
+                },
+                "brandSetting":{
+                    "brandName":"Ira Rangoli Arts",
+                    "brandSubTitle":"undefined",
+                    "brandImg":"https://www.wati.io/wp-content/uploads/2023/04/Wati-logo.svg",
+                    "welcomeText":"Hi there!\nHow can I help you?",
+                    "messageText":"",
+                    "backgroundColor":"#00e785",
+                    "ctaText":"Chat with us",
+                    "borderRadius":"25",
+                    "autoShow":false,
+                    "phoneNumber":"917066686970"
+                }
+                };
+                s.onload = function() {
+                    CreateWhatsappChatWidget(options);
+                };
+                var x = document.getElementsByTagName('script')[0];
+                x.parentNode.insertBefore(s, x);
+            </script>
     </body>
 </html>

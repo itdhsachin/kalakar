@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+{% include 'partials/theme-switch.html' %}
+<main>
+    <div class="container">
+        <h2>Student Competitions</h2>
+        <a href="{% url 'student_competition_add' %}">Add New Candidate</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for competition in competitions %}
+                <tr>
+                    <td>{{ competition.user.username }}</td>
+                    <td>{{ competition.get_status_display }}</td>
+                    <td>{{ competition.created_date }}</td>
+                    <td>
+                        <a href="{% url 'student_competition_edit' competition.id %}">Edit</a>
+                        <a href="{% url 'student_competition_delete' competition.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include 'partials/footer.html' %}
+</main>
+
+{% endblock %}

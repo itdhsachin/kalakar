@@ -8,123 +8,45 @@
                 <h4>My Profile</h4>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form">Registration Date</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form">{{ user.date_joined }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">First Name</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user.first_name }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Last Name</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user.last_name }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Email</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user.email }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Phone Number</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user.phone }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Gender</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">
-                        {% if user_profile.gender == "M" %}
-                            Male
-                        {% elif user_profile.gender == "F" %}
-                            Female
-                        {% endif %}
+                <div class="col-md-8 w-100">
+                    <div class="card p-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Registration Date:</strong> {{ user.date_joined }}</li>
+                            <li class="list-group-item"><strong>First Name:</strong> {{ user.first_name }}</li>
+                            <li class="list-group-item"><strong>Last Name:</strong> {{ user.last_name }}</li>
+                            <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+                            <li class="list-group-item"><strong>Phone Number:</strong> {{ user.phone }}</li>
+                            <li class="list-group-item"><strong>Birth Date:</strong> {{ user_profile.birthday }}</li>
+                            <li class="list-group-item"><strong>Gender:</strong> 
+                                {% if user_profile.gender == "M" %}
+                                    Male
+                                {% elif user_profile.gender == "F" %}
+                                    Female
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item"><strong>Education:</strong> {{ user_profile.education }}</li>
+                            <li class="list-group-item"><strong>Address:</strong> {{ user_profile.address }}</li>
+                            <li class="list-group-item"><strong>Taluka:</strong> {{ user_profile.taluka }}</li>
+                            <li class="list-group-item"><strong>District:</strong> {{ user_profile.district }}</li>
+                            <li class="list-group-item"><strong>State:</strong> {{ user_profile.state }}</li>
+                            <li class="list-group-item"><strong>Pin Code:</strong> {{ user_profile.pincode }}</li>
+                            <li class="list-group-item"><strong>Hobbies:</strong> {{ user_profile.hobbies }}</li>
+                            <li class="list-group-item"><strong>Ira Rangoli Arts Reference From:</strong> {{ user_profile.ira_rangoli_reference }}</li>
+    
+                            {% if user.is_lecturer %}
+                                <li class="list-group-item"><strong>Last Rangoli Batch Completion Date:</strong> {{ user_profile.last_rangoli_batch_completion_date }}</li>
+                                <li class="list-group-item"><strong>Level Completed:</strong> {{ user_profile.level_completed }}</li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Education</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.education }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Address</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.address }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Taluka</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.taluka }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">District</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.district }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">State</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.state }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Pin Code</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.pincode }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Profile Picture</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.picture }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Hobbies</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.hobbies }}</div>
-                </div>
-                <div class="col-lg-4 col-md-4">
-                    <div class="dashboard__form dashboard__form__margin">Ira Rangoli Arts Reference From</div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="dashboard__form dashboard__form__margin">{{ user_profile.ira_rangoli_reference }}</div>
-                </div>
-                {% if user.is_lecturer %}
-                    <div class="col-lg-4 col-md-4">
-                        <div class="dashboard__form dashboard__form__margin">Last Rangoli Batch Completion Date</div>
-                    </div>
-                    <div class="col-lg-8 col-md-8">
-                        <div class="dashboard__form dashboard__form__margin">{{ user_profile.last_rangoli_batch_completion_date }}</div>
-                    </div>
-                    <div class="col-lg-4 col-md-4">
-                        <div class="dashboard__form dashboard__form__margin">Level Completed</div>
-                    </div>
-                    <div class="col-lg-8 col-md-8">
-                        <div class="dashboard__form dashboard__form__margin">{{ user_profile.level_completed }}</div>
-                    </div>
-                {% endif %}
             </div>
-            <div class="row mt-5">
-                <div class="col-lg-6 col-md-6">
-                    <a href="{% url 'password_reset' %}" class="btn btn-warning">Reset PassWord</a>
+            <div class="row mt-4 text-center">
+                <div class="col-6">
+                    <a href="{% url 'password_reset' %}" class="btn btn-warning w-100">Reset Password</a>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <a href="{% url 'update_profile' %}" class="btn btn-primary">Update Profile</a>
+                <div class="col-6">
+                    <a href="{% url 'update_profile' %}" class="btn btn-primary w-100">Update Profile</a>
                 </div>
             </div>
             {{ error }}

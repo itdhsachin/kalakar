@@ -1,94 +1,142 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Course Offer</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-              rel="stylesheet">
-    </head>
-    <body class="bg-light">
-        {% include 'partials/navbar.html' %}
-        <div class="container text-center py-5">
-            <h1 class="display-3 fw-bold text-primary">Exclusive Course Offer</h1>
-            <p class="lead text-muted">Upgrade your skills with our premium course at an unbeatable price!</p>
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Coupon Code{% endblock %}
+
+{% block content %}
+<main class="main_wrapper overflow-hidden">
+  {% include 'partials/navbar.html' %}
+  {% include 'partials/mobile-menu.html' %}
+
+  <div class="container mt-3">
+    <div class="row g-4 text-center">
+      <div class="col-md-6">
+        <div class="p-4 bg-white shadow rounded">
+          <!--
+          <div class="text-center">
+            <h2 class="mb-3">Our Course</h2>
+          </div>
+          <div class="card-body text-center">
+            <h4 class="card-title">Basic Rangoli</h4>
+            <h5 class="text-success">₹ 200.00</h5>
+            <p>For 21 days</p>
+            <div class="mb-3">
+              <div class="ratio ratio-16x9">
+                <video controls>
+                  <source
+                    src="https://irarangoliarts.com/media/courses/basic_rangoli_2/Introduction%20video%20video%20no%200.mp4"
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+            <h5>About This Course</h5>
+            <p>
+                Unlock the art of rangoli with our <strong>Basic Rangoli Course</strong>, designed for beginners and enthusiasts alike.  
+                In this 21-day structured training, you will learn how to create stunning rangoli designs with precision  
+                and confidence. 
+            </p>
+            
+            <p class="fw-bold text-danger">
+                📅 This course will start on <strong>April 6th</strong> and end on <strong>April 26th</strong>. 
+                Make sure to enroll before the start date to secure your spot!
+            </p>
+            
+            <p>
+                From understanding the importance of selecting the right type of rangoli to mastering  
+                essential techniques like proper spacing, hand positioning, and color harmony, this course covers it all.  
+                Our expert-led lessons will guide you through traditional symbols, their meanings, and how they come together  
+                to form intricate rangoli patterns. You will also discover how to use sieves effectively, achieve smooth  
+                color transitions, and develop speed without compromising quality. By the end of the course, you’ll have  
+                the skills and techniques to create breathtaking rangoli effortlessly.
+            </p>
+            
+            <p class="fw-bold text-success">Join us and bring your creativity to life with the timeless beauty of rangoli!</p>
+          </div>-->
+          <div class="text-center">
+            <h2 class="mb-3">Basic Mehndi Art Course</h2>
+          </div> 
+          <div class="text-center">
+            <h4 class="mb-3">Course starts June 17, 2025 – Become competition-ready!</h4>
+          </div>
+          <div>
+            <img loading="lazy" class="img-fluid"  src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+          </div>
+          <div>
+            <p>&nbsp;</p>
+            <p>Complete the course and qualify for the Exclusive Mehndi Competition happening from August 17 to September 14, 2025.</p>
+
+            <p>🏆 Exciting Rewards Await! Full competition details, including prize information, will be revealed on August 10, 2025 - stay tuned!</p>
+
+            <p>Join now and take the first step toward mastering Mehndi artistry! Let me know if you need further refinements. 🚀</p>
+
+            <p>कोर्स पूर्ण करा आणि विशेष मेहंदी स्पर्धेसाठी पात्र ठरा जी १७ ऑगस्ट ते १४ सप्टेंबर २०२५ दरम्यान आयोजित केली जाईल.</p>
+
+            <p>🏆 आकर्षक बक्षिसे वाट पाहत आहेत! स्पर्धेचे संपूर्ण तपशील आणि बक्षिसांची माहिती १० ऑगस्ट २०२५ रोजी जाहीर केली जाईल - त्यासाठी तयार राहा!</p>
+
+            <p>आता सहभागी व्हा आणि मेहंदी कलाकार म्हणून तुमची पहिली पायरी निश्चित करा!</p>
+          </div>
         </div>
-        <div class="container">
-            <div class="row g-4 text-center">
-                <div class="col-md-6">
-                    <div class="p-4 bg-white shadow rounded">
-                        <h2 class="display-5 text-success fw-bold">Course Info</h2>
-                        <p class="fs-5 text-secondary">
-                            Learn from industry experts with hands-on projects, interactive
-                            lessons, and real-world applications.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-4 bg-white shadow rounded">
-                        <h2 class="display-5 text-danger fw-bold">Coupon Code</h2>
-                        <input type="text"
-                               id="couponcode"
-                               class="form-control form-control-lg text-muted text-center my-3"
-                               placeholder="AVI2025">
-                        <h5 id="msg"></h5>
-                        <button onclick="checkCoupon()" class="btn btn-primary mt-3">Search</button>
-                        <div>
-                            <button id="buyCouponBtn"
-                                    class="btn btn-success mt-4 btn-lg w-100"
-                                    style="display: none">
-                                Buy
-                                Coupon
-                            </button>
-                        </div>
-                    </div>
-                </div>
+
+      </div>
+
+      <div class="col-md-6 d-flex justify-content-center align-items-center flex-column">
+        <div class="p-4 bg-white shadow rounded text-center w-100">
+            <h2 class="display-5 text-danger fw-bold">Referral Code</h2>
+            <p class="text-muted">Enter a referral code if you have one, or proceed directly by clicking "Register Now".</p>
+            <input
+                type="text"
+                id="couponcode"
+                class="form-control form-control-lg text-muted text-center my-3"
+                placeholder="Enter Your Referral Code"
+            />
+            <h5 id="msg" class="fw-bold"></h5>
+            <div>
+                <button
+                    id="buyCouponBtn"
+                    class="btn btn-success mt-4 btn-lg w-100"
+                >
+                    Register Now
+                </button>
             </div>
         </div>
-        <!-- Axios CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script>
-        const checkCoupon = async () => {
-            const couponcode = document.getElementById("couponcode").value.trim();
-            console.log(couponcode);
+      </div>
+    </div>
+  </div>
 
-            if (!couponcode) {
-                alert("Please enter a coupon code!");
-                return;
-            }
+  {% include 'partials/footer.html' %}
+</main>
 
-            try {
-                const response = await axios.get("http://127.0.0.1:8000/coupon/check-coupon/", {
-                    params: { coupon_code: couponcode }
-                });
+<!-- Axios CDN -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async function () {
+    const buyCouponBtn = document.getElementById("buyCouponBtn");
+    const couponInput = document.getElementById("couponcode");
+    const msg = document.getElementById("msg");
 
-                console.log(response.data);
+    const updateBuyButton = async (couponcode) => {
+      try {
+        const response = await axios.get("/coupon/check-coupon/", {
+          params: { coupon_code: couponcode },
+        });
 
-                let payment = response.data.payment_link;
-                console.log("payment " + payment);
-
-                if (response.data.match) {
-                    buyCouponBtn.style.display = "block";
-                    document.getElementById("msg").innerText = "Coupon Code Match Successfully...! Proceed To Buy"
-                    buyCouponBtn.onclick = () => {
-                        window.location.href = response.data.payment_link;
-                    };
-
-                } else {
-                    buyCouponBtn.style.display = "block";
-                    document.getElementById("msg").innerText = "Coupon Code Doesn't match Buy with Regular Price"
-                    buyCouponBtn.onclick = () => {
-                        window.location.href = "https://www.google.com";
-                    };
-
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Something went wrong, please try again.");
-            }
+        console.log(response.data);
+        buyCouponBtn.onclick = () => {
+          window.location.href = response.data.payment_link;
         };
-        </script>
-    </body>
-    {% include 'partials/footer.html' %}
-</html>
+        msg.innerText = response.data.message;
+      } catch (error) {
+        console.error("Error:", error);
+        msg.innerText = "Something went wrong, please try again.";
+      }
+    };
+
+    await updateBuyButton("");
+    couponInput.addEventListener("input", async () => {
+      await updateBuyButton(couponInput.value.trim());
+    });
+  });
+</script>
+
+{% endblock %}

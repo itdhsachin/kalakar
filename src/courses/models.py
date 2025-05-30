@@ -3,6 +3,9 @@
 from django.db import models
 
 from accounts.models import User
+from django.urls import reverse
+from datetime import date
+
 
 
 class Subject(models.Model):
@@ -90,6 +93,12 @@ class Course(models.Model):
     enroll_end_date = models.DateField(
         null=True, blank=True, help_text="Enrollment end date"
     )
+    end_date = models.DateField(
+        null=True,
+        blank=True,
+        default=date(2025, 5, 25),
+        help_text="for certificates"
+    )
     completion_days = models.IntegerField(
         null=True, blank=True, help_text="Number of days to complete the course"
     )
@@ -122,6 +131,9 @@ class Course(models.Model):
             str: The title of the course.
         """
         return str(self.title)
+    
+    def get_absolute_url(self):
+        return reverse('courses', kwargs={'slug': self.slug})
 
 
 class Enrollment(models.Model):

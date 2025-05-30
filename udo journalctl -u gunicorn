@@ -1,0 +1,21 @@
+[0;1;32m●[0m gunicorn.service - gunicorn daemon
+     Loaded: loaded (]8;;file://srv738984/etc/systemd/system/gunicorn.service/etc/systemd/system/gunicorn.service]8;;; [0;1;38;5;185mdisabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Fri 2025-03-21 16:41:49 UTC; 34s ago
+TriggeredBy: [0;1;32m●[0m gunicorn.socket
+   Main PID: 402502 (gunicorn)
+      Tasks: 4 (limit: 9488)
+     Memory: 103.7M (peak: 104.2M)
+        CPU: 994ms
+     CGroup: /system.slice/gunicorn.service
+             ├─[0;38;5;245m402502 /var/www/kalakar/venv/bin/python3 /var/www/kalakar/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock root.wsgi:application[0m
+             ├─[0;38;5;245m402504 /var/www/kalakar/venv/bin/python3 /var/www/kalakar/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock root.wsgi:application[0m
+             ├─[0;38;5;245m402505 /var/www/kalakar/venv/bin/python3 /var/www/kalakar/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock root.wsgi:application[0m
+             └─[0;38;5;245m402506 /var/www/kalakar/venv/bin/python3 /var/www/kalakar/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock root.wsgi:application[0m
+
+Mar 21 16:41:49 srv738984 systemd[1]: Started gunicorn.service - gunicorn daemon.
+Mar 21 16:41:49 srv738984 gunicorn[402502]: [2025-03-21 16:41:49 +0000] [402502] [INFO] Starting gunicorn 23.0.0
+Mar 21 16:41:49 srv738984 gunicorn[402502]: [2025-03-21 16:41:49 +0000] [402502] [INFO] Listening at: unix:/run/gunicorn.sock (402502)
+Mar 21 16:41:49 srv738984 gunicorn[402502]: [2025-03-21 16:41:49 +0000] [402502] [INFO] Using worker: sync
+Mar 21 16:41:49 srv738984 gunicorn[402504]: [2025-03-21 16:41:49 +0000] [402504] [INFO] Booting worker with pid: 402504
+Mar 21 16:41:49 srv738984 gunicorn[402505]: [2025-03-21 16:41:49 +0000] [402505] [INFO] Booting worker with pid: 402505
+Mar 21 16:41:49 srv738984 gunicorn[402506]: [2025-03-21 16:41:49 +0000] [402506] [INFO] Booting worker with pid: 402506

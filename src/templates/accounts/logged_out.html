@@ -1,0 +1,9 @@
+{% extends 'base.html' %} 
+{% load static i18n %} 
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+{% include 'partials/theme-switch.html' %}
+  <h2>You have been logged out.</h2>
+  <!-- {% csrf_token %} -->
+  <p><a href="{% url 'login' %}">Log in again</a></p>
+{% endblock %}

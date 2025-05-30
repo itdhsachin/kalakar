@@ -1,6 +1,6 @@
 """Module to perform database operations."""
 
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.loader import render_to_string
@@ -8,6 +8,9 @@ from django.template.loader import render_to_string
 from accounts.models import User
 from courses.fields import OrderField
 from modules.models import Module
+from courses.models import Course  
+from assessment.models import StudentCompetition,CompetitionDetails
+
 
 
 class Lesson(models.Model):
@@ -82,36 +85,38 @@ class Lesson(models.Model):
 class LessonTrack(models.Model):
     """Tracks the progress of a lesson with an ID."""
 
-    id = models.AutoField(primary_key=True, help_text="Primary key")
-    lesson = models.ForeignKey(
-        Lesson,
-        on_delete=models.CASCADE,
-        related_name="lesson_tracks",
-        help_text="Lesson being tracked",
-    )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="lesson_tracks",
-        help_text="User who is tracking the lesson",
-    )
-    time_spent = models.IntegerField(
-        default=0, help_text="Time spent on the lesson"
-    )
-    completed_at = models.DateTimeField(
-        null=True, blank=True, help_text="Timestamp of completion"
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True, help_text="Timestamp of creation"
-    )
-    state = models.BooleanField(
-        default=True, help_text="State of the lesson track (active/inactive)"
-    )
+    id = models.AutoField(primary_key=True)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="lesson_tracks")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="lesson_tracks",null=True, blank=True)  
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="lesson_tracks",null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    state = models.BooleanField(default=True) 
+
+    # # Fetching course ID through the lesson's module
+    # @property
+    # def get_course(self):
+    #     return self.lesson.module.course if hasattr(self.lesson.module, "course") else None
+
+
+    class Meta:
+        verbose_name = "Attendance"
+        verbose_name_plural = "Attendance"
+        unique_together = ("user", "lesson")  # Ensures unique tracking per user per lesson
 
     def __str__(self):
-        """Returns the string representation of the LessonTrack."""
-        return f"LessonTrack for {self.user.username} on {self.lesson.id}"
+        return f"Attendance for {self.user.username} on {self.lesson.id}"
 
+# class LessonTracking(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)   
+#     course_id = models.IntegerField()
+#     access_on = models.DateTimeField(auto_now_add=True)
+#     time_spent = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+#     is_complete = models.BooleanField(default=False)
+
+#     def __str__(self):
+#         return f"User {self.user.username} - Lesson {self.lesson_id} - {self.access_on}"
 
 class ItemBase(models.Model):
     """Abstract base class for different types of items with an owner, title, created and updated timestamps."""
@@ -132,11 +137,41 @@ class ItemBase(models.Model):
         """Returns the string representation of the item."""
         return str(self.title)
 
-    def render(self):
+    def render(self, lesson, request):
         """Renders the item to a string using a template."""
+        template_name = f"lessons/layouts/{self._meta.model_name}.html"
+        course = lesson.module.course if hasattr(lesson.module, "course") else None
+        competition_details = CompetitionDetails.objects.first()
+
+        total_lessons_required = competition_details.total_lessons_required if competition_details else 20
+
+        # Initialize defaults
+        attended_lessons = 0
+        attendance_percentage = 0
+        is_eligible = False
+
+        if request.user.is_authenticated:
+            attended_lessons = LessonTrack.objects.filter(user=request.user, course=course).count()
+            attendance_percentage = (attended_lessons / total_lessons_required) * 100 if total_lessons_required > 0 else 0
+            is_eligible = attendance_percentage >= 50
+
+        show_eligibility_message = False
+        if lesson.object_id == total_lessons_required:
+            show_eligibility_message = is_eligible
+
         return render_to_string(
-            f"lessons/layouts/{self._meta.model_name}.html", {"item": self}
+            template_name,
+            {
+                "item": self,
+                "course_id": lesson.module.course.id if hasattr(lesson.module, "course") else None,
+                "user_id": request.user.id if request.user.is_authenticated else None,
+                "lesson_id": lesson.id,
+                "course_title": lesson.module.course.title,
+                "lesson_title": lesson.title,
+                "show_eligibility_message": show_eligibility_message,
+            },
         )
+
 
 
 class Text(ItemBase):
@@ -161,3 +196,24 @@ class Video(ItemBase):
     """Represents a video item with a URL field."""
 
     url = models.URLField()
+
+
+# class Video(ItemBase):
+#     """Represents a video item with a URL field."""
+#     url = models.URLField()
+#     lessons = GenericRelation("Lesson", related_query_name="videos") 
+
+# class Text(ItemBase):
+#     """Represents a text item with content."""
+#     content = models.TextField()
+#     lessons = GenericRelation("Lesson", related_query_name="texts")  
+
+# class Image(ItemBase):
+#     """Represents an image item with an image field."""
+#     image = models.ImageField(upload_to="images")
+#     lessons = GenericRelation("Lesson", related_query_name="images")  
+
+# class File(ItemBase):
+#     """Represents a file item with a file field."""
+#     file = models.FileField(upload_to="files")
+#     lessons = GenericRelation("Lesson", related_query_name="files")

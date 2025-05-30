@@ -9,6 +9,7 @@ class AssessmentUpload(models.Model):
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        db_index=True,
         related_name="student_submissions",
     )
     work = models.BinaryField()
@@ -49,3 +50,11 @@ class StudentCompetition(models.Model):
         return (
             f"{self.user.username} - {'Active' if self.status else 'Inactive'}"  # pylint: disable=inconsistent-quotes
         )
+
+class CompetitionDetails(models.Model):
+    """Admin-defined competition rules"""
+    total_lessons_required = models.IntegerField(default=1)
+    course_end_date = models.DateField()
+
+    def __str__(self):
+        return f"Competition - {self.total_lessons_required} Lessons | Ends on {self.course_end_date}"

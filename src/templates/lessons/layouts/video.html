@@ -1,74 +1,176 @@
-<div class="container">
+{% extends 'base.html' %} {% load static i18n %} 
+{% block title %}lesson {% endblock %}
+ {% block content %}
+
+<main class="main_wrapper overflow-hidden">
+  {% include 'partials/navbar.html' %} {% include 'partials/mobile-menu.html' %}
+  <div class="container mt-5 mb-5">
+    <!-- Course & Lesson Titles -->
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="embed-responsive embed-responsive-16by9">
-                <div id="player" class="embed-responsive-item"></div>
-            </div>
-        </div>
+      <div class="col-lg-8 text-center">
+        <h2 class="fw-bold text-primary course_title">{{ course_title }}</h2>
+        <h4 class="text-muted lesson_title">{{ lesson_title }}</h4>
+      </div>
     </div>
-</div>
+
+    <!-- Video Player -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-lg-8">
+        <div class="ratio ratio-16x9">
+          <!-- <div id="player"></div> -->
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube-nocookie.com/embed/{{ item.url|slice:'-11:' }}?modestbranding=1&showinfo=0"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscribe Section -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-lg-8 text-center">
+        <p class="fw-semibold mb-3">
+          Enjoying the lessons? Subscribe for more updates! 🎥
+        </p>
+        <div id="subscribe-button">
+          <a
+            href="https://www.youtube.com/@kalagurubyirarangoliarts"
+            class="btn btn-danger rounded-pill px-3 py-2"
+            target="_blank"
+          >
+            <i class="bi bi-youtube me-2"></i> Subscribe to Channel
+          </a>
+        </div>
+
+        {% if show_eligibility_message %}
+        <div class="alert alert-success mt-4 p-4 d-flex flex-column align-items-center text-center shadow-lg rounded">
+            <h4 class="fw-bold text-success mb-3">🎉 Congratulations!</h4>
+            <p class="mb-3">You are eligible for the <strong>Work Submission</strong>.</p>
+        
+            <a href="{% url 'upload' %}" class="btn btn-success fw-semibold px-4 py-2">
+                Submit Your Work
+            </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+<!-- JavaScript for YouTube Player -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Load the IFrame Player API code asynchronously.
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  // Load the YouTube IFrame Player API code asynchronously
+  var tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName("script")[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // Extract the video ID from the YouTube link
-    function getYouTubeVideoId(url) {
-        var videoId = '';
-        var urlParts = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-        if (urlParts[2] !== undefined) {
-            videoId = urlParts[2].split(/[^0-9a-z_\-]/i)[0];
-        } else {
-            videoId = urlParts[0];
-        }
-        return videoId;
+  // Extract YouTube video ID from the URL
+  function getYouTubeVideoId(url) {
+    var videoId = "";
+    var urlParts = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+    if (urlParts[2] !== undefined) {
+      videoId = urlParts[2].split(/[^0-9a-z_\-]/i)[0];
+    } else {
+      videoId = urlParts[0];
+    }
+    return videoId;
+  }
+
+  // Initialize the YouTube Player
+  var player;
+  function onYouTubeIframeAPIReady() {
+    var videoUrl = "{{ item.url }}"; // Fetch YouTube video URL dynamically
+    var videoId = getYouTubeVideoId(videoUrl);
+    player = new YT.Player("player", {
+      height: "390",
+      width: "640",
+      videoId: videoId,
+      playerVars: {
+        controls: 1, // Show controls
+        rel: 0, // Disable related videos at the end
+        modestbranding: 1, // Remove YouTube logo
+        showinfo: 0, // Hide video title & uploader info
+        iv_load_policy: 3, // Hide video annotations
+        fs: 0, // Disable fullscreen button
+        disablekb: 1, // Disable keyboard shortcuts
+        playsinline: 1, // Ensures video plays inline (for mobile)
+      },
+      events: {
+        onStateChange: onPlayerStateChange,
+      },
+    });
+  }
+
+  // Track video watch progress
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+      setInterval(trackProgress, 1000);
+    }
+  }
+
+  function trackProgress() {
+    var currentTime = player.getCurrentTime();
+    var duration = player.getDuration();
+    var percentageWatched = (currentTime / duration) * 100;
+
+    console.log("Current Time: " + currentTime);
+    console.log("Percentage Watched: " + percentageWatched.toFixed(2) + "%");
+
+    if (percentageWatched >= 90) {
+      console.log("User has watched 90% of the video.");
+    }
+  }
+
+  $(document).ready(function () {
+    var lessonId = "{{ lesson_id }}";
+    var userId = "{{ user_id }}";
+    var courseId = "{{ course_id }}";
+
+    function getCSRFToken() {
+      return document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("csrftoken="))
+        ?.split("=")[1];
     }
 
-    // Replace the 'player' div with an <iframe> and YouTube player after the API code downloads.
-    var player;
-    function onYouTubeIframeAPIReady() {
-        var videoUrl = '{{ item.url }}'; // Replace with your YouTube video URL
-        var videoId = getYouTubeVideoId(videoUrl);
-        player = new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: videoId,
-            playerVars: {
-                'controls': 0, // Disable controls
-                'disablekb': 1, // Disable keyboard controls
-                'rel': 0, // Disable related videos
-                'modestbranding': 1, // Hide YouTube logo
-                'showinfo': 0, // Hide video title
-                'iv_load_policy': 3 // Disable annotations
-            },
-            events: {
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
-
-    // Track video watch progress
-    var done = false;
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-            setInterval(trackProgress, 1000);
-            done = true;
-        }
-    }
-
-    function trackProgress() {
-        var currentTime = player.getCurrentTime();
-        var duration = player.getDuration();
-        var percentageWatched = (currentTime / duration) * 100;
-
-        console.log('Current Time: ' + currentTime);
-        console.log('Percentage Watched: ' + percentageWatched.toFixed(2) + '%');
-
-        if (percentageWatched >= 90) {
-            console.log('User has watched 90% of the video.');
-        }
-        // You can send this data to your server or perform other actions
-    }
+    $.ajax({
+      type: "POST",
+      url: "{% url 'track_lesson' %}",
+      data: { lesson_id: lessonId, course_id: courseId, user_id: userId },
+      dataType: "json",
+      headers: { "X-CSRFToken": getCSRFToken() },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+      },
+      // success: function(response) {
+      //     if (response.status === "success") {
+      //         console.log("Lesson tracked:", response);
+      //     }
+      // },
+      // error: function(xhr) {
+      //     console.error("Error tracking lesson:", xhr.responseText);
+      // }
+    });
+  });
 </script>
+
+<!-- Styles for Improved UI -->
+<style>
+  .course_title {
+    font-size: 28px;
+  }
+  .lesson_title {
+    font-size: 22px;
+  }
+  #subscribe-button {
+    margin-top: 15px;
+  }
+</style>
+{% endblock %}

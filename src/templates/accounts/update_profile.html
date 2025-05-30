@@ -45,26 +45,58 @@
                             <label class="form-label">Phone Number</label>
                             {{ form.phone|add_class:"form-control" }}
                         </div>
-                        <!-- Address -->
+                        <!-- Birthdate -->
                         <div class="col-md-12">
-                            <label class="form-label">Address</label>
-                            {{ form.address|add_class:"form-control" }}
+                            <label class="form-label">Birth Date</label>
+                            {{ form.birthday|add_class:"form-control" }}
                         </div>
-                        <!-- Taluka -->
                         <div class="col-md-12">
+                            <label class="form-label">State</label>
+                            <select id="state-dropdown" name="state" class="form-control">
+                                <option value="">Select State</option>
+                                {% for state in form.state.field.queryset %}
+                                <option value="{{ state.id }}" 
+                                {% if form.instance.state and form.instance.state.id == state.id %}selected{% endif %}>
+                                {{ state.name }}
+                            </option>
+                                {% endfor %}
+                                <option value="other">Other (Enter your State manually)</option>
+                            </select>
+                            <input type="text" id="other-state" name="other_state" class="form-control mt-2" placeholder="Enter Other State" style="display: none;">
+                        </div>
+                        
+                        <!-- District Dropdown -->
+                        <div class="col-md-12">
+                            <label class="form-label">District</label>
+                            <select id="district-dropdown" name="district" class="form-control">
+                                <option value="">Select District</option>
+                                {% if form.instance.district %}
+                                    <option value="{{ form.instance.district.id }}" selected>{{ form.instance.district.name }}</option>
+                                {% endif %}
+                                <option value="other">Other (Enter your district manually)</option>
+                            </select>
+                            <input type="text" id="other-district" name="other_district" class="form-control mt-2" placeholder="Enter Other District" style="display: none;">
+                        </div>
+                          <!-- Taluka -->
+                          <div class="col-md-12">
                             <label class="form-label">Taluka</label>
                             {{ form.taluka|add_class:"form-control" }}
                         </div>
-                        <!-- District -->
+                        <!-- Address -->
                         <div class="col-md-12">
+                            <label class="form-label">Full Address</label>
+                            {{ form.address|add_class:"form-control" }}
+                        </div>
+                      
+                        <!-- District -->
+                        <!-- <div class="col-md-12">
                             <label class="form-label">District</label>
                             {{ form.district|add_class:"form-control" }}
                         </div>
-                        <!-- State -->
                         <div class="col-md-12">
                             <label class="form-label">State</label>
                             {{ form.state|add_class:"form-control" }}
-                        </div>
+                        </div> -->
                         <!-- Pincode -->
                         <div class="col-md-12">
                             <label class="form-label">Pin Code</label>
@@ -73,6 +105,7 @@
                         <!-- Profile Picture -->
                         <div class="col-md-12">
                             <label class="form-label">Profile Picture</label>
+                            <p class="text-muted mb-0">Note: Please upload Images less than 2 mb</p>
                             {{ form.picture|add_class:"form-control" }}
                             {% if user_profile.picture %}
                                 <img id="profilePreview"
@@ -112,6 +145,12 @@
                                 {{ form.level_completed|add_class:"form-control" }}
                             </div>
                         {% endif %}
+
+                        {% if form.picture.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.picture.errors }}
+                        </div>
+                    {% endif %}
                         <!-- Submit Button -->
                         <div class="col-12 text-center mt-3">
                             <button type="submit" class="btn btn-primary px-4">Update Profile</button>
@@ -121,15 +160,113 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-  // Show profile picture preview
-  document.getElementById("id_picture").onchange = function (event) {
-    let reader = new FileReader();
-    reader.onload = function () {
-      let img = document.getElementById("profilePreview");
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  };
-    </script>
+document.addEventListener("DOMContentLoaded", function() {
+    var pictureInput = document.getElementById("id_picture");
+
+    if (pictureInput) {
+        // Profile Picture Preview and Size Validation
+        pictureInput.addEventListener("change", function(event) {
+            let file = event.target.files[0];
+            let reader = new FileReader();
+            let errorContainer = document.getElementById("image-size-error");
+
+            if (!errorContainer) {
+                errorContainer = document.createElement("p");
+                errorContainer.id = "image-size-error";
+                errorContainer.style.color = "red";
+                pictureInput.parentNode.appendChild(errorContainer);
+            }
+
+            if (file) {
+                let fileSize = file.size;
+                let maxSize = 2 * 1024 * 1024;
+
+                if (fileSize > maxSize) {
+                    errorContainer.textContent = "The uploaded image exceeds the 2MB limit. Please upload a smaller image.";
+                    pictureInput.value = ""; // Clear file input
+                    return;
+                } else {
+                    errorContainer.textContent = ""; // Clear the error message if the file is valid
+                }
+
+                reader.onload = function () {
+                    let img = document.getElementById("profilePreview");
+                    if (img) {
+                        img.src = reader.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Prevent form submission if file size exceeds limit
+    document.querySelector("form").addEventListener("submit", function(e) {
+        var fileInput = document.querySelector("#id_picture");
+        var errorContainer = document.getElementById("image-size-error");
+
+        if (fileInput && fileInput.files.length > 0) {
+            var fileSize = fileInput.files[0].size; 
+            var maxSize = 2 * 1024 * 1024;
+
+            if (fileSize > maxSize) {
+                if (!errorContainer) {
+                    errorContainer = document.createElement("p");
+                    errorContainer.id = "image-size-error";
+                    errorContainer.style.color = "red";
+                    fileInput.parentNode.appendChild(errorContainer);
+                }
+                errorContainer.textContent = "The uploaded image exceeds the 2MB limit. Please upload a smaller image.";
+                e.preventDefault();
+            } else {
+                if (errorContainer) {
+                    errorContainer.textContent = "";
+                }
+            }
+        }
+    });
+});
+
+$(document).ready(function () {
+    // Handle State Selection
+    $("#state-dropdown").change(function () {
+        var stateId = $(this).val();
+        if (stateId === "other") {
+            $("#other-state").show().prop("required", true);
+            $("#district-dropdown").html('<option value="other">Other</option>');
+        } else {
+            $("#other-state").hide().prop("required", false);
+            $("#other-state").val("");
+
+            // Fetch districts for selected state
+            $.ajax({
+                url: "{% url 'get_districts' %}",
+                data: { state_id: stateId },
+                success: function (data) {
+                    $("#district-dropdown").html('<option value="">Select District</option>');
+                    $.each(data, function (index, district) {
+                        $("#district-dropdown").append(
+                            `<option value="${district.id}">${district.name}</option>`
+                        );
+                    });
+                    $("#district-dropdown").append('<option value="other">Other</option>');
+                }
+            });
+        }
+    });
+
+    // Handle District Selection
+    $("#district-dropdown").change(function () {
+        if ($(this).val() === "other") {
+            $("#other-district").show().prop("required", true);
+        } else {
+            $("#other-district").hide().prop("required", false);
+            $("#other-district").val("");
+        }
+    });
+});
+
+        </script>
 {% endblock %}

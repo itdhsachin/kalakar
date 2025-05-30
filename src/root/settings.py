@@ -28,10 +28,11 @@ SECRET_KEY = config(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = config("DEBUG", default=True, cast=bool)
 
 # ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="82.29.166.251,0.0.0.0").split(",")
-ALLOWED_HOSTS = ['82.29.166.251', 'localhost','kalagurubyirarangoliarts.com']
+ALLOWED_HOSTS = ['82.29.166.251', 'localhost', 'kalagurubyirarangoliarts.com', 'www.kalagurubyirarangoliarts.com']
+
 
 # change the default user models to our custom model
 AUTH_USER_MODEL = "accounts.User"
@@ -54,17 +55,19 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "widget_tweaks",
     "payment",
-    "assessment"
-    "rest_framework",
     "assessment",
     "coupon",
+    "django.contrib.sitemaps"
 ]
+
+#     "rest_framework",
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.http.ConditionalGetMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -133,13 +136,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# TIME_ZONE = "UTC"
+TIME_ZONE =  'Asia/Kolkata'
 
 USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/accounts/dashboard/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"  # Redirects to login page after logout
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -148,6 +155,8 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024  
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -179,10 +188,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # smtp connection
 EMAIL_BACKEND = config("EMAIL_BACKEND")
 EMAIL_HOST = config("EMAIL_HOST")
-EMAIL_PORT = config("EMAIL_PORT")
-EMAIL_USE_TLS = config("EMAIL_USE_TLS")
-
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
+CSRF_TRUSTED_ORIGINS = ['https://kalagurubyirarangoliarts.com']
+RAZORPAY_KEY_ID = "rzp_live_krjJ5BQtw9U2uN"
+RAZORPAY_KEY_SECRET = "Moev7umBflElNGelTi5Les9i"

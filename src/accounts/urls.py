@@ -1,11 +1,22 @@
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+from django.contrib.auth.views import LogoutView
 
 from accounts.views import (
     CustomPasswordResetView,
+    CustomPasswordResetConfirmView,
     dashboard,
     profile,
     update_profile,
+    thank_you,
+    certificate_view,
+    get_districts,
+    certificate_detail,
+    certificate_list,
+    certificate_download
+
+    
+    # logout_view
 )
 
 urlpatterns = [
@@ -24,13 +35,7 @@ urlpatterns = [
         ),
         name="password_reset_done",
     ),
-    path(
-        "password-reset/<uidb64>/<token>/",
-        auth_views.PasswordResetConfirmView.as_view(
-            template_name="accounts/password_reset_confirm.html"
-        ),
-        name="password_reset_confirm",
-    ),
+    path('accounts/password-reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path(
         "reset_complete/done/",
         auth_views.PasswordResetCompleteView.as_view(
@@ -39,4 +44,16 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("dashboard/", dashboard, name="dashboard"),
+    path("thank_you/", thank_you, name="thank_you"),
+    path("certificate/", certificate_view, name="certificate"),
+   
+    # path('logout/', logout_view, name='logout'),
+    # path("logout/",LogoutView.as_view(template_name="accounts/logged_out.html"), name="logout"),
+    path("accounts/logout/" , LogoutView.as_view(template_name="accounts/logged_out.html"), name = "logout"),
+    path("get-districts/", get_districts, name="get_districts"),
+    path('certificates/', certificate_list, name='certificate_list'),
+    path('certificate/<int:course_id>/', certificate_detail, name='certificate_detail'),
+    path('certificate/<int:course_id>/download/', certificate_download, name='certificate_download'),
+
+
 ]

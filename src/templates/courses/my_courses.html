@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Course{% endblock %}
+
+{% block content %}
+
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+<style>
+  .course-card {
+  background-color: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.scrollable-description {
+  height: 180px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+</style>
+<main class="main_wrapper overflow-hidden">
+  {% include 'partials/navbar.html' %}
+  {% include 'partials/mobile-menu.html' %}
+
+  <div>
+    <div class="theme__shadow__circle"></div>
+    <div class="theme__shadow__circle shadow__right"></div>
+  </div>
+
+  <div class="breadcrumbarea pt-2 pb-2 p-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="breadcrumb__content__wraper" data-aos="fade-up">
+            <div class="breadcrumb__title">
+              <h2 class="heading">My Courses</h2>
+            </div>
+            <div class="breadcrumb__inner">
+              <ul>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li>My Courses</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shape__icon__2">
+      <img loading="lazy" class="shape__icon__img shape__icon__img__1" src="{% static 'img/herobanner/herobanner__1.png' %}" alt="photo"/>
+      <img loading="lazy" class="shape__icon__img shape__icon__img__2" src="{% static 'img/herobanner/herobanner__2.png' %}" alt="photo"/>
+      <img loading="lazy" class="shape__icon__img shape__icon__img__3" src="{% static 'img/herobanner/herobanner__3.png' %}" alt="photo"/>
+      <img loading="lazy" class="shape__icon__img shape__icon__img__4" src="{% static 'img/herobanner/herobanner__5.png' %}" alt="photo"/>
+    </div>
+  </div>
+
+  <div class="coursearea sp_top_100 sp_bottom_100">
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-xl-12">
+          <div class="course__text__wraper" data-aos="fade-up">
+          </div>
+        </div> -->
+
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+          <div class="tab-content tab__content__wrapper with__sidebar__content" id="myTabContent">
+            <div class="tab-pane fade active show" id="projects__one" role="tabpanel" aria-labelledby="projects__one">
+              <div class="row">
+                {% for enrollment in enrollments %}
+                <div class="col-xl-4 col-lg-6 col-md-6 col-12 d-flex align-items-stretch" data-aos="fade-up">
+                  <div class="course-card shadow-sm rounded p-3 w-100">
+                    <div class="gridarea__img mb-3 text-center">
+                      {% if enrollment.course.slug %}
+                      <a href="{% url 'courses' enrollment.course.slug %}">
+                        {% if enrollment.course.id == 1 or enrollment.course.id == 9 %}
+                        <img class="img-fluid rounded" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
+                        {% elif enrollment.course.id == 4 or enrollment.course.id == 10 %}
+                        <img class="img-fluid rounded" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 5 or enrollment.course.id == 11 %}
+                        <img class="img-fluid rounded" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 6 or enrollment.course.id == 12 %}
+                        <img class="img-fluid rounded" src="{% static 'img/home/warli_art.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 7 or enrollment.course.id == 13 %}
+                        <img class="img-fluid rounded" src="{% static 'img/home/haar_mala.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 8 or enrollment.course.id == 14 %}
+                        <img class="img-fluid rounded" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
+                        {% else %}
+                        <img class="img-fluid rounded" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+                        {% endif %}
+                      </a>
+                      {% else %}
+                      <div class="text-center p-3">
+                        <p class="text-muted">You are not enrolled in any course yet.</p>
+                        <a href="{% url 'courses' %}" class="btn btn-outline-primary">Enroll Now</a>
+                      </div>
+                      {% endif %}
+                    </div>
+              
+                    <div class="text-center mb-2">
+                      <h5 class="fw-bold">
+                        {% if enrollment.course.slug %}
+                        <a class="text-dark" href="{% url 'courses' enrollment.course.slug %}">{{ enrollment.course.title }}</a>
+                        {% else %}
+                        {{ enrollment.course.title }}
+                        {% endif %}
+                      </h5>
+                    </div>
+              
+                    <div class="scrollable-description mb-3">
+                      <p>{{ enrollment.course.description|linebreaksbr }}</p>
+                    </div>
+              
+                    <div class="text-center mt-auto">
+                      {% if enrollment.course.slug %}
+                      <a class="btn btn-primary w-100" href="{% url 'courses' enrollment.course.slug %}">View Course</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>              
+            </div>
+
+            <div class="tab-pane fade" id="projects__two" role="tabpanel" aria-labelledby="projects__two">
+              <!-- Alternative layout -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footerarea">{% include 'partials/footer.html' %}</div>
+</main>
+{% endblock %}

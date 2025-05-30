@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+{% include 'partials/theme-switch.html' %}
+<main>
+    <div class="container">
+        <h2>Submit Review</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label>Review Score (1-5):</label>
+            <input type="number" name="review_score" min="1" max="5" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    {% include 'partials/footer.html' %}
+</main>
+
+
+{% endblock %}

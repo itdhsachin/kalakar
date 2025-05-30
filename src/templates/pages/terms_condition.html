@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}Terms and Conditions{% endblock %}
+{% block content %}
+<main class="main_wrapper overflow-hidden bg-light">
+  {% include 'partials/navbar.html' %}
+  {% include 'partials/mobile-menu.html' %}
+  <style>
+    li {
+      display: inline flow-root list-item  !important;
+      margin-top: 15px !important;
+      list-style: decimal !important;
+    }
+  </style>
+        <div class="container my-5">
+            <div class="card shadow p-4">
+                <h1 class="text-center text-primary">Terms & Conditions</h1>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ol start="" class="ps-3">
+                            <li>ही सुविधा फक्त ऑनलाईन वर्गासाठीच आहे, फक्त ऑनलाईन वर्ग जॉईन करण्यासाठी तुम्ही भारतातून तुम्ही कुठूनही सहभाग घेऊ शकता</li>
+                            <li>स्पर्धा ही महाराष्ट्रातील ज्यांचे वय वर्ष 18 ते पुढे त्याच्यासाठी असणार आहे</li>
+                            <li>प्रत्येक जिल्ह्यातून फक्त एकच उत्तम कलाकार आपण ऑनलाईन निवडणार आहोत</li>
+                            <li>राज्यस्तरीय स्पर्धा ऑगस्ट किंवा सप्टेंबर महिन्यात ऑनलाईन किंवा ऑफलाईन आयोजित केली जाणार आहे.</li>
+                            <li>२१ दिवसांचे ऑनलाईन मेहंदी वर्ग वेबसाईटच्या माध्यमातून घेण्यात येतील. स्पर्धेत सहभागी होण्यासाठी किमान ८०% उपस्थिती अनिवार्य आहे.</li>
+                            <li>स्पर्धेत घेतलेले निर्णय हे परीक्षकांचे / इरा रांगोळी आर्टस् team चे हे अंतिम असतील</li>
+                            <li>स्पर्धकाने स्वतः मेहंदी काढणे हे आवश्यक आहे—हे बंधनकारक आहे.फायनल मेहंदी काढताना किमान २-३ मिनिटांचा व्हिडिओ शूट करून ठेवणे गरजेचे आहे. आवश्यकता असल्यास आम्ही हा व्हिडिओ मागू. राज्यस्तरीय स्पर्धेसाठी निवड झाल्यास आणि तुमच्याकडे हा व्हिडिओ नसेल, तर तुम्ही आपोआप बाद ठरू शकता.</li>
+                            <li>आपली व्यक्तिगत माहिती भरणे हे बंधनकारक आहे त्याच्याशिवाय तुम्ही स्पर्धेसाठी पात्र ठरणार नाही</li>
+                            <li>जिल्हास्तरीय स्पर्धा ऑनलाईनच होईल, तर राज्यस्तरीय स्पर्धा ऑफलाईन किंवा ऑनलाईन घेण्यात येईल. यासंदर्भातील नियोजन किमान १० ते २० दिवस आधी जाहीर केले जाईल.</li>
+                            <li>या उपक्रमाच्या नाव नोंदणीसाठी नोंदणी शुल्क भरणे हे गरजेचे आहे ते भरल्याशिवाय तुम्ही या उपक्रमात सहभाग घेऊ शकत नाही नोंदणी शुल्क भरल्यानंतर ती पुन्हा मिळणार नाही</li>
+                            <li>नोंदणी शुल्क भरण्यावेळी तुम्ही दिलेल्या माहितीनुसारच आपण तुम्हाला ई-मेल आणि व्हाट्सअप च्या माध्यमातून पुढील तुमचे लॉगिन संदर्भातली माहिती पाठवणार आहोत तुम्ही जर ईमेल आयडी तुमचे नाव मोबाईल (व्हॉट्सॲप) नंबर किंवा इतर गोष्टी जर चुकीच्या टाकल्या असतील तर त्या तुम्हाला पुन्हा बदलता येणार नाही किंवा त्यासाठी तुम्हाला नव्यानेच पुन्हा नोंदणी शुल्क द्यावे लागेल. आणि आधी भरलेले पैसे परत मिळणार नाही.</li>
+                            <li>या उपक्रमात आपण आपले यूट्यूब चैनल आणि बाकी सोशल मीडिया सुद्धा फॉलो करणार हे बंधनकारक/गरजेचे आहे</li>
+                            <li>संपूर्ण नियोजन आपण आपल्या वेबसाईटच्या माध्यमातून करणार आहोत कदाचित याच्यामध्ये काही तांत्रिक अडचण येत असल्यास स्पर्धे संदर्भातील दिलेल्या तारखा ह्यात बदल होऊ शकतो किंवा सदर स्पर्धा ही रद्द सुद्धा होऊ शकते.</li>
+                            <li>आयत्या वेळेस कदाचित यात काही बदल होऊ शकतो आणि काही नियम हे बदलू शकतात.</li>
+                            <li>वरील सर्व नियम या तुम्हाला मान्य असल्यास तरच आपण यात भाग घ्यावा, आपण पैसे भरले याचा अर्थ आपल्याला सर्व नियम माहिती आहे आपण ते वाचले आहेत आणि तुम्हाला ते मान्य आहे असे गृहीत धरण्यात येईल.</li>
+                            <li>जर काही कायदेशीर अडचण येत असेल तर या बद्दल पुणे कोर्टातच याची पूर्तता होऊ शकते.</li>
+                        </ol>
+
+                    </div>
+                    <div class="col-md-6">
+                        <ol start="" class="ps-3">
+                                <li>This facility is only for online classes, you can participate from anywhere in India to join the online class.</li>
+                                <li>The competition will be for those in Maharashtra who are 18 years of age and above.</li>
+                                <li>We will select only one best artist from each district online.</li>
+                                <li>The State-level competition will be held online or offline in August or September.</li>
+                                <li>The 21-day online Mehndi course will be conducted through the website, and participants must maintain at least 80% attendance to qualify for the competition.</li>
+                                <li>The decisions taken in the competition will be final by the judges / Ira Rangoli Arts team.</li>
+                                <li>Participants must create their own Mehndi designs—this is mandatory. During the final round, participants must record a 2-3 minute video of their Mehndi application. If required, we may request this video. If you are selected for the state-level competition but do not have the video, you may be disqualified.</li>
+                                <li>Filling your personal information is mandatory, otherwise you will not be eligible for the competition.</li>
+                                <li>The district-level competition will be strictly online, while the state-level competition may be offline or online. The final decision will be communicated 10 to 20 days in advance.</li>
+                                <li>It is necessary to pay the registration fee for this activity. Without paying it, you cannot participate in this activity. After paying the registration fee, it will not be returned.</li>
+                                <li>We will send you your login information through e-mail and WhatsApp * as per the information you provided while paying the registration fee. If you have entered the email ID, name, mobile (WhatsApp) number or other things incorrectly, you will not be able to change them again or you will have to pay the registration fee again. And the money paid earlier will not be refunded.</li>
+                                <li>It is mandatory/necessary that you also follow our YouTube channel and other social media in this activity.</li>
+                                <li>We will do the entire planning through our website. Perhaps if there is any technical problem in this, the dates given in the competition may change or the competition may even be canceled.</li>
+                                <li>There may be some changes in this from time to time and some rules may change.</li>
+                                <li>You should participate only if you agree to all the above rules, the fact that you have paid means that you know all the rules, you have read them and you agree to them.</li>
+                                <li>If there is any legal problem, then this can be resolved in the Pune court.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center mt-3">© 2025 Ira Rangoli Arts. All Rights Reserved.</p>
+        </div>
+        {% include 'partials/footer.html' %}
+    </main>
+
+    {% endblock %}

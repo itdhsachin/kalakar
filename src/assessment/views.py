@@ -5,6 +5,7 @@ from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
 
 from assessment.forms import ReviewForm, StudentCompetitionForm
 from assessment.models import AssessmentUpload, StudentCompetition
+from django.conf import settings
 
 
 @login_required
@@ -33,9 +34,17 @@ def upload(request):
         user=request.user, status=1
     ).exists():
         return HttpResponse("You are not allowed to upload files.", status=403)
-
+    has_submitted = AssessmentUpload.objects.filter(user_id=request.user).exists()
+    if has_submitted:
+        return render(request, "assessment/upload.html",{
+            "has_submitted" : has_submitted
+        })
     if request.method == "POST" and request.FILES.get("work"):
         file = request.FILES["work"]
+        if file.size > settings.FILE_UPLOAD_MAX_MEMORY_SIZE:
+            return HttpResponse(
+                "File too large. Maximum allowed size is 5 MB.Please upload File less than 5 MB.", status=400
+            )
         current_date = datetime.now().strftime("%Y%m%d")
         formatted_filename = f"{file.name.split('.')[0]}_{request.user.id}_{current_date}.{file.name.split('.')[-1]}"  # pylint: disable=inconsistent-quotes
 

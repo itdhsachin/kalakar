@@ -1,0 +1,116 @@
+{% extends 'base.html' %} 
+{% load static i18n %} 
+{% block title %}Certificates{% endblock %}
+{% block content %}
+<style>
+    .certificate-section {
+        padding: 40px 20px;
+        background: #f9f9f9;
+        border-radius: 15px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .certificate-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #5A4FCF;
+        text-align: center;
+    }
+
+    .certificate-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .certificate-item {
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .certificate-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .certificate-course-name {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #333;
+    }
+
+    .certificate-btn {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+        border-radius: 50px;
+        background: linear-gradient(135deg, #7F56D9, #9F86C6);
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .certificate-btn:hover {
+        background: linear-gradient(135deg, #5A4FCF, #7F56D9);
+        text-decoration: none;
+        color: white;
+    }
+
+    .certificate-empty-msg {
+        font-size: 1.1rem;
+        color: #777;
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    @media (max-width: 600px) {
+        .certificate-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .certificate-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+
+<main class="main_wrapper overflow-hidden">
+    {% include 'partials/navbar.html' %} 
+    {% include 'partials/mobile-menu.html' %}
+    <div class="certificate-section">
+        <h2 class="certificate-title">Your Certificates</h2>
+        {% if certificates_data %}
+            <ul class="certificate-list">
+                {% for cert in certificates_data %}
+                    {% if cert.is_available %}
+                        <li class="certificate-item">
+                            <span class="certificate-course-name">{{ cert.course_name }}</span>
+                            <a href="{{ cert.download_url }}" class="certificate-btn">View Certificate</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            <p class="certificate-empty-msg">No enrolled courses yet.</p>
+        {% endif %}
+    </div>
+    
+
+{% include 'partials/footer.html' %}
+</main>
+{% endblock %}

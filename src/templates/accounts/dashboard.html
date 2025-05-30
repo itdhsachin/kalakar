@@ -2,83 +2,217 @@
 {% load static i18n %} 
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-{% include 'partials/theme-switch.html' %}
+
 <style>
   .headName {
-    font-size: 1.8rem; /* Increase size */
-    font-weight: 700; /* Extra bold */
-    color: #333; /* Adjust color */
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
   }
 
   .main_wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensure page takes full viewport height */
+    min-height: 100vh;
+    background-color: #f5f7fa; /* Light background */
   }
 
   .content_wrapper {
     margin-top: 10px;
-    flex: 1; /* Take up remaining height */
+    flex: 1;
     display: flex;
     flex-direction: column;
   }
 
-  .dashboard-btn {
-    width: 300px !important; /* Fixed button width */
+  .dashboard-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
   }
 
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .dashboard-icon {
+    font-size: 28px;
+    background: #eef5ff;
+    padding: 12px;
+    border-radius: 50%;
+    color: #007bff;
+  }
+  .dashboard-img {
+  width: 50px;  /* Adjust size */
+  height: 50px;
+  object-fit: contain;
+}
+
+  .dashboard-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  .logout-button {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+}
+
+.logout-button form {
+    width: 250px; 
+}
+
+.logout-button button {
+    width: 100%;
+}
+
   @media (max-width: 767px) {
-    .dashboard-btn {
-      width: 100% !important; /* Full width on mobile */
+    .dashboard-card {
+      flex-direction: column;
+      text-align: center;
     }
+    .logout-button form {
+    width: 100%; 
+}
+
+.logout-button button {
+    width: 100%;
+}
   }
 </style>
 
 <main class="main_wrapper overflow-hidden">
-  {% include 'partials/navbar.html' %} {% include 'partials/mobile-menu.html' %}
+  {% include 'partials/navbar.html' %} 
+  {% include 'partials/mobile-menu.html' %}
 
   <div class="content_wrapper">
-    <!-- Ensures content takes full height -->
     <div class="text-center mt-5">
       <p class="headName fw-bold">
-        Welcome,
-        <span class="text-primary"
-          >{{ user.first_name }} {{ user.last_name }}</span
-        >
+        Welcome <span class="text-primary">{{ user.first_name }} {{ user.last_name }}</span>
       </p>
     </div>
-
     <div class="container mt-4">
-      <div class="row justify-content-center g-2">
-        <div class="col-12 col-md-5 d-flex justify-content-center">
-          <a href="#" class="dashboard-btn btn btn-primary btn-lg">Course</a>
+      {% if show_message %}
+      <div class="alert alert-warning d-flex align-items-center justify-content-between p-3 rounded shadow-sm">
+          <div class="d-flex align-items-center">
+              <p class="mb-0 fw-semibold">
+                  Your profile is <span class="fw-bold">{{ profile_completion }}%</span> complete. Please complete your profile to 100%.
+              </p>
+          </div>
+          <a href="{% url 'update_profile' %}" class="btn btn-sm btn-dark fw-bold">Complete Profile</a>
+      </div>
+      {% endif %}
+  </div>
+  
+
+    
+      <div class="row gy-3">
+        <div class="col-12 col-md-6">
+          <a href="{% url 'my_courses' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static '/img/dashboardicons/courseicon.png' %}" alt="Courses" class="dashboard-img">
+            <p class="dashboard-text">My Courses</p>
+          </a>
         </div>
-        <div class="col-12 col-md-5 d-flex justify-content-center">
-          <a
-            href="{% url 'profile' %}"
-            class="dashboard-btn btn btn-success btn-lg"
-            >Profile</a
-          >
+        <div class="col-12 col-md-6">
+          <a href="{% url 'courses' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static '/img/dashboardicons/online_course.png' %}" alt="Courses" class="dashboard-img">
+            <p class="dashboard-text">Explore Courses</p>
+          </a>
         </div>
-        <div class="col-12 col-md-5 d-flex justify-content-center">
-          <a
-            href="{% url 'update_profile' %}"
-            class="dashboard-btn btn btn-warning btn-lg"
-            >Update Profile</a
-          >
+        <!-- {% if competition %}
+        
+        <div class="col-12 col-md-6">
+          <a href="{% url 'upload' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static 'img/dashboardicons/submission.png' %}" alt="Profile" class="dashboard-img">
+            <p class="dashboard-text">Submit Your Work</p>
+          </a>
         </div>
-        <div class="col-12 col-md-5 d-flex justify-content-center">
-          <a
-            href="{% url 'password_reset' %}"
-            class="dashboard-btn btn btn-danger btn-lg"
-            >Reset Password</a
-          >
+        {% endif %} -->
+        <!-- <div class="col-12 col-md-6">
+          <a href="{% url 'certificate' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static 'img/dashboardicons/certificateicon.png' %}" alt="Profile" class="dashboard-img">
+            <p class="dashboard-text">Get Certificate</p>
+          </a>
+        </div> -->
+
+
+        {% if single_certificate %}
+        <!-- <a href="{% url 'certificate_list' %}" class="btn btn-primary">View Certificate</a> -->
+        <div class="col-12 col-md-6">
+          <a href="{% url 'certificate_list' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static 'img/dashboardicons/certificateicon.png' %}" alt="Certificate" class="dashboard-img">
+            <p class="dashboard-text">View Certificate</p>
+          </a>
         </div>
+    {% endif %}
+    {% if multiple_certificates %}
+    <!-- <a href="{% url 'certificate_list' %}" class="btn btn-primary">Get Certificates</a> -->
+    <div class="col-12 col-md-6">
+      <a href="{% url 'certificate_list' %}" class="dashboard-card text-decoration-none">
+        <img src="{% static 'img/dashboardicons/certificateicon.png' %}" alt="Profile" class="dashboard-img">
+        <p class="dashboard-text">Get Certificate</p>
+      </a>
+    </div>
+{% endif %}
+    
+
+        <div class="col-12 col-md-6">
+          <a href="{% url 'profile' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static 'img/dashboardicons/profileicon.png' %}" alt="Profile" class="dashboard-img">
+            <p class="dashboard-text">Profile</p>
+          </a>
+        </div>
+        <div class="col-12 col-md-6">
+          <a href="{% url 'update_profile' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static 'img/dashboardicons/updateprofile.png' %}" alt="Update Profile" class="dashboard-img">
+            <p class="dashboard-text">Update Profile</p>
+          </a>
+        </div>
+        <div class="col-12 col-md-6">
+          <a href="{% url 'password_reset' %}" class="dashboard-card text-decoration-none">
+            <img src="{% static 'img/dashboardicons/forgot-password.png' %}" alt="Reset Password" class="dashboard-img">
+            <p class="dashboard-text">Reset Password</p>
+          </a>
+        </div>
+        {% if competition  %}
+        {% if user.is_authenticated %}
+        <div class="col-12 col-md-6">
+          <a href="#" class="dashboard-card text-decoration-none" onclick="document.getElementById('logout-form').submit();">
+            <img src="{% static 'img/dashboardicons/logouticon.png' %}" alt="Logout" class="dashboard-img">
+            <p class="dashboard-text">Logout</p>
+          </a>
+        
+          <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+          </form>
+        </div>
+        {% endif %}
+        {% else %}
+        {% if user.is_authenticated %}
+        <div class="col-12 col-md-6">
+          <a href="#" class="dashboard-card text-decoration-none" onclick="document.getElementById('logout-form').submit();">
+            <img src="{% static 'img/dashboardicons/logouticon.png' %}" alt="Logout" class="dashboard-img">
+            <p class="dashboard-text">Logout</p>
+          </a>
+        
+          <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+          </form>
+        </div>
+        {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>
 
-  <!-- Footer sticks to the bottom -->
   {% include 'partials/footer.html' %}
 </main>
 {% endblock %}

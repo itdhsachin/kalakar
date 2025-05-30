@@ -13,3 +13,4 @@ class Coupons(models.Model):
     )
     coupon_code = models.TextField(max_length=50)
     payment_link = models.URLField(max_length=256)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
