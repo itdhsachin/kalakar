@@ -14,7 +14,6 @@ import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
 from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -32,10 +31,11 @@ from students.forms import CourseEnrollForm
 from django.shortcuts import render
 from django.conf import settings
 from django.utils import timezone
-from django.db.models import Q
-
+from datetime import timedelta
 from coupon.models import Coupons
 
+from django.db.models import Q, Count
+from accounts.models import Student
 
 class OwnerMixin:
     """Mixin to filter the queryset based on the owner of the course.
@@ -495,6 +495,7 @@ def create_razorpay_order(request):
                 "user_phone": phone,
                 "final_price": final_price,  # Include updated price in response
                 "callback_url": "https://kalagurubyirarangoliarts.com/accounts/thank_you/",
+                "couponCode": coupon_code,
             })
 
         except Exception as e:
@@ -558,7 +559,7 @@ class CourseListView(TemplateResponseMixin, View):
             state=1
         ).filter(
             Q(enroll_end_date__gte=today) | Q(enroll_end_date__isnull=True)
-        ).order_by("id")[:8]
+        ).order_by("id")[:12]
         # courses = Course.objects.filter(state=1).order_by("id")[:8]  # limit to 8
 
         if subject:
@@ -612,27 +613,96 @@ class CourseDetailView(DetailView):
         # Initialize enrollment form
         context["enroll_form"] = CourseEnrollForm(initial={"course": self.object})
 
-        # Prefetch modules & lessons for efficiency
-        context["modules"] = self.object.modules.prefetch_related("lessons")
+        # Prefetch modules & lessons
+        modules = self.object.modules.prefetch_related("lessons")
+        context["modules"] = modules
 
-        # Determine user enrollment status
         user = self.request.user
-        context["is_enrolled"] = (
-            Enrollment.objects.filter(user=user, course=self.object).exists()
-            if user.is_authenticated else False
-        )
+        today = timezone.now().date()
 
-        # Handle coupon code from URL
+        # Determine user enrollment
+        enrollment = None
+        if user.is_authenticated:
+            enrollment = Enrollment.objects.select_related("batch").filter(
+                user=user,
+                course=self.object,
+                state=True
+            ).first()
+
+        context["is_enrolled"] = bool(enrollment)
+
+        batch_start_date = None
+        if enrollment and enrollment.batch:
+            batch_start_date = enrollment.batch.start_date
+
+        context["batch_start_date"] = batch_start_date
+        context["today"] = today
+
+        # ---------------------------------------------------
+        # Lesson release logic
+        # ---------------------------------------------------
+
+        today = timezone.now().date()
+
+        for module in modules:
+
+            lessons = module.lessons.all()
+            processed_lessons = []
+
+            for lesson in lessons:
+
+                lesson.can_view = False
+                lesson.release_date = None
+                lesson.expiry_date = None
+                lesson.expired = False
+                lesson.locked = False
+                lesson.demo = False
+
+                # DEMO lessons
+                if lesson.release_after_days == -1:
+                    lesson.can_view = True
+                    lesson.demo = True
+
+                elif enrollment and batch_start_date:
+
+                    # rule for lesson 0
+                    if lesson.release_after_days == 0:
+                        release_date = enrollment.enrollment_date.date()
+
+                    else:
+                        release_date = batch_start_date + timedelta(days=lesson.release_after_days - 1)
+
+                    expiry_date = release_date + timedelta(days=3)
+
+                    lesson.release_date = release_date
+                    lesson.expiry_date = expiry_date
+
+                    if today < release_date:
+                        lesson.locked = True
+
+                    elif release_date <= today <= expiry_date:
+                        lesson.can_view = True
+
+                    elif today > expiry_date:
+                        lesson.expired = True
+
+                processed_lessons.append(lesson)
+
+            module.lessons_with_access = processed_lessons
+
+        # ---------------------------------------------------
+
+        # Handle coupon code
         coupon_code = self.request.GET.get("coupon", "").strip()
-        final_price = self.object.price  # Default price
+        final_price = self.object.price
 
         if coupon_code:
             coupon = Coupons.objects.filter(coupon_code=coupon_code).first()
             if coupon:
-                final_price = coupon.price  # Apply coupon price
+                final_price = coupon.price
 
-        context["final_price"] = final_price  # Pass updated price to template
-        context["couponCode"] = coupon_code  # Pass updated price to template
+        context["final_price"] = final_price
+        context["couponCode"] = coupon_code
 
         return context
 
@@ -652,3 +722,80 @@ class CourseDetailView(DetailView):
 #         return context
 
 
+
+def mask_phone(phone):
+    """Hide middle digits of phone number."""
+
+    if not phone:
+        return ""
+
+    phone = str(phone)
+
+    if len(phone) < 6:
+        return phone
+
+    return phone[:3] + "*****" + phone[-2:]
+
+def coupon_search(request):
+    """
+    Public search page to check coupon usage or phone enrollment.
+    """
+
+    query = request.GET.get("q", "").strip()
+
+    results = []
+    coupon_stats = []
+
+    if query:
+
+        enrollments = Enrollment.objects.filter(
+            Q(coupon_code__icontains=query) |
+            Q(user__phone__icontains=query)
+        ).select_related("user", "course")
+
+        users = {}
+
+        for e in enrollments:
+
+            user = e.user
+
+            if user.id not in users:
+
+                try:
+                    student = user.student
+                    city = student.district.name if student.district else ""
+                except:
+                    city = ""
+
+                users[user.id] = {
+                    "name": user.get_full_name(),
+                    "phone": mask_phone(user.phone),
+                    "city": city,
+                    "courses": []
+                }
+
+            users[user.id]["courses"].append(e.course.title)
+
+        results = users.values()
+
+    # Coupon leaderboard
+    coupon_stats = (
+        Enrollment.objects.exclude(coupon_code__isnull=True)
+        .exclude(coupon_code="")
+        .values("coupon_code")
+        .annotate(
+            total_users=Count("user", distinct=True),
+            total_enrollments=Count("id")
+        )
+        .order_by("-total_enrollments")
+    )
+
+    return render(
+        request,
+        "courses/coupon_search.html",
+        {
+            "results": results,
+            "query": query,
+            "coupon_stats": coupon_stats,
+        },
+    )    

@@ -12,7 +12,7 @@ class AssessmentUpload(models.Model):
         db_index=True,
         related_name="student_submissions",
     )
-    work = models.BinaryField()
+    work = models.CharField(max_length=255)
     filename = models.CharField(max_length=255, default="default_filename.png")
     content_type = models.CharField(
         max_length=100, default="application/octet-stream"

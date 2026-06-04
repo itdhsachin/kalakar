@@ -4,6 +4,8 @@ from django.db import connection  # Needed for raw SQL queries
 from assessment.models import AssessmentUpload, StudentCompetition,CompetitionDetails
 
 from django.utils.html import format_html
+from django.templatetags.static import static
+
 import base64
 from django.http import HttpResponse
 from django.urls import reverse
@@ -88,13 +90,13 @@ class AssessmentUploadAdmin(admin.ModelAdmin):
         "get_user",
         "get_district",
         "display_image",
-        "get_filename",
-        "assigned_teacher",
         "review_score",
+        "assigned_teacher",
+        "get_filename",
         "timestamp",
     )
-    form = AssessmentUploadForm 
-    readonly_fields = ("display_image",)
+    form = AssessmentUploadForm  # Using the custom form here
+    readonly_fields = ("work","filename","display_image",)
 
     list_filter = ("assigned_teacher", "review_score", DistrictFilter)
     search_fields = ("user_id__username", "assigned_teacher__username")
@@ -102,22 +104,10 @@ class AssessmentUploadAdmin(admin.ModelAdmin):
     list_editable = ("assigned_teacher",)
     list_per_page = 10
 
-    # def get_queryset(self, request):
-    #     qs = super().get_queryset(request)
-    #     return qs.select_related("user_id", "assigned_teacher").only(
-    #         "user_id__username",
-    #         "work",
-    #         "filename",
-    #         "assigned_teacher__username",
-    #         "review_score",
-    #         "timestamp"
-    #     )
     def get_queryset(self, request):
-        """Apply district filter from request GET parameters"""
         qs = super().get_queryset(request)
         qs = qs.select_related("user_id", "assigned_teacher")
 
-        # Apply district filter if exists
         district_id = request.GET.get("district")
         if district_id:
             qs = qs.filter(user_id_id__student_id__district_id=district_id)
@@ -133,31 +123,53 @@ class AssessmentUploadAdmin(admin.ModelAdmin):
     get_user.short_description = "User"
 
     def get_district(self, obj):
-        """Fetch district name from accounts_district"""
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT name FROM accounts_district WHERE id = (SELECT district_id FROM accounts_student WHERE student_id = %s)",
-                [obj.user_id_id]  # Assuming user_id_id refers to the student's ID
+                [obj.user_id_id]
             )
             district = cursor.fetchone()
-        
         return district[0] if district else "Not Assigned"
-
     get_district.short_description = "District"
-    get_district.admin_order_field = "user_id_id__student_id__district_id"  # allow sorting
+    get_district.admin_order_field = "user_id_id__student_id__district_id"
+
+    def get_user(self, obj):
+        if obj.user_id:
+            return format_html(
+                "{} {}<br>{}<br>({})",
+                obj.user_id.first_name,
+                obj.user_id.last_name,
+                obj.user_id.phone,
+                obj.user_id.email
+            )
+        return "Unknown"
+    get_user.short_description = "User Info"
 
     def display_image(self, obj):
-        """Render clickable image to download or open in new tab"""
-        if obj.work:
-            url = '#'
+        if obj.filename:
+            # Decode bytes if necessary
+            file_path = obj.filename.decode('utf-8') if isinstance(obj.filename, bytes) else str(obj.filename).strip()
+
+            # Remove unwanted characters like quotes or stray "b'"
+            file_path = file_path.strip("\"'")
+            if file_path.startswith("b'") and file_path.endswith("'"):
+                file_path = file_path[2:-1]
+
+            # Prepend 'assignment/' to the relative path
+            full_path = f"assignment/{file_path}"
+
+            # Build the final static URL
+            image_url = static(full_path)
             return format_html(
-                '<a href="{}" target="_blank"><img src="data:image/png;base64,{}" width="400" height="auto"/></a>',
-                url,
-                base64.b64encode(obj.work).decode("utf-8")
+                '<a href="{}" target="_blank">'
+                '<img src="{}" width="200" style="border:1px solid #ccc;" />'
+                '</a>',
+                image_url,
+                image_url
             )
         return "No Image"
-
     display_image.short_description = "Work Image"
+       
 
 @admin.register(CompetitionDetails)
 class CompetitionDetailsAdmin(admin.ModelAdmin):

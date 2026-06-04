@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}KalaGuru by Ira Rangoli Arts - Rangoli Competition Results{% endblock %}
+{% block content %}
+<main class="main_wrapper overflow-hidden bg-light">
+  {% include 'partials/navbar.html' %}
+  {% include 'partials/mobile-menu.html' %}
+  <style>
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("{% static 'img/competition/all_participents.jpeg' %}") center/cover no-repeat;
+      color: white;
+      padding: 350px 20px;
+      text-align: center;
+    }
+    .winner-img, .participant-img, .gallery-img {
+      height: auto;
+      object-fit: cover;
+      width: 100%;
+      border-radius: 12px;
+    }
+    .lead {
+        color: #fff;
+    }
+    .gallery-img:hover {
+      opacity: 0.85;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .modal-body {
+        min-height: 400px; /* Adjust as needed */
+    }
+  </style>
+<!-- Add before </body> -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById('mediaModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalVideo = document.getElementById('modalVideo');
+
+    document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#mediaModal"]').forEach(function (media) {
+        media.addEventListener("click", function () {
+            const type = media.getAttribute("data-bs-type");
+            const src = media.getAttribute("data-bs-src");
+
+            // Reset modal content
+            modalImg.classList.add("d-none");
+            modalVideo.classList.add("d-none");
+            modalVideo.src = ""; // Reset video
+
+            if (type === "image") {
+                modalImg.src = src;
+                modalImg.classList.remove("d-none");
+            } else if (type === "video") {
+                modalVideo.src = src;
+                modalVideo.classList.remove("d-none");
+            }
+        });
+    });
+});
+</script>
+
+        <!-- Hero Section -->
+        <section class="hero animate__animated animate__fadeIn">
+          <div class="container">
+            <h1 class="display-4"><b>KalaGuru Rangoli Competition 2025</b></h1>
+            <p class="lead"><b>Organized by Ira Rangoli Arts | Pune | 1st June 2025</b></p>
+          </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="py-5 animate__animated animate__fadeInUp">
+          <div class="container">
+            <h2>About the Competition</h2>
+            <p>This was the first Rangoli competition organized by KalaGuru by Ira Rangoli Arts in Pune at Ira Rangoli Arts Center, Vidya Vikas Vidyalaya, Sahakar Nagar, Pune 09. The event took place on 1st June 2025 and witnessed enthusiastic participation from talented artists across Maharashtra.</p>
+            <p>All participants were the first-round winners from their respective districts. The initial round was held online following the completion of a Basic Rangoli class. The final round was conducted physically and evaluated by a jury based on creativity, technique, and presentation.</p>
+          </div>
+        </section>
+
+        <!-- Winners Section -->
+        <section class="py-5 bg-light animate__animated animate__fadeInUp">
+          <div class="container">
+            <h2 class="text-center mb-4">Top 3 Winners</h2>
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <img src="{% static 'img/competition/kalaguru_rangoli_first_prize.jpeg' %}" class="winner-img" alt="1st Rank Rangoli">
+                <h4 class="mt-2">1st: Gourav Waghmare (Amravati)</h4>
+                <p>Prize: ₹35,000 + Trophy</p>
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="{% static 'img/competition/kalaguru_rangoli_second_prize.jpeg' %}" class="winner-img" alt="2nd Rank Rangoli">
+                <h4 class="mt-2">2nd: Priti Dhanbhadur (Akola)</h4>
+                <p>Prize: ₹26,000 + Trophy</p>
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="{% static 'img/competition/kalaguru_rangoli_third_prize.jpeg' %}" class="winner-img" alt="3rd Rank Rangoli">
+                <h4 class="mt-2">3rd: Pradnya Shelke (Latur)</h4>
+                <p>Prize: ₹17,000 + Trophy</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Winners Section -->
+        <section class="py-5 bg-light animate__animated animate__fadeInUp">
+          <div class="container">
+            <h2 class="text-center mb-4">Top 3 Winners Rangoli</h2>
+            <div class="row">
+              <div class="col-md-4 text-center">
+                <img src="{% static 'img/competition/rank_1_rangoli.jpeg' %}" class="winner-img" alt="1st Rank Rangoli">
+                <h4 class="mt-2">1st: Gourav Waghmare (Amravati)</h4>
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="{% static 'img/competition/rank_2_rangoli.jpeg' %}" class="winner-img" alt="2nd Rank Rangoli">
+                <h4 class="mt-2">2nd: Priti Dhanbhadur (Akola)</h4>
+              </div>
+              <div class="col-md-4 text-center">
+                <img src="{% static 'img/competition/rank_3_rangoli.jpeg' %}" class="winner-img" alt="3rd Rank Rangoli">
+                <h4 class="mt-2">3rd: Pradnya Shelke (Latur)</h4>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Participants Section -->
+       <!--  <section class="py-5 animate__animated animate__fadeInUp">
+          <div class="container">
+            <h2 class="text-center mb-4">All Participants</h2>
+            <div class="row g-3">
+              <div class="col-md-3"><img src="participant1.jpg" class="participant-img" alt="Participant"></div>
+              <div class="col-md-3"><img src="participant2.jpg" class="participant-img" alt="Participant"></div>
+              <div class="col-md-3"><img src="participant3.jpg" class="participant-img" alt="Participant"></div>
+              <div class="col-md-3"><img src="participant4.jpg" class="participant-img" alt="Participant"></div>
+            </div>
+          </div>
+        </section> -->
+
+        <!-- Testimonials Section -->
+        <section class="py-5 bg-light animate__animated animate__fadeInUp">
+          <div class="container">
+            <h2 class="text-center mb-4">Video Testimonials</h2>
+            <div class="row">
+
+              <!-- Testimonial 1 -->
+              <div class="col-md-4">
+                <div class="video-testimonial">
+                  <img src="{% static 'img/competition/testimonial_thumbnail1.png' %}" 
+                       class="gallery-img" 
+                       alt="Priti Dhanbhadur Testimonial" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#mediaModal" 
+                       data-bs-type="video"
+                       data-bs-src="https://kalagurubyirarangoliarts.com/static/img/competition/kalaguru_rangoli_prize2_video.mp4">
+                  <p class="mt-2"><strong>Priti Dhanbhadur</strong></p>
+                </div>
+              </div>
+
+              <!-- Testimonial 2 -->
+              <div class="col-md-4">
+                <div class="video-testimonial">
+                  <img src="{% static 'img/competition/testimonial_thumbnail2.png' %}" 
+                       class="gallery-img" 
+                       alt="Gourav Waghmare Testimonial" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#mediaModal" 
+                       data-bs-type="video"
+                       data-bs-src="https://kalagurubyirarangoliarts.com/static/img/competition/kalaguru_rangoli_prize1_video.mp4">
+                  <p class="mt-2"><strong>Gourav Waghmare</strong></p>
+                </div> 
+              </div>
+
+              <!-- Testimonial 3 -->
+              <div class="col-md-4">
+                <div class="video-testimonial">
+                  <img src="{% static 'img/competition/testimonial_thumbnail3.png' %}" 
+                       class="gallery-img" 
+                       alt="Pradnya Shelke Testimonial" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#mediaModal" 
+                       data-bs-type="video"
+                       data-bs-src="https://kalagurubyirarangoliarts.com/static/img/competition/kalaguru_rangoli_prize3_video.mp4">
+                  <p class="mt-2"><strong>Pradnya Shelke</strong></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="py-5 animate__animated animate__fadeInUp">
+          <div class="container">
+            <h2 class="text-center mb-4">Gallery</h2>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <img src="{% static 'img/competition/all_trophy.jpeg' %}" 
+                     class="gallery-img" 
+                     alt="All Trophy" 
+                     data-bs-toggle="modal" 
+                     data-bs-target="#mediaModal" 
+                     data-bs-type="image"
+                     data-bs-src="https://kalagurubyirarangoliarts.com{% static 'img/competition/all_trophy.jpeg' %}">
+              </div>
+              <div class="col-md-4">
+                <img src="{% static 'img/competition/competition_oppening_cermoney.jpeg' %}" 
+                     class="gallery-img" 
+                     alt="Opening Ceremony" 
+                     data-bs-toggle="modal" 
+                     data-bs-target="#mediaModal" 
+                     data-bs-type="image"
+                     data-bs-src="https://kalagurubyirarangoliarts.com{% static 'img/competition/competition_oppening_cermoney.jpeg' %}">
+              </div>
+              <div class="col-md-4">
+                <img src="https://i.ytimg.com/vi/VUHH4gMZFi0/hqdefault.jpg" 
+                     class="gallery-img" 
+                     alt="Competition Highlights" 
+                     data-bs-toggle="modal" 
+                     data-bs-target="#mediaModal" 
+                     data-bs-type="video"
+                     data-bs-src="https://www.youtube.com/embed/VUHH4gMZFi0">
+              </div>
+               <div class="col-md-4">
+                <img src="{% static 'img/competition/first_three_winner.jpeg' %}" 
+                     class="gallery-img" 
+                     alt="Opening Ceremony" 
+                     data-bs-toggle="modal" 
+                     data-bs-target="#mediaModal" 
+                     data-bs-type="image"
+                     data-bs-src="https://kalagurubyirarangoliarts.com{% static 'img/competition/first_three_winner.jpeg' %}">
+              </div>
+              <div class="col-md-4">
+                <div class="video-testimonial">
+                  <img src="https://i.ytimg.com/vi/zWe00TMnpyc/hqdefault.jpg" 
+                       class="gallery-img" 
+                       alt="" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#mediaModal" 
+                       data-bs-type="video"
+                       data-bs-src="https://www.youtube.com/embed/zWe00TMnpyc">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="video-testimonial">
+                  <img src="https://i.ytimg.com/vi/sOUHeRBUayw/hqdefault.jpg" 
+                       class="gallery-img" 
+                       alt="" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#mediaModal" 
+                       data-bs-type="video"
+                       data-bs-src="https://www.youtube.com/embed/sOUHeRBUayw">
+                </div>
+              </div>
+            </div>
+            <div class="text-center"><br><br><a href="https://www.youtube.com/@Kalagurubyirarangoliarts" target="_blank" class="btn btn-info">More More Videos Click Here</a></div>
+          </div>
+        </section>
+
+        <!-- Modal (Supports Images & Videos) -->
+        <div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content bg-transparent border-0">
+                  <div class="modal-body text-center p-0">
+                    <img id="modalImage" src="" class="img-fluid rounded d-none" alt="Popup Image">
+                    <iframe id="modalVideo" class="" width="100%" height="400" 
+                            src="" frameborder="0" allowfullscreen></iframe>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container my-5">
+            <p class="text-center mt-3">© 2025 Ira Rangoli Arts. All Rights Reserved.</p>
+        </div>
+
+        {% include 'partials/footer.html' %}
+    </main>
+
+    {% endblock %}
+
+

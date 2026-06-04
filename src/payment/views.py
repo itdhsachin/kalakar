@@ -6,7 +6,7 @@ from accounts.models import Student, User
 from accounts.utils import generate_password, send_html_email
 from payment.models import Payment
 from assessment.models import StudentCompetition
-from courses.models import Course, Enrollment
+from courses.models import Course, Enrollment, Batch
 import requests
 from decouple import config
 from django.shortcuts import get_object_or_404
@@ -14,6 +14,30 @@ import logging
 import os
 import urllib.parse
 from django.utils import timezone
+
+def get_current_batch(course):
+
+    today = timezone.now().date()
+
+    batches = Batch.objects.filter(
+        course=course,
+        state=True
+    ).order_by("start_date")
+
+    for i, batch in enumerate(batches):
+
+        # If user pays before batch start
+        if today < batch.start_date:
+            return batch
+
+        # If user pays during batch period
+        if batch.start_date <= today <= batch.end_date:
+            if i + 1 < len(batches):
+                return batches[i + 1]
+            return None
+
+    return None
+
 # import razorpay
 
 from django.conf import settings
@@ -29,6 +53,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
+
 
 
 @csrf_exempt
@@ -62,9 +87,35 @@ def payment_callback(request):
             # last_name = notes.get("last_name", "").strip()
             # pincode = notes.get("pincode", "").strip()
             course_id = notes.get("course_id", "").strip()
-            course = get_object_or_404(Course, id=course_id)
+            coupon_code = notes.get("couponCode") or notes.get("coupon") or ""
+            # course = get_object_or_404(Course, id=course_id)
 
-            print("course id =" , course_id)
+            # Convert to int safely
+            try:
+                course_id = int(course_id)
+            except (TypeError, ValueError):
+                logging.error(f"Invalid course_id: {course_id}")
+                course_id = None
+
+            if course_id:
+                # Mapping for special enrollments
+                course_map = {
+                    25: [4, 15],
+                    24: [19, 20],
+                    26: [18,15, 19, 4, 20, 7],
+                    22: [4, 18, 7, 19],
+                    21: [15, 18, 7, 19],
+                    23: [18, 7],
+                    31: [29, 30],
+                }
+
+                # Check if course_id is in mapping, else default single course
+                if course_id in course_map:
+                    course_ids = course_map[course_id]
+                else:
+                    course_ids = [course_id]
+
+            # print("course ids =" , course_ids)
             
 
             if not email:
@@ -81,15 +132,27 @@ def payment_callback(request):
                     if existing_user:
                         # Create enrollment for existing user
                         try:
-                            Enrollment.objects.create(
-                            user=existing_user,
-                            course=course,
-                            created_by=existing_user,
-                            enrollment_date = timezone.now(),
-                            target_end_date=course.enroll_end_date,
-                            state=True,
-                            )
+                            for cid in course_ids:
+                                try:
+                                    course = get_object_or_404(Course, id=cid)
+                                    batch = get_current_batch(course)
 
+                                    logging.info(f"Batch assigned for course {course.id}: {batch}")
+
+                                    Enrollment.objects.create(
+                                        user=existing_user,
+                                        course=course,
+                                        batch=batch,
+                                        coupon_code=coupon_code,
+                                        created_by=existing_user,
+                                        enrollment_date=timezone.now(),
+                                        target_end_date=course.enroll_end_date,
+                                        state=True,
+                                    )
+                                    logging.info(f"Enrolled {existing_user} into course {cid}")
+                                except Exception as e:
+                                    logging.error(f"Failed to create enrollment for course {cid}: {e}")
+                            
                             email_context = {
                             # "name": fullname,
                             "name": "User",
@@ -122,10 +185,19 @@ def payment_callback(request):
                                 "Authorization": WATI_API_KEY,
                             }
 
-                            response = requests.post(
-                                whatsapp_url, data=payload, headers=headers
-                            )
-                            logging.info(f"WhatsApp payload: {payload}")
+                            try:
+                                response = requests.post(
+                                    whatsapp_url,
+                                    data=payload,
+                                    headers=headers
+                                )
+
+                                logging.info(f"WhatsApp payload: {payload}")
+                                logging.info(f"WATI Response Status: {response.status_code}")
+                                logging.info(f"WATI Response Body: {response.text}")
+
+                            except Exception as e:
+                                logging.error(f"WATI API Error: {str(e)}")
                             # print(response.text)
                             # SMS API details
                             api_username = 'irarangoli.trans'
@@ -182,17 +254,26 @@ def payment_callback(request):
                             status=status,
                             # pincode=pincode,
                         )
-                        try:
-                            Enrollment.objects.create(
-                            user=user,
-                            course=course,
-                            created_by=user,
-                            enrollment_date = timezone.now(),
-                            target_end_date=course.enroll_end_date,
-                            state=True,
-                            )
-                        except Exception as e:
-                            logging.error(f"Failed to create enrollment: {e}")
+                        for cid in course_ids:
+                            try:
+                                course = get_object_or_404(Course, id=cid)
+                                batch = get_current_batch(course)
+
+                                logging.info(f"Batch assigned for course {course.id}: {batch}")
+                                
+                                Enrollment.objects.create(
+                                    user=user,
+                                    course=course,
+                                    batch=batch,
+                                    coupon_code=coupon_code,
+                                    created_by=user,
+                                    enrollment_date=timezone.now(),
+                                    target_end_date=course.enroll_end_date,
+                                    state=True,
+                                )
+                                logging.info(f"Enrolled {user} into course {cid}")
+                            except Exception as e:
+                                logging.error(f"Failed to create enrollment for course {cid}: {e}")
 
                         email_context = {
                             # "name": fullname,
@@ -200,8 +281,8 @@ def payment_callback(request):
                             "username": email,
                             "password": password,
                             "Amount": amount / 100,
-                            "start_date" : "17 June",
-                            "end_date" : "10 July"
+                            "start_date" : "15 March",
+                            "end_date" : "1 June"
                         }
 
                         send_html_email(
@@ -232,10 +313,19 @@ def payment_callback(request):
                             "Authorization": WATI_API_KEY,
                         }
 
-                        response = requests.post(
-                            whatsapp_url, data=payload, headers=headers
-                        )
-                        logging.info(f"WhatsApp payload: {payload}")
+                        try:
+                            response = requests.post(
+                                whatsapp_url,
+                                data=payload,
+                                headers=headers
+                            )
+
+                            logging.info(f"WhatsApp payload: {payload}")
+                            logging.info(f"WATI Response Status: {response.status_code}")
+                            logging.info(f"WATI Response Body: {response.text}")
+
+                        except Exception as e:
+                            logging.error(f"WATI API Error: {str(e)}")
                         # print(response.text)
 
                         # SMS API details

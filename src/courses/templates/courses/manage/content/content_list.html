@@ -11,97 +11,105 @@
 {% endblock %}
 
 {% block content %}
-    {% with course=module.course %}
-        <div class="contents hover-style">
-            <h3 class="hover-style">
-                Modules
-            </h3>
-
-            <ul>
-                {% for m in course.modules.all %}
-                    <li data-id="{{ m.id }}" {% if m == module %} class="selected" {% endif %}>
-                        <a href="{% url 'module_content_list' m.id %}">
-                            <span>
-                                Module <span class="order">{{ m.order|add:1 }}</span>
-                            </span>
-                            <br>
-                            {{ m.title }}
-                        </a>
-                    </li>
-                {% empty %}
-                    <li class="display-4">No modules yet.</li>
-                {% endfor %}
-            </ul>
-            <p>
-                <a href="{% url 'course_module_update' course.id %}">Edit Modules</a>
-            </p>
+{% with course=module.course %}
+<div class="row">
+    <!-- Sidebar: Modules List -->
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Modules</h5>
+            </div>
+            <div class="card-body p-2">
+                <ul id="modules" class="list-group list-group-flush">
+                    {% for m in course.modules.all %}
+                        <li class="list-group-item {% if m == module %}active{% endif %}" data-id="{{ m.id }}">
+                            <a href="{% url 'module_content_list' m.id %}" class="{% if m == module %}text-white{% else %}text-dark{% endif %}">
+                                <strong>Module {{ m.order|add:1 }}</strong><br>
+                                <span>{{ m.title }}</span>
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No modules yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{% url 'course_module_update' course.id %}" class="btn btn-sm btn-outline-primary">Edit Modules</a>
+            </div>
         </div>
+    </div>
 
-        <div class="module shadow-style" style="width: 60%">
-            <h5 class="display-6">Module{{ module.order|add:1 }} "{{ module.title }}"</h5>
-
-            <div id="module-contents">
+    <!-- Main Content: Selected Module -->
+    <div class="col-md-8 mb-3">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Module {{ module.order|add:1 }} – "{{ module.title }}"</h5>
+            </div>
+            <div id="module-contents" class="card-body">
                 {% for content in module.lessons.all %}
-                    <div data-id="{{ content.id }}">
+                    <div class="border rounded p-3 mb-3 bg-light" data-id="{{ content.id }}">
                         {% with item=content.item %}
                             {% if item and item.id and item|model_name %}
-                                <p>{{ item }} ({{ item|model_name }})</p>
+                                <p class="mb-1">
+                                    <strong>{{ item }}</strong>
+                                    <small class="text-muted">({{ item|model_name }})</small>
+                                </p>
+                                <a href="{% url 'module_content_update' module.id item|model_name item.id %}" 
+                                   class="btn btn-sm btn-outline-primary me-2">Edit</a>
 
-                                <a class="btn btn-outline-primary text-primary m-1"
-                                   href="{% url 'module_content_update' module.id item|model_name item.id %}">
-                                    Edit
-                                </a>
-
-                                <form method="post" action="{% url 'module_content_delete' content.id %}">
+                                <form method="post" action="{% url 'module_content_delete' content.id %}" class="d-inline">
                                     {% csrf_token %}
-                                    <button class="btn btn-outline-danger m-1" type="submit" value="Delete">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                                 </form>
                             {% else %}
                                 <p class="text-muted">No content added yet ({{ content.content_type.name }})</p>
-
                                 {% if content.content_type.model %}
-                                <a class="btn btn-outline-success m-1"
-                                   href="{% url 'module_content_create' module.id content.content_type.model %}">
-                                    Add {{ content.content_type.name }}
-                                </a>
-                            {% else %}
-                                <p class="text-danger">Invalid content type – please fix in admin panel.</p>
-                            {% endif %}
+                                    <a href="{% url 'module_content_create' module.id content.content_type.model %}" 
+                                       class="btn btn-sm btn-outline-success">Add {{ content.content_type.name }}</a>
+                                {% else %}
+                                    <p class="text-danger">Invalid content type. Fix in admin panel.</p>
+                                {% endif %}
                             {% endif %}
                         {% endwith %}
                     </div>
                 {% empty %}
-                    <p>This module has no content yet.</p>
+                    <p class="text-muted">This module has no content yet.</p>
                 {% endfor %}
             </div>
         </div>
 
-        <div id="add-nav" class="module shadow-style">
-            <h3 class="">Add new content:</h3>
-            <ul class="list-unstyled list-inline p-0 m-0">
-                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'text' %}">Text</a></li>
-                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'image' %}">Image</a></li>
-                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'video' %}">Video</a></li>
-                <li class="list-inline-item p-1"><a class="btn btn-outline-primary text-primary" href="{% url 'module_content_create' module.id 'file' %}">File</a></li>
-            </ul>
+        <!-- Add New Content -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">Add new content</h6>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'module_content_create' module.id 'text' %}" class="btn btn-outline-primary btn-sm">Text</a>
+                    <a href="{% url 'module_content_create' module.id 'image' %}" class="btn btn-outline-primary btn-sm">Image</a>
+                    <a href="{% url 'module_content_create' module.id 'video' %}" class="btn btn-outline-primary btn-sm">Video</a>
+                    <a href="{% url 'module_content_create' module.id 'file' %}" class="btn btn-outline-primary btn-sm">File</a>
+                </div>
+            </div>
         </div>
-
-    {% endwith %}
+    </div>
+</div>
+{% endwith %}
 {% endblock %}
 
 {% block domready %}
     $('#modules').sortable({
         stop: function(event, ui) {
-            modules_order = {};
+            let modules_order = {};
             $('#modules').children().each(function(){
                 $(this).find('.order').text($(this).index() + 1);
                 modules_order[$(this).data('id')] = $(this).index();
             });
-
             $.ajax({
                 type: 'POST',
                 url: '{% url "module_order" %}',
-                contentType: 'application/json; charset=utf-8', dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
                 data: JSON.stringify(modules_order)
             });
         }
@@ -109,11 +117,10 @@
 
     $('#module-contents').sortable({
         stop: function(event, ui) {
-            contents_order = {};
+            let contents_order = {};
             $('#module-contents').children().each(function(){
                 contents_order[$(this).data('id')] = $(this).index();
             });
-
             $.ajax({
                 type: 'POST',
                 url: '{% url "content_order" %}',

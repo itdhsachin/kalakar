@@ -47,13 +47,11 @@ urlpatterns = [
     path("thank_you/", thank_you, name="thank_you"),
     path("certificate/", certificate_view, name="certificate"),
    
-    # path('logout/', logout_view, name='logout'),
-    # path("logout/",LogoutView.as_view(template_name="accounts/logged_out.html"), name="logout"),
     path("accounts/logout/" , LogoutView.as_view(template_name="accounts/logged_out.html"), name = "logout"),
     path("get-districts/", get_districts, name="get_districts"),
     path('certificates/', certificate_list, name='certificate_list'),
     path('certificate/<int:course_id>/', certificate_detail, name='certificate_detail'),
     path('certificate/<int:course_id>/download/', certificate_download, name='certificate_download'),
-
-
+    path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
+    # path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 ]

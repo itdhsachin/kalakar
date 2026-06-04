@@ -14,6 +14,9 @@
 
             <div class="card p-2">
                 <h3 class="display-6">{{ course.title }}</h3>
+                {% if course.course_image %}
+                  <img src="{{ course.course_image.url }}" alt="{{ course.title }}" style="width:200px;height:auto;">
+                {% endif %}
                 <p>
                     <a class="btn btn-primary text-white" href="{% url 'course_edit' course.id %}">Edit Course</a>
                     <a class="btn btn-primary text-white" href="{% url 'course_module_update' course.id %}">Edit Modules</a>

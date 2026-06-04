@@ -60,10 +60,10 @@
     </div>
 
     <div class="shape__icon__2">
-      <img loading="lazy" class="shape__icon__img shape__icon__img__1" src="{% static 'img/herobanner/herobanner__1.png' %}" alt="photo"/>
-      <img loading="lazy" class="shape__icon__img shape__icon__img__2" src="{% static 'img/herobanner/herobanner__2.png' %}" alt="photo"/>
-      <img loading="lazy" class="shape__icon__img shape__icon__img__3" src="{% static 'img/herobanner/herobanner__3.png' %}" alt="photo"/>
-      <img loading="lazy" class="shape__icon__img shape__icon__img__4" src="{% static 'img/herobanner/herobanner__5.png' %}" alt="photo"/>
+      <img class="img-fluid rounded" loading="lazy" class="shape__icon__img shape__icon__img__1" src="{% static 'img/herobanner/herobanner__1.png' %}" alt="photo"/>
+      <img class="img-fluid rounded" loading="lazy" class="shape__icon__img shape__icon__img__2" src="{% static 'img/herobanner/herobanner__2.png' %}" alt="photo"/>
+      <img class="img-fluid rounded" loading="lazy" class="shape__icon__img shape__icon__img__3" src="{% static 'img/herobanner/herobanner__3.png' %}" alt="photo"/>
+      <img class="img-fluid rounded" loading="lazy" class="shape__icon__img shape__icon__img__4" src="{% static 'img/herobanner/herobanner__5.png' %}" alt="photo"/>
     </div>
   </div>
 
@@ -85,20 +85,32 @@
                     <div class="gridarea__img mb-3 text-center">
                       {% if enrollment.course.slug %}
                       <a href="{% url 'courses' enrollment.course.slug %}">
-                        {% if enrollment.course.id == 1 or enrollment.course.id == 9 %}
-                        <img class="img-fluid rounded" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
+                        {% if enrollment.course.id == 1 or enrollment.course.id == 15 or enrollment.course.id == 17 %}
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
                         {% elif enrollment.course.id == 4 or enrollment.course.id == 10 %}
-                        <img class="img-fluid rounded" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/Portrait_new.png' %}" alt="grid" />
                         {% elif enrollment.course.id == 5 or enrollment.course.id == 11 %}
-                        <img class="img-fluid rounded" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
                         {% elif enrollment.course.id == 6 or enrollment.course.id == 12 %}
-                        <img class="img-fluid rounded" src="{% static 'img/home/warli_art.png' %}" alt="grid" />
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/warli_art.png' %}" alt="grid" />
                         {% elif enrollment.course.id == 7 or enrollment.course.id == 13 %}
-                        <img class="img-fluid rounded" src="{% static 'img/home/haar_mala.png' %}" alt="grid" />
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/haar_mala.png' %}" alt="grid" />
                         {% elif enrollment.course.id == 8 or enrollment.course.id == 14 %}
-                        <img class="img-fluid rounded" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 16 %}
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 18 %}
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/flower_new.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 19 %}
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/border_new.png' %}" alt="grid" />
+                        {% elif enrollment.course.id == 20 %}
+                        <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/marathi_letter_new.png' %}" alt="grid" />
                         {% else %}
-                        <img class="img-fluid rounded" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+                            {% if enrollment.course.course_image %}
+                              <img class="img-fluid rounded" loading="lazy" src="{{ enrollment.course.course_image.url }}" alt="{{ enrollment.course.title }}" />
+                            {% else %}
+                              <img class="img-fluid rounded" loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="{{ enrollment.course.title }}" />
+                            {% endif %}
                         {% endif %}
                       </a>
                       {% else %}

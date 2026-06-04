@@ -1,0 +1,300 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Achievement</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <style>
+        body {
+            background: white;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .certificate-container {
+            width: 1056px;
+            height: 760px;
+            max-width: 100%;
+            margin: 50px auto;
+            padding: 40px;
+            background: #f1ede3;
+            border: 12px solid #c59b08;
+            box-sizing: border-box;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 15px;
+        }
+
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .certificate-title {
+            font-size: 42px;
+            font-weight: bold;
+            color: #b8860b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .certificate-header {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .recipient-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #b8860b;
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 10px 0;
+        }
+
+        .certificate-body {
+            font-size: 20px;
+            color: #555;
+            /* margin-bottom: 30px; */
+        }
+
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-top: 10px;
+        }
+
+        .certificate-footer div {
+            text-align: center;
+            width: 45%;
+        }
+
+        .signature-line {
+            border-top: 2px solid black;
+            display: inline-block;
+            width: 200px;
+            margin-top: 10px;
+        }
+        .footer-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 30px;
+    gap: 20px;
+    flex-wrap: wrap;
+    color: #333;
+}
+
+.footer-links div {
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+}
+
+.social-icons {
+    margin-top: 20px;
+}
+
+.social-icons a {
+    margin: 0 10px;
+    display: inline-block;
+}
+
+.social-icons img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+        @media screen and (max-width: 768px) {
+            .certificate-container {
+                padding: 10px;
+                height: auto;
+            }
+
+            .logo-container img {
+                max-width: 100px;
+            }
+
+            .certificate-title {
+                font-size: 6vw;
+            }
+
+            .certificate-header,
+            .recipient-name,
+            .certificate-body {
+                font-size: 4vw;
+            }
+
+            .certificate-footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .certificate-footer div {
+                width: 100%;
+            }
+
+            .signature-line {
+                width: 50%;
+            }
+            @page {
+                size: A4 landscape ;
+                margin: 0;
+            }
+        }
+
+        /* PRINT MEDIA CSS */
+        @media print {
+            body {
+                background: none;
+            }
+
+            .download-btn {
+                display: none;
+            }
+
+            .certificate-container {
+                border: 10px solid #c59b08;
+                box-shadow: none;
+                width: 100%;
+                height: 100%;
+                page-break-before: always;
+            }
+
+            /* @page {
+                size: A4 landscape;
+                margin: 20mm;
+            } */
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+        }
+
+
+        .download-btn {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+        }
+
+        .kalaguru-text {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-weight: bold;
+        }
+    </style>
+
+    <div class="container certificate-container">
+        <!-- Company Logo -->
+        <div class="logo-container">
+            <img src="{% static 'img/logo/kalaguru_logo.jpg' %}" alt="Company Logo">
+        </div>
+
+        <div class="certificate-title">Certificate of Achievement</div>
+        <div class="certificate-header">This certificate is presented To</div>
+        <div class="recipient-name">{{user_name}}</div>
+
+        <h1 class="certificate-body display-1">
+            For active and significant participation in <br>
+            <span class="certificate-title">Rangoli Master Course.</span><br>
+        </h1>
+
+        <div class="certificate-footer">
+            <div>
+                <p>Signature</p>
+                <p class="kalaguru-text">KalaGuru By Ira Rangoli Arts</p>
+                <div class="signature-line"></div>
+            </div>
+            <div>
+                <p>Date</p>
+                <p class="kalaguru-text">{{date_today}}</p>
+                <div class="signature-line"></div>
+            </div>
+        </div>
+        <div class="footer-links">
+            <div>
+                <strong>Kalaguru Website</strong><br>
+                <a href="https://kalagurubyirarangoliarts.com" target="_blank">kalagurubyirarangoliarts.com</a>
+            </div>
+            <div>
+                <strong>Ira Rangoli Website</strong><br>
+                <a href="https://irarangoliarts.com/" target="_blank">irarangoliarts.com</a>
+            </div>
+            <div>
+                <strong>WhatsApp</strong><br>
+                7066686970 / 8983623472
+            </div>
+        </div>        
+        
+        <div class="social-icons">
+            <span style="font-size: medium;">Follow us – </span>
+            <a href="https://www.facebook.com/share/1BdWq5n3wL/" target="_blank">
+                <img src="{% static 'img/icon/facebook.png' %}" alt="Facebook">
+            </a>
+            <a href="https://www.youtube.com/@kalagurubyirarangoliarts" target="_blank">
+                <img src="{% static 'img/icon/youtube_icon.png' %}" alt="YouTube">
+            </a>
+            <a href="https://www.instagram.com/ira_rangoli_artss" target="_blank">
+                <img src="{% static 'img/icon/instagram.png' %}" alt="Instagram">
+            </a>
+            <a href="https://sharechat.com/profile/irarangoliarts?d=n" target="_blank">
+                <img src="{% static 'img/icon/sharechat.png' %}" alt="ShareChat">
+            </a>
+            <a href="https://pin.it/2C6NXkN" target="_blank">
+                <img src="{% static 'img/icon/pinterest.png' %}" alt="Pinterest">
+            </a>
+            <a href="https://www.threads.net/@ira_rangoli_artss" target="_blank">
+                <img src="{% static 'img/icon/threads.png' %}" alt="Threads">
+            </a>
+        </div>
+        
+    </div>
+
+    <button class="download-btn" onclick="window.print()">Download PDF</button>
+
+</body>
+
+</html>

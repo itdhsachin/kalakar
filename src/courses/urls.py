@@ -12,6 +12,7 @@ from courses import views
 
 urlpatterns = [
     path("", views.CourseListView.as_view(), name="courses"),
+     path("coupon-search/", views.coupon_search, name="coupon_search"),
     path("my_courses", views.my_courses, name="my_courses"),
     path("razorpay_order/", views.create_razorpay_order, name="razorpay_order"),
 

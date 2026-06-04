@@ -1,11 +1,12 @@
+import os
 from datetime import datetime
-
+from django.conf import settings
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import HttpResponse, get_object_or_404, redirect, render
-
 from assessment.forms import ReviewForm, StudentCompetitionForm
 from assessment.models import AssessmentUpload, StudentCompetition
-from django.conf import settings
+
 
 
 @login_required
@@ -25,44 +26,51 @@ def login_redirect(request):
 # Upload Work
 @login_required
 def upload(request):
-    """Handles the upload of student work.
-
-    This function checks if the user is part of an active competition,
-    processes the uploaded file, and saves it to the database.
-    """
-    if not StudentCompetition.objects.filter(
-        user=request.user, status=1
-    ).exists():
-        return HttpResponse("You are not allowed to upload files.", status=403)
     has_submitted = AssessmentUpload.objects.filter(user_id=request.user).exists()
     if has_submitted:
-        return render(request, "assessment/upload.html",{
-            "has_submitted" : has_submitted
+        return render(request, "assessment/upload.html", {
+            "has_submitted": has_submitted
         })
+
     if request.method == "POST" and request.FILES.get("work"):
         file = request.FILES["work"]
+
         if file.size > settings.FILE_UPLOAD_MAX_MEMORY_SIZE:
             return HttpResponse(
-                "File too large. Maximum allowed size is 5 MB.Please upload File less than 5 MB.", status=400
+                "File too large. Maximum allowed size is 5 MB. Please upload file less than 5 MB.",
+                status=400
             )
+
+        if not file.name.lower().endswith((".png", ".jpg", ".jpeg")):
+            return HttpResponse(
+                "Invalid file type. Please upload PNG or JPG.",
+                status=400
+            )
+
+        # Generate file path and filename
         current_date = datetime.now().strftime("%Y%m%d")
-        formatted_filename = f"{file.name.split('.')[0]}_{request.user.id}_{current_date}.{file.name.split('.')[-1]}"  # pylint: disable=inconsistent-quotes
+        ext = file.name.split(".")[-1]
+        filename = f"{file.name.split('.')[0]}_{request.user.id}_{current_date}.{ext}"
+        relative_path = f"assignment/{filename}"
+        save_path = os.path.join(settings.BASE_DIR, 'static', relative_path)
 
-        if file.name.lower().endswith((".png", ".jpg", ".jpeg")):
-            file_data = file.read()
+        # Ensure folder exists
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
-            AssessmentUpload.objects.create(
-                user_id=request.user,
-                work=file_data,
-                filename=formatted_filename,
-                content_type=file.content_type,
-            )
+        # Save file to disk
+        with open(save_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
 
-            return render(request, "assessment/thankyou.html")
-
-        return HttpResponse(
-            "Invalid file type. Please upload PNG or JPG.", status=400
+        # Save file path (relative) in DB
+        AssessmentUpload.objects.create(
+            user_id=request.user,
+            work=relative_path,  # relative path saved to DB
+            filename=filename,
+            content_type=file.content_type,
         )
+
+        return render(request, "assessment/thankyou.html")
 
     return render(request, "assessment/upload.html")
 

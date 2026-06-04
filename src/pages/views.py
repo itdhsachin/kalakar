@@ -21,7 +21,7 @@ def index_page_view(request):
             state=1
         ).filter(
             Q(enroll_end_date__gte=today) | Q(enroll_end_date__isnull=True)
-        ).order_by("id")[:8]
+        ).order_by("id")[:12]
         # courses = Course.objects.filter(state=1).order_by("id")[:8]  # limit to 8
 
         purchased_course_ids = set()
@@ -70,6 +70,11 @@ def privacy_policy(request):
         return render(request, "pages/privacy_policy.html")
     except TemplateDoesNotExist:
         return render(request, "pages/error.html")
+def competition_one_result(request):
+    try:
+        return render(request, "pages/competition_one_result.html")
+    except TemplateDoesNotExist:
+        return render(request, "pages/error.html")        
 def faq(request):
     try:
         return render(request, "pages/faq.html")

@@ -1,4 +1,5 @@
 """Course database models."""
+import os
 
 from django.db import models
 
@@ -7,6 +8,10 @@ from django.urls import reverse
 from datetime import date
 
 
+def course_image_path(instance, filename):
+    # store uploads in img/course/<course_id>/<filename>
+    course_id = instance.id or "temp"
+    return os.path.join("img/course", str(course_id), filename)
 
 class Subject(models.Model):
     """Represents a subject with a title and slug.
@@ -114,6 +119,13 @@ class Course(models.Model):
     state = models.BooleanField(
         default=True, help_text="State of the course (active/inactive)"
     )
+    course_image = models.ImageField(
+        upload_to=course_image_path,
+        blank=True,
+        null=True,
+        default="img/course/default.png",
+        help_text="Upload course image"
+    )
 
     class Meta:
         """Metaclass.
@@ -189,7 +201,19 @@ class Enrollment(models.Model):
     state = models.BooleanField(
         default=True, help_text="State of the enrollment (active/inactive)"
     )
-
+    batch = models.ForeignKey(
+        "Batch",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="enrollments"
+    )
+    coupon_code = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        help_text="Coupon used during enrollment"
+    )
     class Meta:
         """Metaclass.
 
@@ -308,3 +332,36 @@ class CertificateMaster(models.Model):
             str: The title of the certificate master.
         """
         return str(self.title)
+
+class Batch(models.Model):
+    """Represents a batch for a course"""
+
+    id = models.AutoField(primary_key=True)
+
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name="batches"
+    )
+
+    name = models.CharField(max_length=100)
+
+    start_date = models.DateField()
+
+    end_date = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="created_batches"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    state = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.course.title} - {self.name}"

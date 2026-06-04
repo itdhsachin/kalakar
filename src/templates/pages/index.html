@@ -117,11 +117,13 @@
     <div class="container">
         <div class="row align-items-center">
             <!-- Image -->
-            <div class="col-lg-6 mb-4 mb-lg-0 text-center">
-                <img src="{% static 'img/home/competition.jpg' %}" alt="Competition Announcement" class="img-fluid rounded shadow-lg" style="max-height: 450px; object-fit: cover;">
-            </div>
+            <!-- <div class="col-lg-12 mb-12 mb-lg-12 text-center">
+                 <h2 class="fw-bold text-dark text-center mb-3">📢 Announcement</h2>
+                 <br>
+                <img src="{% static 'img/home/june_competition.jpeg' %}" alt="Competition Announcement" class="img-fluid rounded shadow-lg" style="max-height: 600px; object-fit: cover;">
+            </div> -->
             <!-- Text Content -->
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
                 <h2 class="fw-bold text-dark text-center mb-3">📢 Announcement</h2>
                 <p><strong>Hello!</strong> In the first year of our <strong>KalaGuru</strong> initiative, we chose <strong>Rangoli Art</strong> as the first artistic form to promote. The district-level competition was conducted both online and offline in Pune.</p>
                 <p>You can now view the winners of the district-level competition on our official <strong>KalaGuru Facebook</strong> page.</p>
@@ -140,7 +142,7 @@
                 <p>will be featured in the final artwork list. This initiative received tremendous response with many participants enrolling and receiving <strong>free training</strong>.</p>
                 <p class="fw-bold">Stay tuned for more creative competitions! Follow us on Facebook, YouTube, and Instagram to stay updated.</p>
                 <p class="mt-3 mb-0">— <em>Team Ira Rangoli Arts®</em><br><strong>KalaGuru by Ira Rangoli Arts™</strong></p>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>
@@ -201,12 +203,12 @@
             <div class="container" id="explore">
                 <h2 class="text-center fw-bold mb-4 text-dark">Explore Our Courses</h2>
                 <div class="row justify-content-center">
-<div class="alert alert-warning text-center" role="alert">
+<!-- <div class="alert alert-warning text-center" role="alert">
   <b>📌 Please Note:<br>
   📅 Each lesson will be available only for 48 hours.<br>
   🔓 New lessons will unlock daily.<br><br>
   The courses will begin on June 01, 2025. Make sure to mark your calendar and get ready to join!</b>
-</div>
+</div> -->
 
                         <!-- <div class="list-group">
                             <div class="list-group-item d-flex align-items-start">
@@ -248,10 +250,10 @@
                                 <div class="gridarea__wraper gridarea__wraper__2">
                                   <div class="gridarea__img">
                                     <a href="{% url 'courses' course.slug %}">
-                                        {% if course.id == 1 or course.id == 9 or course.id == 15%}
+                                        {% if course.id == 1 or course.id == 15 or course.id == 17 %}
                                         <img loading="lazy" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
                                         {% elif course.id == 4 or course.id == 10 %}
-                                        <img loading="lazy" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+                                        <img loading="lazy" src="{% static 'img/home/Portrait_new.png' %}" alt="grid" />
                                         {% elif course.id == 5 or course.id == 11 %}
                                         <img loading="lazy" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
                                         {% elif course.id == 6 or course.id == 12 %}
@@ -262,8 +264,18 @@
                                         <img loading="lazy" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
                                         {% elif course.id ==  16 %}
                                         <img loading="lazy" src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+                                        {% elif course.id ==  18 %}
+                                            <img loading="lazy" src="{% static 'img/home/flower_new.png' %}" alt="grid" />
+                                        {% elif course.id ==  19 %}
+                                        <img loading="lazy" src="{% static 'img/home/border_new.png' %}" alt="grid" />
+                                        {% elif course.id ==  20 %}
+                                        <img loading="lazy" src="{% static 'img/home/marathi_letter_new.png' %}" alt="grid" />
                                         {% else %}
-                                        <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+                                            {% if course.course_image %}
+                                              <img loading="lazy" src="{{ course.course_image.url }}" alt="{{ course.title }}" />
+                                            {% else %}
+                                              <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="{{ course.title }}" />
+                                            {% endif %}
                                         {% endif %}
                                     </a>
                                   </div>

@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}Coupon Search{% endblock %}
+
+{% block content %}
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<main class="main_wrapper overflow-hidden">
+
+<!-- header -->
+{% include 'partials/navbar.html' %}
+{% include 'partials/mobile-menu.html' %}
+
+<div>
+  <div class="theme__shadow__circle"></div>
+  <div class="theme__shadow__circle shadow__right"></div>
+</div>
+
+
+<!-- breadcrumb -->
+<div class="breadcrumbarea pt-2 pb-2 p-1">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12">
+
+        <div class="breadcrumb__content__wraper">
+
+          <div class="breadcrumb__title">
+            <h2 class="heading">Coupon Search</h2>
+          </div>
+
+          <div class="breadcrumb__inner">
+            <ul>
+              <li>
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+              </li>
+              <li>Coupon Search</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- main section -->
+
+<div class="blogarea__2 sp_top_100 sp_bottom_100">
+
+<div class="container">
+
+<div class="row justify-content-center">
+
+<div class="col-xl-10">
+
+
+<!-- search box -->
+
+<div class="card mb-4">
+
+<div class="card-body">
+
+<form method="get">
+
+<div class="row">
+
+<div class="col-md-8">
+
+<input
+type="text"
+name="q"
+value="{{ query }}"
+class="form-control"
+placeholder="Enter coupon code or phone number"
+/>
+
+</div>
+
+<div class="col-md-4">
+
+<button class="btn btn-primary">
+Search
+</button>
+
+<a href="{% url 'coupon_search' %}" class="btn btn-secondary">
+Clear
+</a>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+
+<!-- search results -->
+
+{% if results %}
+
+<div class="card mb-5">
+
+<div class="card-header">
+<h5>Search Results</h5>
+</div>
+
+<div class="card-body">
+
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+<th>User Name</th>
+<th>Phone</th>
+<th>City</th>
+<th>Courses</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for r in results %}
+
+<tr>
+
+<td>{{ r.name }}</td>
+
+<td>{{ r.phone }}</td>
+
+<td>{{ r.city }}</td>
+
+<td>{{ r.courses|join:", " }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% elif query %}
+
+<div class="alert alert-warning">
+No results found
+</div>
+
+{% endif %}
+
+
+
+<!-- coupon leaderboard -->
+
+<div class="card">
+
+<div class="card-header">
+<h5>Coupon Usage Leaderboard</h5>
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+<th>Coupon Code</th>
+<th>Total Users</th>
+<th>Total Enrollments</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for c in coupon_stats %}
+
+<tr>
+
+<td>{{ c.coupon_code }}</td>
+
+<td>{{ c.total_users }}</td>
+
+<td>{{ c.total_enrollments }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- footer -->
+
+{% include 'partials/footer.html' %}
+
+</main>
+
+{% endblock %}

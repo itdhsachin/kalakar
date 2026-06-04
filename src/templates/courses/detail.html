@@ -42,6 +42,10 @@
     text-decoration: underline;
   }
 
+  .slider-img {
+    height: 400px !important;       /* you can adjust height as needed */
+    object-fit: cover;   /* crop image to fit container */
+  }
 </style>
 <!-- <p>todays date = {{ today_date }}</p> -->
 <meta name="csrf-token" content="{{ csrf_token }}">
@@ -118,10 +122,10 @@
             class="blogarae__img__2 course__details__img__2"
             data-aos="fade-up"
           >
-            {% if course.id == 1 or course.id == 9 or course.id == 15 %}
+            {% if course.id == 1 or course.id == 15 or course.id == 17 %}
             <img loading="lazy" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
             {% elif course.id == 4 or course.id == 10 %}
-            <img loading="lazy" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+            <img loading="lazy" src="{% static 'img/home/Portrait_new.png' %}" alt="grid" />
             {% elif course.id == 5 or course.id == 11 %}
             <img loading="lazy" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
             {% elif course.id == 6 or course.id == 12 %}
@@ -132,8 +136,52 @@
             <img loading="lazy" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
             {% elif course.id ==  16 %}
             <img loading="lazy" src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+            {% elif course.id ==  19 %}
+            <img loading="lazy" src="{% static 'img/home/border_new.png' %}" alt="grid" />
+            {% elif course.id ==  20 %}
+            <img loading="lazy" src="{% static 'img/home/marathi_letter_new.png' %}" alt="grid" />
+            {% elif course.id ==  18 %}
+                <div id="flowerRangoliCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                  <div class="carousel-inner">
+
+                    <div class="carousel-item active">
+                      <img loading="lazy" src="{% static 'img/home/flower_rangoli_art_2.jpeg' %}" class="d-block w-100 slider-img" alt="Flower Rangoli 1">
+                    </div>
+
+                    <div class="carousel-item">
+                      <img loading="lazy" src="{% static 'img/home/flower_rangoli_art_1.jpeg' %}" class="d-block w-100 slider-img" alt="Flower Rangoli 2">
+                    </div>
+
+                    <div class="carousel-item">
+                      <img loading="lazy" src="{% static 'img/home/flower_rangoli_at_3.jpeg' %}" class="d-block w-100 slider-img" alt="Flower Rangoli 3">
+                    </div>
+
+                    <div class="carousel-item">
+                      <img loading="lazy" src="{% static 'img/home/flower_rangoli_art_4.jpeg' %}" class="d-block w-100 slider-img" alt="Flower Rangoli 4">
+                    </div>
+
+                     <div class="carousel-item">
+                      <img loading="lazy" src="{% static 'img/home/flower_rangoli_art_5.jpeg' %}" class="d-block w-100 slider-img" alt="Flower Rangoli 4">
+                    </div>
+
+                  </div>
+
+                  <!-- Controls -->
+                  <button class="carousel-control-prev" type="button" data-bs-target="#flowerRangoliCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#flowerRangoliCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
             {% else %}
-            <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+                {% if course.course_image %}
+                  <img loading="lazy" src="{{ course.course_image.url }}" alt="{{ course.title }}" />
+                {% else %}
+                  <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="{{ course.title }}" />
+                {% endif %}
             {% endif %}
           </div>
           <div class="blog__details__content__wraper">
@@ -322,158 +370,90 @@
                   </div> -->
 
 
-                  <div class="accordion content__cirriculum__wrap" id="accordionExample">
-                    {% now "Y-m-d H:i:s" as today_date %}
-                    {% with course.enroll_start_date|date:"Y-m-d" as start_date %}
-                    <!-- {% with course.enroll_end_date|date:"Y-m-d" as end_date %} -->
-                  
-                      {% for module in object.modules.all %}
-                        <div class="accordion-item">
-                          <h2 class="accordion-header" id="heading{{ module.id }}">
-                            <button class="accordion-button"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#collapse{{ module.id }}"
-                                    aria-expanded="true"
-                                    aria-controls="collapse{{ module.id }}">
-                              {{ module.title }}
-                            </button>
-                          </h2>
-                          <div id="collapse{{ module.id }}"
-                               class="accordion-collapse collapse show"
-                               aria-labelledby="heading{{ module.id }}"
-                               data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
+                  <!-- STARTS lessons set -->
 
-                              {% for content in module.lessons.all %}
-                                {% with content.available_date|date:"Y-m-d" as lesson_start_date %}
-                                {% with content.target_date|date:"Y-m-d" as lesson_end_date %}
-                                {% with lesson_start_date|stringformat:"s"|add:" 07:00:00" as lesson_start_dt %}
-                                {% with lesson_end_date|stringformat:"s"|add:" 07:00:00" as lesson_end_dt %}
-                  
-                                  {% if not lesson_start_date and not lesson_end_date %}
-                                    <!-- Always show lessons with no date -->
-                                    <div class="lesson-box">
-                                      <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                        <div class="scc__info d-flex align-items-center mb-2 mb-md-0">
-                                          {% if content.get_type == 'Video' %}
-                                            <i class="icofont-video-alt fs-4"></i>
-                                          {% endif %}
-                                          <h5 class="mb-0">
-                                            <span class="text-muted">{{ content.get_type }} :</span>
-                                            <strong>{{ content.title }}</strong>
-                                          </h5>
-                                        </div>
-                                        <div class="scc__meta">
-                                          <a href="{% url 'lessons' content.id %}" target="_blank">
-                                            <i class="icofont-external-link"></i> View Now
-                                          </a>
-                                        </div>
-                                      </div>
-                                    </div>
-                  
-                                  {% else %}
-                                    {% if is_enrolled %}
+<!-- Modules: {{ modules|length }}
 
-                                      {% if not start_date or start_date <= today_date|slice:":10" %}
-                                        
+{% for module in modules %}
+Module: {{ module.title }}
 
-                                          {% if not lesson_start_date or today_date >= lesson_start_dt %}
-                                            {% if not lesson_end_date or today_date < lesson_end_dt %}
-                                            <div class="lesson-box">
-                                              <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                                <div class="scc__info d-flex align-items-center mb-2 mb-md-0">
-                                                  {% if content.get_type == 'Video' %}
-                                                    <i class="icofont-video-alt fs-4"></i>
-                                                  {% endif %}
-                                                  <h5 class="mb-0">
-                                                    <span class="text-muted">{{ content.get_type }} :</span>
-                                                    <strong>{{ content.title }}</strong>
-                                                  </h5>
-                                                </div>
-                                                <div class="scc__meta">
-                                                  <a href="{% url 'lessons' content.id %}" target="_blank">
-                                                    <i class="icofont-external-link"></i> View Now
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            {% else %}
-                                              <p class="text-danger">
-                                                <i class="icofont-close-circled"></i> This lesson ended at 7:00 AM on {{ lesson_end_date }}.
-                                              </p>
-                                            {% endif %}
-                                          {% else %}
-                                          <div class="alert alert-warning d-flex align-items-center p-3 rounded-3">
-                                            <i class="icofont-clock-time fs-4 me-2"></i>
-                                            <div>
-                                              <strong>Heads up!</strong> This lesson will be available from <strong>7:00 AM on {{ lesson_start_date }}</strong>.
-                                            </div>
-                                          </div>
-                                          {% endif %}
-                                      {% endif %}
-                                    {% endif %}
-                                  {% endif %}
-                  
-                                {% endwith %}
-                                {% endwith %}
-                                {% endwith %}
-                                {% endwith %}
-                              {% endfor %}
-                            </div>
-                          </div>
-                        </div>
-                      {% endfor %}
+Lessons: {{ module.lessons.all|length }}
 
-                      {% if not is_enrolled %}
-                      <div class="text-center mt-4">
+Processed: {{ module.lessons_with_access|length }}
 
-                        <input type="checkbox" id="terms_{{ course.id }}" name="terms_{{ course.id }}" value="agree">
-                        <label for="terms_{{ course.id }}">I agree to the <a href="https://kalagurubyirarangoliarts.com/terms_condition/" target="_blank">Terms and Conditions</a></label><br><br>
+{% endfor %} -->
 
-                        <button id="buyButton_{{ course.id }}" class="rzp-button btn-primary btn btn-lg" data-course-id="{{ course.id }}" data-course-couponcode="{{ couponCode }}" disabled>
-                            Buy ₹{{ final_price }}
-                        </button>
-                        <script>
+                  {% for module in modules %}
 
-                            document.getElementById('terms_{{ course.id }}').addEventListener('change', function() {
-                                document.getElementById('buyButton_{{ course.id }}').disabled = !this.checked;
-                            });
-                        </script>
+                  <div class="accordion-item">
+                  <h2>{{ module.title }}</h2>
 
-                       <br>
-                       <br>
-                      </div>
-                    {% endif %}
-                  
-                      <!-- Course Not Started -->
-                      {% if start_date and start_date > today_date|slice:":10" %}
-                        <div class="alert alert-warning d-flex align-items-center p-3">
-                          <i class="icofont-clock-time fs-4 me-2"></i>
-                          <div>
-                            <strong>Upcoming Course:</strong> This course will start on <span class="fw-bold">{{ start_date }}</span>.  
-                            Please check back later or set a reminder!
-                          </div>
-                        </div>
-                      {% endif %}
-                  
-                      <!-- Course Ended -->
-                      <!-- {% if end_date and today_date|slice:":10" > end_date %}
-                        <div class="alert alert-danger d-flex align-items-center p-3">
-                          <i class="icofont-close-circled fs-4 me-2"></i>
-                          <div>
-                            <strong>Course Ended:</strong> This course was completed on <span class="fw-bold">{{ end_date }}</span>.  
-                            If you have any questions, please contact support.
-                          </div>
-                        </div>
-                      {% endif %} -->
-                  
-                    {% endwith %}
-                    {% endwith %}
+                  {% for content in module.lessons_with_access %}
+
+                  {% if content.can_view %}
+
+                  <div class="lesson-box">
+                  <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                  <div class="scc__info d-flex align-items-center">
+                  {% if content.get_type == 'Video' %}
+                  <i class="icofont-video-alt fs-4"></i>
+                  {% endif %}
+                  <h5>
+                  <span class="text-muted">{{ content.get_type }} :</span>
+                  <strong>{{ content.title }}</strong>
+                  </h5>
+                  </div>
+
+                  <div class="scc__meta">
+                  {% if content.demo %}
+                  <i class="icofont-read-book-alt fs-4"></i> Demo&nbsp;&nbsp;
+                  {% endif %}
+                  <a href="{% url 'lessons' content.id %}" target="_blank">
+                  <i class="icofont-external-link"></i> View Now
+                  </a>
+                  </div>
+
+                  </div>
+                  </div>
+
+                  {% elif content.locked %}
+
+                  <div class="alert alert-warning d-flex align-items-center p-3 rounded-3">
+                  <i class="icofont-clock-time fs-4 me-2"></i>
+                  <div>
+                  <strong>{{ content.title }}</strong> will unlock on <b>{{ content.release_date }}</b>.
+                  </div>
                   </div>
                   
+                  {% elif content.expired %}
+
+                  <div class="alert alert-danger d-flex align-items-center p-3 rounded-3">
+                  <i class="icofont-close-circled fs-4 me-2"></i>
+                  <div>
+                  <strong>Time's up!</strong> This lesson was available until <b>{{ content.expiry_date }}</b>.
+                  </div>
+                  </div>
+
+                  {% endif %}
+
+                  {% endfor %}
+
+                  </div>
+
+                  {% endfor %}
+                  <!-- ENDS lessons set -->
 
                   
+                  <!-- To Submit work  -->
+                  
+                  {% if course.id ==  16 %}
+                    <div class="col-12 row text-center">
+                      <a href="{% url 'upload' %}" class="btn btn-warning btn-lg btn-block">
+                        <b>Submit Your Work</b>
+                      </a>
+                    </div>
+                  {% endif %}
                     
                 </div>
               </div>
@@ -510,14 +490,22 @@
                                                 <span class="sb_label">Instructor:</span><span class="sb_content"><a href="{% url 'pages:dynamic_pages' template_name='instructor-detail' %}">D. Willaim</a></span>
                                             </div>
                                         </li> -->
-                  <li>
+                  <!-- <li>
                     <div class="course__summery__item">
-                      <span class="sb_label">Start Date</span
+                      <span class="sb_label">Enrollment Start Date</span
                       ><span class="sb_content"
                         >{{course.enroll_start_date}}</span
                       >
                     </div>
                   </li>
+                    <li>
+                    <div class="course__summery__item">
+                      <span class="sb_label">Enrollment End Date</span
+                      ><span class="sb_content"
+                        >{{course.enroll_end_date}}</span
+                      >
+                    </div>
+                  </li> -->
                   <!-- <li>
                                             <div class="course__summery__item">
                                                 <span class="sb_label">Total Duration</span><span class="sb_content">08Hrs
@@ -552,10 +540,28 @@
                                                 <span class="sb_label">Quiz</span><span class="sb_content">Yes</span>
                                             </div>
                                         </li> -->
-                  <li>
+                  
+                   <li>
                     <div class="course__summery__item">
-                      <span class="sb_label">Certificate</span
-                      ><span class="sb_content">Yes</span>
+                      <span class="sb_label">Next Batch Enrolment opens on</span
+                      ><span class="sb_content">1 Apr 2026</span>
+                    </div>
+                  </li>
+                   <li>
+                    <div class="course__summery__item">
+                      <span class="sb_label">Next Batch starts on</span
+                      ><span class="sb_content">16 Apr 2026</span>
+                    </div>
+                  </li>
+                   <li>
+                    <div class="course__summery__item">
+                      <span class="sb_label">Next Admission closes on</span
+                      ><span class="sb_content">15 Apr 2026</span>
+                    </div>
+                  </li><li>
+                    <div class="course__summery__item">
+                      <span class="sb_label">Current Batch Certificate access available until</span
+                      ><span class="sb_content">15 Apr 2026, 7:01 AM</span>
                     </div>
                   </li>
                 </ul>
@@ -571,19 +577,45 @@
                 </div>
                 {% endif %}
                 {% if not is_enrolled %}
-                <div class="text-center mx-auto">
-                        <input type="checkbox" id="rterms_{{ course.id }}" name="rterms_{{ course.id }}" value="agree">
-                        <label for="rterms_{{ course.id }}">I agree to the <a href="https://kalagurubyirarangoliarts.com/terms_condition/" target="_blank">Terms and Conditions</a></label><br><br>
+                  <div class="text-center mx-auto">
 
-                        <button id="rbuyButton_{{ course.id }}" class="rzp-button btn-warning btn btn-lg" data-course-couponcode="{{ couponCode }}"  data-course-id="{{ course.id }}" disabled>
-                            Buy ₹{{ final_price }}
+                    <!-- Coupon Field -->
+                    <div class="mb-3">
+                        <input type="text"
+                               id="coupon_code_{{ course.id }}"
+                               class="form-control text-center"
+                               placeholder="Enter Coupon Code"
+                               value="{{ request.GET.coupon|default:'' }}">
+
+                        <button class="btn btn-primary mt-2"
+                                onclick="applyCoupon({{ course.id }})">
+                            Apply Now
                         </button>
-                        <script>
 
-                            document.getElementById('rterms_{{ course.id }}').addEventListener('change', function() {
-                                document.getElementById('rbuyButton_{{ course.id }}').disabled = !this.checked;
-                            });
-                        </script>
+                        <div id="coupon_msg_{{ course.id }}" class="mt-2 text-danger"></div>
+                    </div>
+
+                    <input type="checkbox" id="rterms_{{ course.id }}" name="rterms_{{ course.id }}" value="agree">
+
+                    <label for="rterms_{{ course.id }}">
+                        I agree to the
+                        <a href="https://kalagurubyirarangoliarts.com/terms_condition/" target="_blank">
+                            Terms and Conditions
+                        </a>
+                    </label>
+
+                    <br><br>
+
+                    <button id="rbuyButton_{{ course.id }}"
+                        class="rzp-button btn-warning btn btn-lg"
+                        data-course-couponcode="{{ couponCode }}"
+                        data-course-id="{{ course.id }}"
+                        disabled>
+
+                        Buy ₹{{ final_price }}
+
+                    </button>
+
                 </div>
                 {% if course.id ==  16 %}
                   <div>    
@@ -657,7 +689,8 @@ document.querySelectorAll('.rzp-button').forEach(button => {
                     "contact":data.user_phone
                 },
                 "notes": {
-                    "course_id": data.course_id
+                    "course_id": data.course_id,
+                    "couponCode": couponCode 
                 },
                 "theme": {
                     "color": "#9F86C6"
@@ -673,6 +706,46 @@ document.querySelectorAll('.rzp-button').forEach(button => {
         e.preventDefault();
     });
 });
+
+function applyCoupon(courseId){
+
+    let coupon = document.getElementById("coupon_code_" + courseId).value.trim();
+
+    if(coupon === ""){
+        document.getElementById("coupon_msg_" + courseId).innerHTML = "Please enter coupon code";
+        return;
+    }
+
+    fetch("/coupon/check-coupon/?coupon_code=" + coupon)
+    .then(response => response.json())
+    .then(data => {
+
+        if(data.match){
+
+            let url = new URL(window.location.href);
+            url.searchParams.set("coupon", coupon);
+            window.location.href = url;
+
+        }else{
+
+            document.getElementById("coupon_msg_" + courseId).innerHTML = data.message;
+
+        }
+
+    })
+    .catch(error => {
+
+        document.getElementById("coupon_msg_" + courseId).innerHTML = "Something went wrong";
+
+    });
+
+}
+
+
+document.getElementById('rterms_{{ course.id }}').addEventListener('change', function() {
+    document.getElementById('rbuyButton_{{ course.id }}').disabled = !this.checked;
+});
+
 </script>
 
 {% endblock %}

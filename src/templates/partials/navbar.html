@@ -23,16 +23,34 @@
     </head>
     <body>
         <header class="sticky-top bg-white py-2 shadow" style="z-index: 1050;">
-            <div class="container">
-                <div class="d-flex justify-content-center">
-                    <div class="headerarea_logo">
-                        <a href="https://kalagurubyirarangoliarts.com/">
-                            <img src="{% static 'img/logo/kalaguru_logo.jpg' %}" alt="logo" style="height: 80px; width: auto;">
-                        </a>
-                    </div>
-                </div>
+          <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+              
+              <!-- Logo Left -->
+              <div class="headerarea_logo">
+                <a href="https://kalagurubyirarangoliarts.com/">
+                  <img src="{% static 'img/logo/kalaguru_logo.jpg' %}" alt="logo" style="height: 80px; width: auto;">
+                </a>
+              </div>
+
+              <!-- Auth Links Right -->
+              <div>
+                {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger px-4"><i class="fa fa-sign-out-alt"></i> Logout</button>
+                    </form>
+                {% else %}
+                  <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">
+                    <i class="fa fa-sign-in-alt"></i> Login
+                  </a>
+                {% endif %}
+              </div>
+
             </div>
-        </header>
+          </div>
+        </header> 
+
         
     </body>
 </html>

@@ -68,6 +68,11 @@ class Lesson(models.Model):
 
     order = OrderField(blank=True, for_fields=["module"])
 
+    release_after_days = models.IntegerField(
+        default=0,
+        help_text="Days after batch start when lesson unlocks"
+    )
+    
     class Meta:
         """Metaclass."""
 

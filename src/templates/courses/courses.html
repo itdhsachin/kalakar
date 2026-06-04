@@ -134,12 +134,12 @@
               role="tabpanel"
               aria-labelledby="projects__one"
             >
-<div class="alert alert-warning text-center" role="alert">
+<!-- <div class="alert alert-warning text-center" role="alert">
   <b>📌 Please Note:<br>
   📅 Each lesson will be available only for 48 hours.<br>
   🔓 New lessons will unlock daily.<br><br>
   The courses will begin on June 01, 2025. Make sure to mark your calendar and get ready to join!</b>
-</div>
+</div> -->
 
               <div class="row">
                 {% for course in courses %} 
@@ -151,10 +151,10 @@
                   <div class="gridarea__wraper gridarea__wraper__2">
                     <div class="gridarea__img">
                       <a href="{% url 'courses' course.slug %}">
-                        {% if course.id == 1 or course.id == 9 or course.id == 15 %}
+                        {% if course.id == 1 or course.id == 15 or course.id == 17 %}
                         <img loading="lazy" src="{% static 'img/home/basicrangoli.jpg' %}" alt="grid" />
                         {% elif course.id == 4 or course.id == 10 %}
-                        <img loading="lazy" src="{% static 'img/home/portrait_rangoli.png' %}" alt="grid" />
+                        <img loading="lazy" src="{% static 'img/home/Portrait_new.png' %}" alt="grid" />
                         {% elif course.id == 5 or course.id == 11 %}
                         <img loading="lazy" src="{% static 'img/home/hand_write.png' %}" alt="grid" />
                         {% elif course.id == 6 or course.id == 12 %}
@@ -165,8 +165,18 @@
                         <img loading="lazy" src="{% static 'img/home/mehandi.png' %}" alt="grid" />
                         {% elif course.id ==  16 %}
                         <img loading="lazy" src="{% static 'img/home/new_mehendi.png' %}" alt="grid" />
+                        {% elif course.id ==  18 %}
+                        <img loading="lazy" src="{% static 'img/home/flower_new.png' %}" alt="grid" />
+                        {% elif course.id ==  19 %}
+                        <img loading="lazy" src="{% static 'img/home/border_new.png' %}" alt="grid" />
+                        {% elif course.id ==  20 %}
+                        <img loading="lazy" src="{% static 'img/home/marathi_letter_new.png' %}" alt="grid" />
                         {% else %}
-                        <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="grid" />
+                          {% if course.course_image %}
+                              <img loading="lazy" src="{{ course.course_image.url }}" alt="{{ course.title }}" />
+                          {% else %}
+                              <img loading="lazy" src="{% static 'img/home/ira_courses_default.png' %}" alt="{{ course.title }}" />
+                          {% endif %}
                         {% endif %}
                       </a>
                       <!-- <div class="gridarea__small__button">
@@ -313,6 +323,12 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+
+function getCouponFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('coupon') || '';
+}
+
 document.querySelectorAll('.rzp-button').forEach(button => {
     button.addEventListener('click', function (e) {
         const courseId = this.getAttribute('data-course-id');
@@ -320,13 +336,15 @@ document.querySelectorAll('.rzp-button').forEach(button => {
         // console.log(courseId);
         const csrftoken = document.querySelector('[name=csrf-token]').content;
 
+        const couponCode = getCouponFromURL();
+
         fetch('razorpay_order/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRFToken': csrftoken
             },
-            body: `course_id=${courseId}`
+            body: `course_id=${courseId}&coupon=${couponCode}`
         })
         .then(response => response.json())
         .then(data => {
@@ -336,7 +354,7 @@ document.querySelectorAll('.rzp-button').forEach(button => {
                 "amount": data.amount,
                 "currency": "INR",
                 "name": "KalaGuru By Ira Rangoli Arts",
-                "description": "Course ID: " + data.course_id,
+                "description": "Course ID: " + data.course_id + (data.couponCode ? " | Coupon: " + data.couponCode : ""),
                 "order_id": data.order_id,
                 "callback_url": data.callback_url,
                 "prefill": {
@@ -345,7 +363,8 @@ document.querySelectorAll('.rzp-button').forEach(button => {
                     "contact":data.user_phone
                 },
                 "notes": {
-                    "course_id": data.course_id
+                    "course_id": data.course_id,
+                    "coupon": data.couponCode
                 },
                 "theme": {
                     "color": "#9F86C6"

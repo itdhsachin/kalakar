@@ -12,6 +12,8 @@ from django.utils.translation import gettext_lazy as _
 
 from accounts.models import Student, Teacher, User,State,District
 
+import csv
+from django.http import HttpResponse
 
 class UserAdmin(admin.ModelAdmin):
     """Admin interface options for the User model."""
@@ -19,6 +21,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = [
         "get_full_name",
         "username",
+        "phone",
         "email",
         "is_active",
         "is_student",
@@ -26,7 +29,8 @@ class UserAdmin(admin.ModelAdmin):
         "is_staff",
         "delete_button",
     ]
-    search_fields = ["username", "first_name", "last_name", "email"]
+    search_fields = ["username", "phone", "first_name", "last_name", "email"]
+    actions = ["export_as_csv"]
 
     def delete_button(self, obj):
         """Generate a delete button for each user row."""
@@ -62,6 +66,21 @@ class UserAdmin(admin.ModelAdmin):
 
         return redirect("/admin/accounts/user/")
 
+    def export_as_csv(self, request, queryset):
+        """Export selected users as CSV with email, phone, full name."""
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="users.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(["Full Name", "Email", "Phone"])  # CSV headers
+
+        for user in queryset:
+            writer.writerow([user.get_full_name(), user.email, user.phone])
+
+        return response
+
+    export_as_csv.short_description = "Export Selected Users as CSV"
+    
     class Meta:
         managed = True
         verbose_name = "User"

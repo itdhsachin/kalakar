@@ -1,33 +1,51 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{% endblock %}
+{% block title %}
+    {% if object %} Edit {{ object.title }} {% else %} Add New Content {% endif %}
+{% endblock %}
 
 {% block page_title %}
-        {% if object %}
-            Edit {{ object.title }}
-        {% else %}
-            Add a new content
-        {% endif %}
+    {% if object %}
+        Edit "{{ object.title }}"
+    {% else %}
+        Add a new content
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-
-    <div class="w-100 module shadow-style">
-        <div class="row h-100 justify-content-center">
-            <form class="d-inline-block" action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% for field in form %}
-                    {{ field.errors }}
-                    <p>{{ field.label_tag }}</p>
-                    <p class="text-black-50">{{ field }}</p>
-                    {% if field.help_text %}
-                        {{ field.help_text|safe }}
-                     {% endif %}
-                {% endfor %}
-                <p><button class="btn btn-primary" type="submit" value="Save Content">Save Content</button></p>
-         </form>
-      </div>
-  </div>
-
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    {% if object %}
+                        Update Content
+                    {% else %}
+                        Create Content
+                    {% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Save Content</button>
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
